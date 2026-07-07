@@ -176,6 +176,109 @@ def from_jsonl(path: str | Path, *, source: str = "", trace_id: str = "") -> Raw
     return RawTrace(steps=steps, source=source or str(p), trace_id=trace_id or p.stem)
 
 
+_TOOL_TARGET_KEYS = ("file_path", "command", "path", "pattern", "url", "query", "notebook_path")
+
+
+def _summarize_tool(block: dict[str, Any]) -> str:
+    """Compact one tool_use block to a readable, rumination-legible line.
+
+    Rumination in a coding agent shows up as repeated actions on the same target
+    (retrying the same edit, re-running the same command), so the target is
+    load-bearing. For edit-like tools we also surface a snippet of what changed, so
+    a scorer can tell distinct edits (productive) from circular ones (ruminative),
+    which is the whole discriminator and is invisible from the file path alone.
+    """
+    name = block.get("name", "tool")
+    inp = block.get("input") or {}
+
+    target = None
+    for key in _TOOL_TARGET_KEYS:
+        if key in inp and isinstance(inp[key], str):
+            target = inp[key].strip().replace("\n", " ")[:120]
+            break
+
+    snippet = None
+    if name in ("Edit", "Write", "MultiEdit", "NotebookEdit"):
+        for key in ("new_string", "content", "new_source"):
+            if isinstance(inp.get(key), str):
+                snippet = " ".join(inp[key].split())[:70]
+                break
+        if snippet is None and isinstance(inp.get("edits"), list) and inp["edits"]:
+            first = inp["edits"][0]
+            if isinstance(first, dict) and isinstance(first.get("new_string"), str):
+                snippet = " ".join(first["new_string"].split())[:70]
+
+    label = f"{name}: {target}" if target else name
+    if snippet:
+        label += f' -> "{snippet}"'
+    return label
+
+
+def from_claude_code_jsonl(
+    path: str | Path,
+    *,
+    include_thinking: bool = False,
+    trace_id: str = "",
+) -> RawTrace:
+    """Ingest a Claude Code transcript, one step per assistant turn.
+
+    Each step is the assistant's narration text plus a compact summary of the tool
+    actions that turn took, e.g. "Let me fix the import\n[actions: Edit src/foo.py]".
+    That granularity is what makes rumination legible: three consecutive steps that
+    all read "Edit src/foo.py" around the same reworded reasoning is the pattern.
+
+    ``include_thinking`` folds the agent's thinking blocks in too (where present);
+    off by default because thinking is verbose and not always recorded.
+    """
+    p = Path(path)
+    steps: list[TraceStep] = []
+    with p.open("r", encoding="utf-8", errors="replace") as fh:
+        for line in fh:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                record = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if not isinstance(record, dict) or record.get("type") != "assistant":
+                continue
+            msg = record.get("message")
+            content = msg.get("content") if isinstance(msg, dict) else None
+            if not isinstance(content, list):
+                continue
+
+            texts: list[str] = []
+            actions: list[str] = []
+            for block in content:
+                if not isinstance(block, dict):
+                    continue
+                bt = block.get("type")
+                if bt == "text" and block.get("text"):
+                    texts.append(block["text"].strip())
+                elif bt == "thinking" and include_thinking and block.get("thinking"):
+                    texts.append("[thinking] " + block["thinking"].strip())
+                elif bt == "tool_use":
+                    actions.append(_summarize_tool(block))
+
+            parts = []
+            if texts:
+                parts.append("\n".join(texts))
+            if actions:
+                parts.append("[actions: " + "; ".join(actions) + "]")
+            text = "\n".join(parts).strip()
+            if not text:
+                continue
+            steps.append(
+                TraceStep(
+                    text=text,
+                    index=len(steps),
+                    meta={"actions": actions, "n_actions": len(actions)},
+                )
+            )
+    return RawTrace(steps=steps, source=str(p), trace_id=trace_id or p.stem)
+
+
 def save_traces(traces: Iterable[Any], path: str | Path) -> None:
     """Write RawTraces or ScoredTraces to a JSON file (list of dicts)."""
     payload = [t.to_dict() for t in traces]
