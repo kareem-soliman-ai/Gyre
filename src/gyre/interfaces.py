@@ -1,18 +1,12 @@
-"""Common interfaces for loop monitors.
+"""Loop-side interfaces: what a loop *is*, independent of how it measures.
 
-A loop monitor observes an iterating agent and reports on the quality of the loop
-it is running: is the loop still generating information, has it plateaued, should
-it exit or switch. Every pattern in the Gyre catalogue that *measures* something
-(L1, L2, L3, L6) can be expressed against the ``LoopMonitor`` protocol below.
+A loop here is a controller. It is constructed with a ``MeasurementProvider``
+(see ``gyre.measurement``), fed observations, and asked for a verdict. It owns
+the control policy (the state machine: how long a signal has to stay bad before
+acting, how to route when it does) and nothing about measurement. Swap the
+provider and the control policy is unchanged; that is the whole design.
 
-This module contains no detectors. It is the vocabulary layer: the types a
-detector would produce, and the shape it would present. Build your detector to
-this interface and it composes with the rest of the catalogue, including a future
-meta-loop controller (L7) that consumes ``LoopSignal`` and ``LoopVerdict`` to
-decide which loop runs next.
-
-See ../../loops/INDEX.md for the catalogue and ../../docs/measurement-stance.md
-for why the scoring internals are deliberately not here.
+This module has no dependency on any concrete provider, and must never gain one.
 """
 
 from __future__ import annotations
@@ -21,12 +15,12 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any, Protocol, Sequence, runtime_checkable
 
+from gyre.measurement import Measurement
+
 
 class Maturity(str, Enum):
-    """How ready a pattern is, and how much its outputs can be trusted.
-
-    See ../../loops/INDEX.md and ../../docs/measurement-stance.md.
-    """
+    """How ready a pattern (or a provider) is, and how far its claims can be
+    trusted. See docs/measurement-stance.md."""
 
     FRAMING = "framing"
     """An idea and a naming. No code expected (e.g. L0 TOTE, L7 meta-loop)."""
@@ -35,24 +29,23 @@ class Maturity(str, Enum):
     """A working version is a small job, buildable straight from the pattern doc."""
 
     INSTRUMENT = "instrument"
-    """Measures a latent property. Cannot state numbers until validated against
-    ground truth. Method open, validated scoring held back."""
+    """Measures a latent property. Cannot state performance numbers until
+    validated against ground truth. Method open, validated scoring held back."""
 
 
 class ExitReason(str, Enum):
-    """Why a loop should stop, escalate, or switch.
+    """Why a loop should continue, stop, escalate, or switch.
 
-    A monitor does not itself act; it reports one of these so the surrounding
-    scaffold (or an L7 controller) can decide what to do.
+    A loop reports one of these; it does not act. Acting is the job of the
+    surrounding scaffold or an L7 controller, which keeps loops composable.
     """
 
     CONTINUE = "continue"
     """The loop is still paying. Keep going."""
 
     PLATEAU = "plateau"
-    """Information gain has fallen below threshold for long enough that the loop
-    has stopped learning. The L1 rumination signal. Route to reframe, escalate,
-    or abandon-with-note."""
+    """The measured signal says the loop has stopped learning (the L1 case).
+    Route to reframe, escalate, or abandon-with-note."""
 
     REFRAME = "reframe"
     """Hand to an incubation / Einstellung break (L5): disengage, reset attention,
@@ -63,62 +56,41 @@ class ExitReason(str, Enum):
     plateaued. Not a raw failure dump."""
 
     ABANDON = "abandon"
-    """Record the impasse in a form a later loop or session can pick up (the L4
-    Zeigarnik register), so the dead end is not silently re-entered."""
+    """Record the impasse where a later loop or session can pick it up (the L4
+    register), so the dead end is not silently re-entered."""
 
     RUPTURE = "rupture"
     """The human-agent alliance shows rupture markers (L3). Pre-empts object-level
     optimisation: initiate repair before continuing."""
 
-
-@dataclass(frozen=True)
-class LoopSignal:
-    """A single measured signal about a loop, with its provenance attached.
-
-    ``value`` is deliberately untyped as to its scale: it might be a diff-novelty
-    ratio in [0, 1], a Brier score, a deviation magnitude. ``name`` and
-    ``loop_id`` say what it is and which pattern produced it. ``confounds`` is not
-    decoration: every signal in this catalogue is confounded, and a monitor that
-    does not name its confounds is hiding the thing you most need to know.
-    """
-
-    loop_id: str
-    """Which pattern produced this, e.g. "L1", "L6"."""
-
-    name: str
-    """What the signal is, e.g. "diff_novelty_ratio", "brier_score"."""
-
-    value: float
-    """The measured value. Scale is signal-specific; see the pattern doc."""
-
-    confounds: Sequence[str] = field(default_factory=tuple)
-    """Known ways this signal can mislead. Stated so callers can weight it."""
-
-    detail: dict[str, Any] = field(default_factory=dict)
-    """Optional extra context (window size, sample count, etc.)."""
+    DEVIATION = "deviation"
+    """A monitored channel departed from its learned baseline (the L6 case).
+    Allocate attention; the steady state should stay silent."""
 
 
 @dataclass(frozen=True)
 class LoopVerdict:
-    """A monitor's read on the loop, as of the observations it has seen.
+    """A loop's read on itself, resting on the measurements it has seen.
 
-    A verdict is a *hypothesis*, not a fact, until the monitor producing it has
-    been validated on labelled traces. ``confidence`` should reflect that, and
-    ``maturity`` records whether this monitor is even allowed to make a claim yet.
+    A verdict is a hypothesis, not a fact, until the provider that fed it has been
+    validated. ``confidence`` should reflect that, and ``maturity`` records how
+    far the underlying measurement is allowed to speak.
     """
 
     exit_reason: ExitReason
     """What the surrounding scaffold should consider doing."""
 
-    signals: Sequence[LoopSignal] = field(default_factory=tuple)
-    """The signals this verdict rests on. Never hide the basis for a verdict."""
+    measurements: Sequence[Measurement] = field(default_factory=tuple)
+    """The readings this verdict rests on. Never hide the basis for a verdict; the
+    confounds ride along inside each Measurement."""
 
     confidence: float | None = None
-    """Optional [0, 1] confidence. None means the monitor does not (yet) make a
-    calibrated confidence claim, which for an unvalidated instrument is honest."""
+    """Optional [0, 1] confidence in the verdict. ``None`` means the loop does not
+    make a calibrated confidence claim, which for an unvalidated provider is the
+    honest answer."""
 
     maturity: Maturity = Maturity.BUILDABLE
-    """The maturity of the monitor issuing this verdict."""
+    """Maturity of the least-mature provider this verdict depends on."""
 
     note: str = ""
     """Human-readable one-liner, e.g. for an ESCALATE summary."""
@@ -126,30 +98,26 @@ class LoopVerdict:
 
 @runtime_checkable
 class LoopMonitor(Protocol):
-    """The shape every loop monitor shares.
+    """The shape every loop controller shares.
 
-    A monitor observes an iterating agent and, when asked, returns a verdict. It
-    is intentionally passive: it watches, it reports, it does not act. Acting on
-    the verdict is the job of the scaffold or the L7 controller, which keeps
-    monitors composable and lets you add one to an existing agent without
-    rewriting the agent.
-
-    Minimal contract:
-      - ``observe`` is fed each iteration's artefacts (a diff, a transcript slice,
-        a log line, an outcome). Cheap; called often.
-      - ``verdict`` returns the current read. May be called any time.
-
-    Implement this for your L1 rumination detector, L6 habituation filter, etc.
-    The catalogue describes *how*; this protocol describes the *shape*.
+    Construct it with a provider, feed it observations, ask for a verdict. It is
+    intentionally passive: it watches and reports, it does not act. That is what
+    lets you bolt one onto an existing agent without rewriting the agent, and what
+    lets an L7 controller consume many loops' verdicts to decide what runs next.
     """
 
     loop_id: str
-    """Which pattern this monitor implements, e.g. "L1"."""
+    """Which pattern this implements, e.g. "L1"."""
 
-    def observe(self, iteration: Any) -> None:
-        """Take in one iteration's worth of behaviour. Should be cheap."""
+    def observe(self, observation: Any) -> None:
+        """Take in one observation. Delegates measurement to the provider; should
+        stay cheap."""
         ...
 
     def verdict(self) -> LoopVerdict:
-        """Return the monitor's current read of the loop."""
+        """Return the loop's current read."""
+        ...
+
+    def reset(self) -> None:
+        """Clear control state and the provider's state for an independent run."""
         ...

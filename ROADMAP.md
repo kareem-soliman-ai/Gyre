@@ -14,20 +14,24 @@ The framing and the taxonomy, shipped open.
 
 v0.1 is complete on its own. Everything below is optional and can resume cold from this repository.
 
-## v0.2 — The Instrument
+## v0.2 — The Modular Measurement Architecture (this release)
 
-Turn the flagship pattern into a working detector and run it on reality.
+The seam that makes measurement pluggable, and the loops that run against it.
 
-- [ ] A naive [L1](loops/L1-rumination-vs-reflection.md) rumination detector: diff-novelty on an agent transcript, built against the `LoopMonitor` interface.
-- [ ] Run it on a real agent trace of a loop going in circles.
-- [ ] Report the measured result honestly: what it caught, what it missed, what continuing cost. No claim beyond what the trace supports.
+- [x] The measurement seam: `MeasurementProvider`, `Measurement` (with a calibration ladder), `Meaning`. Loops depend on the interface, never on a concrete sensor.
+- [x] Loop controllers against the seam: [L1](loops/L1-rumination-vs-reflection.md) RuminationMonitor, [L2](loops/L2-metacognitive-calibration.md) CalibrationGovernor, [L5](loops/L5-incubation-einstellung-breaker.md) EinstellungBreaker, [L6](loops/L6-habituation-orienting.md) HabituationFilter.
+- [x] Naive baseline sensors (diff-novelty, rolling Brier, z-score deviation), honest about being crude, so everything runs out of the box.
+- [x] `gyre.bench`: score any sensor against labelled traces, head-to-head, so the value gap is runnable.
+- [x] The [build-your-own-measurement guide](docs/building-measurements.md) and the gitignored proprietary provider fence.
 
-## v0.3 — The Packaging
+## v0.3 — The Instrument, on real traces
 
-Make the detector reusable and add the loop that public feedback pulls for.
+Turn the flagship into a validated sensor and run it on reality.
 
-- [ ] The L1 detector as a reusable hook (Claude Code hook shape, watching the transcript).
-- [ ] One more loop implemented, chosen by which one the community asks for most (likely [L4](loops/L4-zeigarnik-intentions-register.md) or [L6](loops/L6-habituation-orienting.md)).
+- [ ] A real [L1](loops/L1-rumination-vs-reflection.md) rumination sensor that models the construct (not just lexical novelty), plugged in behind the interface.
+- [ ] Run it on a real agent trace of a loop going in circles; score it against the naive baseline with `gyre.bench`.
+- [ ] Report the measured result honestly: what it caught that the baseline missed, what it missed, what continuing cost. No claim beyond what the traces support.
+- [ ] Package the L1 monitor as a reusable Claude Code hook.
 
 ## v0.4 — The Library
 

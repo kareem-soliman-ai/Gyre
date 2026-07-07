@@ -27,11 +27,24 @@ Gyre draws a specific line:
 
 This is "open method, closed pipeline," and it is the same fence serious measurement work draws everywhere. It is not a marketing hold-back. It is the difference between "here is how you would measure this" (safe to publish) and "here is a number you should trust" (has to be earned first).
 
+## How the fence is drawn in the code
+
+This is not just a policy, it is the architecture. Loops are controllers and measurements are sensors, joined by a `MeasurementProvider` interface, and the loop never imports a concrete sensor (see [architecture.md](architecture.md)). That seam is what lets the fence be clean rather than grudging:
+
+- The **loops**, the **measurement seam**, the **naive baseline sensors**, and the **benchmark harness** are all public. Everything runs out of the box on the baselines.
+- **Validated instruments** plug into the same interface from a gitignored layer. A public checkout simply has none and falls back to the baselines. Nothing about the loop changes; only the quality of the signal does.
+
+So "open method, closed instrument" is literally true: the method is the public interface plus the [build guide](building-measurements.md), and the closed part is a set of provider implementations behind the fence, not a secret woven through the control code.
+
+## Prove it rather than claim it
+
+Because measurement is pluggable, you do not have to trust anyone's assertion that a better sensor helps. `gyre.bench` scores any provider against labelled traces, and `compare_providers` runs a head-to-head. Put a naive baseline and a serious sensor on the same traces and read the gap. That is the honest version of the value argument: not "measurement matters, trust me," but "here is the number, run it yourself." The harness is generous to the naive provider (it sweeps a threshold and reports best-case), and the naive provider usually loses anyway, which is the result worth sitting with.
+
 ## What this means if you are building on Gyre
 
-- The **Buildable** patterns (L2, L4, L5, L6) you can implement straight from their docs. They still deserve care, but they are not making the kind of latent-construct claim that needs a validation study before it can speak.
-- The **Instrument** patterns (L1's scoring layer, L3) you can also implement from their docs, and you are encouraged to. Just hold your own results to the same bar: a detector you built is a hypothesis until you have checked it against labelled traces. Report it as one.
-- **No performance claims ship unvalidated.** You will not find "saves 40% of tokens" anywhere in this repository, because no detector here has earned that number yet. When one has, the claim will appear with its sample, its method, and its caveats intact, and not before.
+- The **naive baselines** (diff-novelty for L1, rolling Brier for L2, z-score deviation for L6) are real and usable. For low-stakes, high-signal cases they are genuinely enough, and you should not gold-plate a measurement whose errors cost you nothing.
+- To go past them, **build a sensor** against the interface and hold your result to the bar: a detector you built is a hypothesis until you have checked it against labelled traces with `gyre.bench`. Report it as one.
+- **No performance claims ship unvalidated.** You will not find "saves 40% of tokens" anywhere in this repository, because no sensor here has earned that number yet. When one has, the claim will appear with its sample, its method, and its caveats intact, and not before.
 
 ## The short version
 

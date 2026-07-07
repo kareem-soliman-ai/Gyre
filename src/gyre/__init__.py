@@ -1,34 +1,63 @@
 """Gyre: psychology-grounded loop patterns for AI agents.
 
-This v0.1 package ships *interfaces and vocabulary*, not detectors. It gives you
-the types to write your own loop monitors against a common shape while the
-measurement instruments (see docs/measurement-stance.md) mature.
+The design in one sentence: a **loop** is a controller and a **measurement** is a
+sensor, and Gyre keeps them apart so you can run the same loop with a throwaway
+sensor or a validated one and watch it behave differently.
 
-Nothing here scores anything. There are no thresholds, no validated detectors,
-and deliberately so: a detector that makes a confident claim it has not earned is
-a liability, not a contribution. What this package gives you is the *shape* every
-loop monitor in the catalogue shares, so that when you build the L1 rumination
-detector or the L6 habituation filter, it plugs into the same interface as
-everyone else's.
+What ships here (all open):
+- the measurement seam: ``MeasurementProvider``, ``Measurement``, ``Meaning``
+- loop controllers: ``RuminationMonitor`` (L1), ``CalibrationGovernor`` (L2),
+  ``EinstellungBreaker`` (L5), ``HabituationFilter`` (L6)
+- naive reference providers, so every loop runs out of the box
+- ``gyre.bench``: score your own measurement against a baseline
 
-Read the catalogue first: ../loops/INDEX.md
+What does not ship here: validated latent-variable measurements. Those take real
+psychometric work and live behind a gitignored fence
+(``gyre.providers.proprietary``). The naive baselines are honest about being
+proxies; build a better one and prove it with ``gyre.bench``.
+
+Read the catalogue: ../loops/INDEX.md
+Build a measurement: ../docs/building-measurements.md
 """
 
 from gyre.interfaces import (
     ExitReason,
     LoopMonitor,
-    LoopSignal,
     LoopVerdict,
     Maturity,
 )
+from gyre.loops import (
+    CalibrationGovernor,
+    ChannelObservation,
+    EinstellungBreaker,
+    HabituationFilter,
+    IterationObservation,
+    PredictionOutcome,
+    ResetDirective,
+    RuminationMonitor,
+)
+from gyre.measurement import Meaning, Measurement, MeasurementProvider
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 __all__ = [
-    "ExitReason",
+    # seam
+    "MeasurementProvider",
+    "Measurement",
+    "Meaning",
+    # loop-side interfaces
     "LoopMonitor",
-    "LoopSignal",
     "LoopVerdict",
+    "ExitReason",
     "Maturity",
+    # loops
+    "RuminationMonitor",
+    "IterationObservation",
+    "CalibrationGovernor",
+    "PredictionOutcome",
+    "HabituationFilter",
+    "ChannelObservation",
+    "EinstellungBreaker",
+    "ResetDirective",
     "__version__",
 ]

@@ -53,33 +53,60 @@ Plus a [backlog](loops/backlog.md) of one-line sketches waiting for someone to p
 
 ---
 
+## Loops are controllers. Measurements are sensors.
+
+Here is the design decision that runs through the code, and it is worth thirty seconds because it is also the most useful idea in the project.
+
+A loop is a controller: it decides when to act and how to route. A measurement is a sensor: it turns the agent's behaviour into the signal the controller acts on. Gyre keeps them strictly separate. A loop depends only on a `MeasurementProvider` interface and never imports a concrete measurement. So you can run the same loop with a throwaway sensor or a carefully built one, on the same trace, and watch it behave differently.
+
+That separation is not tidiness for its own sake. It is the [TOTE](loops/L0-tote.md) control-theory lineage taken literally, and control theory is blunt about one thing agent builders keep learning the hard way: **a controller is only as good as its sensor.** The loops here are decent controllers. What separates a system that works from one that thrashes is almost always the quality of the measurement feeding it. Gyre is built so you can see that for yourself instead of taking it on faith.
+
+Which means measurement is pluggable, and that is deliberate. Bring your own.
+
+```python
+from gyre import RuminationMonitor, ExitReason
+from gyre.providers import DiffNoveltyProvider   # a naive baseline that ships with Gyre
+
+monitor = RuminationMonitor(DiffNoveltyProvider(), patience=3, threshold=0.2)
+for attempt in agent_attempts:
+    monitor.observe(attempt)
+    if monitor.verdict().exit_reason is not ExitReason.CONTINUE:
+        break   # the loop plateaued; reframe, escalate, or abandon
+```
+
+Swap `DiffNoveltyProvider` for a sensor you build, and the loop code does not change. The naive baselines are real and honest about being crude; a good measurement fills in things they leave blank (a calibrated probability, a baseline-relative score, an estimate of its own reliability) and the loop starts firing earlier and more precisely. Want to know how much better your measurement is than the baseline? Score them head to head with `gyre.bench`. The value gap is runnable, not asserted.
+
+To build your own sensor, start with [docs/building-measurements.md](docs/building-measurements.md). For the architecture in full, [docs/architecture.md](docs/architecture.md).
+
+---
+
 ## The three tiers
 
-Gyre is built in three layers, and only the first is in this repository today.
+Gyre is built in three layers.
 
-**Tier 1, the patterns (here, open).** The documented catalogue: source, mechanism, translation, signal, exit, shape. This is not defensible as a secret and it is not meant to be. Once a pattern is named, anyone can restate it. Its value is that it exists, that it is attributed, and that it gives the loop-engineering conversation a shared language. This ships open under CC BY, and it ships first.
+**Tier 1, the patterns and the loops (here, open).** The documented catalogue, plus the loop controllers, the measurement seam, naive baseline sensors, and the benchmark harness. Once a pattern is named anyone can restate it, so there is nothing to protect and every reason to give it away well. This ships open, and it ships first.
 
-**Tier 2, the instruments (staged).** The detectors that actually score loop quality from live agent behaviour. A rumination detector is not a pattern, it is a measurement instrument: it claims to detect a latent property (is this loop productive) from noisy, time-unfolding behaviour. That is a real measurement problem with real validity requirements, and getting it wrong quietly is worse than not measuring at all. The method is described openly in each pattern doc. The scoring internals, thresholds, and validation pipelines stay closed until they have been validated on real traces. Method open, pipeline closed.
+**Tier 2, the instruments (the fence).** The sensors that actually score loop quality well: validated, latent-variable measurements with known reliability. A rumination detector that models the construct rather than proxying it, a calibration sensor that knows whether the agent is over or under confident, a rupture detector for the human-agent dyad. These are measurement instruments with real validity requirements, and getting one quietly wrong is worse than not measuring at all. The method is described openly (every pattern doc, plus the build guide). The validated sensors live behind a pluggable interface in a gitignored layer, because an unvalidated instrument should not be handed a confident voice, and because this is the part that takes a background in psychometrics to build and to defend. Open method, closed instrument.
 
-**Tier 3, the controller (not here).** The meta-loop that decides which loop runs when. That is a hard problem with its own research lineage, and it is not rebuilt in this repo. When it arrives it will be as a described interface, not a giveaway.
+**Tier 3, the controller (not here).** The meta-loop that decides which loop runs when. A hard problem with its own research lineage, described here as an interface, not rebuilt as a giveaway.
 
-If that fence sounds cautious, it is deliberate. The patterns are the gift. The measurement is the craft. Giving away the first does not require giving away the second, and a detector that reports a confident number it has not earned is not a contribution, it is a liability.
+The architecture makes this fence clean rather than mercenary: the loops and the naive sensors are genuinely free and genuinely useful, the benchmark is a public proving ground, and only the validated instrument sits behind the interface. Free razor. The blade is the measurement.
 
 ---
 
 ## Install
-
-The v0.1 package ships interfaces and vocabulary, not detectors. It gives you the types to write your own loop monitors against a common shape while the instruments mature.
 
 ```bash
 pip install -e .
 ```
 
 ```python
-from gyre import LoopMonitor, LoopVerdict, ExitReason
+from gyre import RuminationMonitor, HabituationFilter, CalibrationGovernor
+from gyre.providers import DiffNoveltyProvider, ZScoreDeviationProvider
+from gyre.bench import compare_providers
 ```
 
-See [`src/gyre/`](src/gyre/) for the interfaces and [`docs/pattern-template.md`](docs/pattern-template.md) for how a pattern doc is structured if you want to contribute one.
+The package ships the loop controllers, the measurement seam, naive reference sensors so everything runs out of the box, and the benchmark. It does not ship validated instruments. See [`src/gyre/`](src/gyre/) for the code and [docs/building-measurements.md](docs/building-measurements.md) to write a sensor of your own.
 
 ---
 

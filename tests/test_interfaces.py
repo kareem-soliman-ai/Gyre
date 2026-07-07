@@ -1,70 +1,61 @@
-"""Interfaces smoke tests.
+"""Seam and interface smoke tests.
 
-These do not test a detector, because v0.1 ships no detectors. They check that
-the vocabulary layer imports, that the types compose, and that a hand-written
-monitor satisfies the LoopMonitor protocol. That is the whole contract at this
-stage: the shape is real and usable, even though nothing scores anything yet.
+These check the vocabulary layer: that the seam imports, that a Measurement
+carries its honesty fields, that the calibration ladder reads correctly, and that
+a loop controller satisfies the LoopMonitor protocol.
 """
 
 from gyre import (
     ExitReason,
     LoopMonitor,
-    LoopSignal,
     LoopVerdict,
     Maturity,
+    Meaning,
+    Measurement,
+    MeasurementProvider,
+    RuminationMonitor,
     __version__,
 )
+from gyre.providers import DiffNoveltyProvider
 
 
-def test_version_is_present():
-    assert __version__ == "0.1.0"
+def test_version_bumped_for_measurement_seam():
+    assert __version__ == "0.2.0"
 
 
-def test_signal_carries_its_confounds():
-    sig = LoopSignal(
-        loop_id="L1",
-        name="diff_novelty_ratio",
-        value=0.03,
-        confounds=("rewards thrashing", "lexical not semantic"),
-    )
-    assert sig.loop_id == "L1"
-    assert "rewards thrashing" in sig.confounds
+def test_measurement_carries_confounds_and_is_uncalibrated_by_default():
+    m = Measurement(value=0.03, meaning=Meaning.HIGHER_IS_HEALTHIER, confounds=("lexical only",))
+    assert m.confounds == ("lexical only",)
+    assert m.is_calibrated() is False  # no decision, no probability
 
 
-def test_verdict_defaults_are_honest():
-    # An unvalidated monitor should not fake a confidence number.
-    verdict = LoopVerdict(exit_reason=ExitReason.PLATEAU)
-    assert verdict.confidence is None
-    assert verdict.maturity is Maturity.BUILDABLE
+def test_calibration_ladder_reads_as_calibrated_when_decision_present():
+    m = Measurement(value=0.0, meaning=Meaning.HIGHER_IS_HEALTHIER, decision=True)
+    assert m.is_calibrated() is True
 
 
-def test_hand_written_monitor_satisfies_protocol():
-    class TrivialMonitor:
-        loop_id = "L1"
+def test_naive_provider_satisfies_provider_protocol():
+    p = DiffNoveltyProvider()
+    assert isinstance(p, MeasurementProvider)
+    assert p.loop_id == "L1"
 
-        def __init__(self):
-            self._seen = 0
 
-        def observe(self, iteration):
-            self._seen += 1
-
-        def verdict(self) -> LoopVerdict:
-            reason = ExitReason.CONTINUE if self._seen < 3 else ExitReason.PLATEAU
-            return LoopVerdict(
-                exit_reason=reason,
-                signals=(
-                    LoopSignal(loop_id="L1", name="iterations_seen", value=float(self._seen)),
-                ),
-                maturity=Maturity.BUILDABLE,
-                note="toy monitor, not a real detector",
-            )
-
-    monitor = TrivialMonitor()
+def test_loop_satisfies_monitor_protocol():
+    monitor = RuminationMonitor(DiffNoveltyProvider(), threshold=0.1)
     assert isinstance(monitor, LoopMonitor)
-
-    for _ in range(5):
-        monitor.observe({"diff": "..."})
-
     v = monitor.verdict()
-    assert v.exit_reason is ExitReason.PLATEAU
-    assert v.signals[0].value == 5.0
+    assert isinstance(v, LoopVerdict)
+    assert v.exit_reason is ExitReason.CONTINUE
+    assert v.maturity is Maturity.BUILDABLE
+
+
+def test_provider_loop_id_mismatch_is_caught_early():
+    brier_like = DiffNoveltyProvider()  # an L1 provider
+    try:
+        from gyre import CalibrationGovernor
+
+        CalibrationGovernor(brier_like)  # expects L2
+    except ValueError as e:
+        assert "L2 provider" in str(e)
+    else:  # pragma: no cover
+        raise AssertionError("expected a ValueError on loop_id mismatch")

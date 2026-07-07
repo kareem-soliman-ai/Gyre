@@ -13,6 +13,16 @@ mechanisms/
 pipelines/private/
 validation/
 
+# Proprietary measurement providers: the whole folder is private EXCEPT the
+# public stub + README that document the fence.
+src/gyre/providers/proprietary/*
+!src/gyre/providers/proprietary/__init__.py
+!src/gyre/providers/proprietary/README.md
+
+# Labelled trace corpora used to validate measurements (a separate asset)
+traces/private/
+benchmarks/private/
+
 # --- Session/agent artefacts ---
 .remember/
 .logs/
