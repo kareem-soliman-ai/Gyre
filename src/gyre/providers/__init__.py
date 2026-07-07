@@ -21,6 +21,7 @@ from gyre.providers.naive import (
     RollingBrierProvider,
     ZScoreDeviationProvider,
 )
+from gyre.providers.remote import RemoteMeasurementProvider, http_transport
 
 _REGISTRY: dict[str, Callable[[], MeasurementProvider]] = {}
 
@@ -69,4 +70,6 @@ __all__ = [
     "DiffNoveltyProvider",
     "RollingBrierProvider",
     "ZScoreDeviationProvider",
+    "RemoteMeasurementProvider",
+    "http_transport",
 ]

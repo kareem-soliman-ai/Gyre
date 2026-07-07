@@ -76,7 +76,7 @@ for attempt in agent_attempts:
 
 Swap `DiffNoveltyProvider` for a sensor you build, and the loop code does not change. The naive baselines are real and honest about being crude; a good measurement fills in things they leave blank (a calibrated probability, a baseline-relative score, an estimate of its own reliability) and the loop starts firing earlier and more precisely. Want to know how much better your measurement is than the baseline? Score them head to head with `gyre.bench`. The value gap is runnable, not asserted.
 
-To build your own sensor, start with [docs/building-measurements.md](docs/building-measurements.md). For the architecture in full, [docs/architecture.md](docs/architecture.md).
+To build your own sensor, start with [docs/building-measurements.md](docs/building-measurements.md). For the architecture in full, [docs/architecture.md](docs/architecture.md). A sensor can also run behind an API rather than in your process, so a validated instrument can be used without being shipped: see [docs/hosted-measurements.md](docs/hosted-measurements.md).
 
 ---
 

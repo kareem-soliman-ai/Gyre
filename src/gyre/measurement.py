@@ -128,6 +128,40 @@ class Measurement:
         trust the provider's own call or apply a configured threshold."""
         return self.decision is not None or self.probability is not None
 
+    def to_dict(self) -> dict[str, Any]:
+        """JSON-safe representation, for sending a reading over the wire.
+
+        This is what makes a measurement transport-agnostic: a provider can run
+        the scoring on a remote server and return the result as JSON, and a loop
+        cannot tell the difference. See ``gyre.providers.remote``.
+        """
+        return {
+            "value": self.value,
+            "meaning": self.meaning.value,
+            "standardized": self.standardized,
+            "probability": self.probability,
+            "decision": self.decision,
+            "measurement_error": self.measurement_error,
+            "confounds": list(self.confounds),
+            "provider": self.provider,
+            "detail": self.detail,
+        }
+
+    @classmethod
+    def from_dict(cls, d: dict[str, Any]) -> "Measurement":
+        """Reconstruct a Measurement from its ``to_dict`` form."""
+        return cls(
+            value=d["value"],
+            meaning=Meaning(d["meaning"]),
+            standardized=d.get("standardized"),
+            probability=d.get("probability"),
+            decision=d.get("decision"),
+            measurement_error=d.get("measurement_error"),
+            confounds=tuple(d.get("confounds", ())),
+            provider=d.get("provider", ""),
+            detail=d.get("detail", {}),
+        )
+
 
 @runtime_checkable
 class MeasurementProvider(Protocol):
