@@ -28,6 +28,8 @@ Issues = "https://github.com/<owner>/gyre/issues"
 
 [project.optional-dependencies]
 dev = ["pytest>=7.0"]
+# Semantic measurement backends (torch-free): char n-grams + local ONNX embeddings.
+semantic = ["scikit-learn>=1.0", "fastembed>=0.3"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/gyre"]
