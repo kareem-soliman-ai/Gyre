@@ -25,12 +25,29 @@ from gyre.measurement import MeasurementProvider
 
 
 def register_all(register: Callable[[str, Callable[[], MeasurementProvider]], None]) -> None:
-    """Register proprietary providers with the registry.
+    """Discover and register any proprietary provider modules present.
 
-    The public stub registers nothing. A private checkout replaces or extends this
-    with real registrations, e.g.::
+    This walks the sibling modules in this (gitignored) package and calls each
+    one's ``register_providers(register)`` if it defines one. In a clean public
+    checkout there are no sibling modules, so this is a no-op and everything runs
+    on the naive baselines. In a checkout that has the private layer, each gitignored
+    provider module registers itself here without any tracked code naming it.
 
-        from gyre.providers.proprietary.rumination_mvt import MvtRuminationProvider
-        register("psy:mvt-rumination", MvtRuminationProvider)
+    A provider module only needs to expose::
+
+        def register_providers(register):
+            register("psy:my-provider", MyProviderFactory)
     """
-    return None
+    import importlib
+    import pkgutil
+
+    for mod in pkgutil.iter_modules(__path__):
+        if mod.name.startswith("_"):
+            continue
+        try:
+            module = importlib.import_module(f"{__name__}.{mod.name}")
+        except Exception:  # noqa: BLE001 - a broken private module must not break discovery
+            continue
+        hook = getattr(module, "register_providers", None)
+        if callable(hook):
+            hook(register)
