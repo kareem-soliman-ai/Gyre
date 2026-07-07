@@ -1,0 +1,43 @@
+# --- Private: never publish ---
+# Project seed / internal strategy (pre-public planning docs)
+cognitive-loops-seed.md
+internal/
+sharing/
+
+# Imported mechanisms from private projects (staged for later release, if ever)
+imports/
+mechanisms/
+
+# Instrument internals: scoring, thresholds, validation pipelines
+# (open-method, closed-pipeline until validated)
+pipelines/private/
+validation/
+
+# --- Session/agent artefacts ---
+.remember/
+.logs/
+.tmp/
+AGENT_CONTROL.md
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# --- Environment / secrets ---
+.env
+.env.*
+*.local
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

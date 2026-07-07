@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use Gyre's loop patterns or vocabulary, please cite it."
+title: "Gyre: Psychology-Grounded Loop Patterns for AI Agents"
+abstract: >-
+  Gyre is a library of loop patterns for AI agents, each grounded in a
+  validated mechanism from the psychological and cybernetic literature,
+  translated into an agent-engineering shape with a measurable behavioural
+  signal and an explicit exit condition. It reframes the emerging practice
+  of "loop engineering" as a rediscovery of cybernetic psychology, and
+  offers a shared vocabulary for the loops an agent actually runs.
+type: software
+authors:
+  - family-names: Soliman
+    given-names: Kareem
+    orcid: "https://orcid.org/0009-0006-7204-1129"
+repository-code: "https://github.com/<owner>/gyre"
+url: "https://github.com/<owner>/gyre"
+keywords:
+  - AI agents
+  - loop engineering
+  - agentic loops
+  - cybernetics
+  - psychology
+  - metacognition
+  - control theory
+  - agent evaluation
+license: Apache-2.0
+date-released: "2026-07-07"
+version: "0.1.0"

@@ -1,0 +1,13 @@
+Gyre — psychology-grounded loop patterns for AI agents
+Copyright 2026 Kareem Soliman
+
+This product includes software developed by Kareem Soliman.
+
+Code is licensed under the Apache License, Version 2.0 (see LICENSE).
+The written loop catalogue and documentation are licensed under
+Creative Commons Attribution 4.0 International (see LICENSE-docs).
+
+The loop patterns in this repository translate mechanisms from the
+psychological and cybernetic literature into agent-engineering shapes.
+Each pattern names its source. Those sources are the work of their
+respective authors and are cited, not reproduced, here.

@@ -1,0 +1,33 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "gyre-loops"
+version = "0.1.0"
+description = "Psychology-grounded loop patterns for AI agents: interfaces and vocabulary."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [{ name = "Kareem Soliman" }]
+keywords = ["ai-agents", "loop-engineering", "agentic-loops", "cybernetics", "metacognition"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/<owner>/gyre"
+Documentation = "https://github.com/<owner>/gyre/tree/main/loops"
+Issues = "https://github.com/<owner>/gyre/issues"
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/gyre"]

@@ -1,0 +1,35 @@
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+Copyright 2026 Kareem Soliman
+
+The written loop catalogue and documentation in this repository (everything
+under `loops/` and `docs/`, plus the prose portions of `README.md` and
+`ROADMAP.md`) are licensed under the Creative Commons Attribution 4.0
+International License.
+
+You are free to:
+  - Share: copy and redistribute the material in any medium or format.
+  - Adapt: remix, transform, and build upon the material for any purpose,
+    even commercially.
+
+Under the following terms:
+  - Attribution: You must give appropriate credit, provide a link to the
+    license, and indicate if changes were made. You may do so in any
+    reasonable manner, but not in any way that suggests the licensor
+    endorses you or your use.
+
+Full license text: https://creativecommons.org/licenses/by/4.0/legalcode
+
+---
+
+Why two licenses?
+
+Code in this repository (everything under `src/`, plus example scripts and
+configuration) is licensed under Apache-2.0 (see LICENSE). The written
+taxonomy is licensed under CC BY 4.0 because attribution is the point: this
+is a body of patterns meant to be cited, restated, and built on. If you use
+a pattern from the catalogue in a talk, a paper, a blog post, or your own
+agent framework, credit keeps the lineage legible for everyone who follows.
+
+Suggested attribution:
+  "Loop pattern from Gyre (K. Soliman, 2026), https://github.com/<owner>/gyre"
