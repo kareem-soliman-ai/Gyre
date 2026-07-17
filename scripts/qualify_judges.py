@@ -23,16 +23,27 @@ from gyre.labeling import OpenRouterJudge, judge_trace, qualify_judge
 from gyre.traces import RawTrace, TraceStep, load_scored_traces
 
 
+DEFAULT_JUDGES = ["google/gemini-2.5-flash", "openai/gpt-4o-mini"]
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description="Qualify LLM judges vs a human-scored set.")
-    ap.add_argument("human", help="JSON file of human-scored traces (gold labels)")
-    ap.add_argument("--judges", nargs="+", required=True, help="OpenRouter model ids")
+    ap.add_argument("human", nargs="?", default="traces/private/scoring_set.json",
+                    help="JSON file of human-scored traces (gold labels)")
+    ap.add_argument("--judges", nargs="+", default=DEFAULT_JUDGES, help="OpenRouter model ids")
     ap.add_argument("--kappa-floor", type=float, default=0.6)
     ap.add_argument("--ac1-floor", type=float, default=0.6)
     args = ap.parse_args()
 
     gold = load_scored_traces(args.human)
     human_labels = [s.is_ruminating for tr in gold for s in tr.steps]
+    if not any(human_labels):
+        raise SystemExit(
+            "The gold set has ZERO positive labels — it is an unscored template, and\n"
+            "qualifying a judge against labels nobody assigned is not qualification.\n"
+            "Score traces/private/scoring_worksheet.md (instructions at the top), run\n"
+            "scripts/absorb_worksheet.py, then re-run this."
+        )
     # Reconstruct the raw steps (text only) so each judge scores the same inputs.
     raw = [
         RawTrace(
