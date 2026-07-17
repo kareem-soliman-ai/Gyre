@@ -92,6 +92,7 @@ class RuminationMonitor:
         if self._streak >= self.patience:
             return LoopVerdict(
                 exit_reason=self.on_plateau,
+                loop_id=self.loop_id,
                 measurements=recent,
                 maturity=maturity,
                 note=(
@@ -101,6 +102,7 @@ class RuminationMonitor:
             )
         return LoopVerdict(
             exit_reason=ExitReason.CONTINUE,
+            loop_id=self.loop_id,
             measurements=recent,
             maturity=maturity,
             note=f"loop still paying (low-gain streak {self._streak}/{self.patience})",

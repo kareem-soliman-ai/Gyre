@@ -86,12 +86,14 @@ class HabituationFilter:
         if self.orienting():
             return LoopVerdict(
                 exit_reason=ExitReason.DEVIATION,
+                loop_id=self.loop_id,
                 measurements=measurements,
                 maturity=maturity,
                 note=f"channel deviated from baseline (streak {self._streak})",
             )
         return LoopVerdict(
             exit_reason=ExitReason.CONTINUE,
+            loop_id=self.loop_id,
             measurements=measurements,
             maturity=maturity,
             note="channel matches baseline; habituated, staying silent",

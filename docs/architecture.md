@@ -97,6 +97,28 @@ the argument: measurement is not a detail of the loop, it is a separable compone
 whose quality dominates the system's behaviour, and Gyre is built so you can see
 that for yourself rather than take it on faith.
 
+## The second seam: controllers
+
+The same cut, one layer up. ``gyre.control`` separates the loops from the
+**meta-controller** — the L7 layer that decides which route the agent takes
+when a loop fires. ``ControlContext`` carries what the scaffold knows and no
+loop does (stakes, budgets, costs, problem type); a ``MetaController`` consumes
+the loops' verdicts plus that context and returns one ``ExitReason``. Context
+enters *above* the verdicts. It never goes inside ``Measurement``: a sensor
+reports what is happening, a controller decides what it is worth.
+
+The reference controllers that ship (fixed-route, L5-informed) are the control
+tier's naive baselines: real, usable, and honest about their ceiling — a fixed
+route that is best under one cost regime is among the worst under another, and
+``scripts/exp_controller_gap.py`` puts numbers on that. Validated adaptive
+controllers live behind ``gyre.control.proprietary``, the same fence as the
+sensors, for the same reason: a controller that decides an agent's
+mode-switching should be validated before it is handed a confident voice.
+
+Hold the sensor constant and swap controllers, or hold the controller constant
+and swap sensors: both value gaps are runnable, and that symmetry is the
+architecture.
+
 See [building-measurements.md](building-measurements.md) to build a sensor and
 [measurement-stance.md](measurement-stance.md) for why the validated ones are held
 back until they are validated.

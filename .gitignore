@@ -19,6 +19,11 @@ src/gyre/providers/proprietary/*
 !src/gyre/providers/proprietary/__init__.py
 !src/gyre/providers/proprietary/README.md
 
+# Proprietary meta-controllers (Tier 3): same fence, one layer up.
+src/gyre/control/proprietary/*
+!src/gyre/control/proprietary/__init__.py
+!src/gyre/control/proprietary/README.md
+
 # Labelled trace corpora used to validate measurements (a separate asset)
 traces/private/
 benchmarks/private/

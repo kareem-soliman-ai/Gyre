@@ -95,11 +95,13 @@ class CalibrationGovernor:
         if self._last is None:
             return LoopVerdict(
                 exit_reason=ExitReason.CONTINUE,
+                loop_id=self.loop_id,
                 note="no predictions resolved yet",
             )
         maturity = Maturity.INSTRUMENT if self._last.is_calibrated() else Maturity.BUILDABLE
         return LoopVerdict(
             exit_reason=ExitReason.CONTINUE,
+            loop_id=self.loop_id,
             measurements=(self._last,),
             confidence=self._last.probability,
             maturity=maturity,

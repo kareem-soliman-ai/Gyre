@@ -55,6 +55,11 @@ class ExitReason(str, Enum):
     """Surface to a human with a structured summary of what was tried and why it
     plateaued. Not a raw failure dump."""
 
+    SEEK_INFO = "seek_info"
+    """Gather information before committing to an action (the L2 case: stated
+    confidence is below the bar the calibration read demands). Cheaper than
+    ESCALATE: it asks the environment, not a human."""
+
     ABANDON = "abandon"
     """Record the impasse where a later loop or session can pick it up (the L4
     register), so the dead end is not silently re-entered."""
@@ -79,6 +84,11 @@ class LoopVerdict:
 
     exit_reason: ExitReason
     """What the surrounding scaffold should consider doing."""
+
+    loop_id: str = ""
+    """Which loop produced this verdict (e.g. "L1"). A meta-controller consuming
+    several loops' verdicts needs the attribution; a single-loop scaffold can
+    ignore it."""
 
     measurements: Sequence[Measurement] = field(default_factory=tuple)
     """The readings this verdict rests on. Never hide the basis for a verdict; the
