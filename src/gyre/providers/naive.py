@@ -74,6 +74,77 @@ class DiffNoveltyProvider:
         self._previous = None
 
 
+class EvidenceNoveltyProvider:
+    """L1: information arrival across BOTH channels, lexically.
+
+    The construct L1 wants is information gain per step, and an iteration has two
+    places new information can show up: the agent's artifact (a genuinely new
+    hypothesis) and the environment's response (a changed error, a moved test).
+    The environment is the channel the agent cannot game, and it is the one an
+    artifact-only sensor is blind to: an identical retry after the world changed
+    *is* information arrival, and no amount of artifact novelty modelling can see
+    that.
+
+    gain = max(artifact novelty, evidence novelty), each measured lexically
+    against ALL prior steps (recycling anything already seen, in either channel,
+    is not new). When an observation carries no ``error``, the evidence channel
+    stays silent and this degrades to an all-priors variant of diff-novelty.
+
+    What it still cannot see: a *reworded* hypothesis reads as lexically novel,
+    so semantically stale retries slip through exactly as they do for
+    ``DiffNoveltyProvider``. The evidence channel narrows the blind spot; it does
+    not remove it. And like every naive provider it returns a raw value, so you
+    supply the threshold.
+    """
+
+    loop_id = "L1"
+    name = "naive:evidence-novelty"
+
+    def __init__(self) -> None:
+        self._artifacts: list[str] = []
+        self._errors: list[str] = []
+
+    @staticmethod
+    def _novelty_vs_priors(current: str, priors: list[str]) -> float:
+        if not priors:
+            return 1.0
+        best = max(
+            difflib.SequenceMatcher(None, prior, current).ratio() for prior in priors
+        )
+        return 1.0 - best
+
+    def measure(self, observation: IterationObservation) -> Measurement:
+        artifact_novelty = self._novelty_vs_priors(observation.artifact, self._artifacts)
+        self._artifacts.append(observation.artifact)
+
+        evidence_novelty: float | None = None
+        if observation.error is not None:
+            evidence_novelty = self._novelty_vs_priors(observation.error, self._errors)
+            self._errors.append(observation.error)
+
+        gain = artifact_novelty if evidence_novelty is None else max(
+            artifact_novelty, evidence_novelty
+        )
+        return Measurement(
+            value=gain,
+            meaning=Meaning.HIGHER_IS_HEALTHIER,
+            confounds=(
+                "lexical, not semantic: a reworded hypothesis reads as novelty",
+                "evidence channel silent when observations carry no error",
+                "no baseline: cannot tell if this much change is normal",
+            ),
+            provider=self.name,
+            detail={
+                "artifact_novelty": artifact_novelty,
+                "evidence_novelty": evidence_novelty,
+            },
+        )
+
+    def reset(self) -> None:
+        self._artifacts.clear()
+        self._errors.clear()
+
+
 class RollingBrierProvider:
     """L2: rolling Brier score over recent (predicted, outcome) pairs.
 

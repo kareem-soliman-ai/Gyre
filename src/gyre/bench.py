@@ -75,26 +75,30 @@ class ProviderScore:
     notes: tuple[str, ...] = field(default_factory=tuple)
 
 
-def _decisions_calibrated(provider: MeasurementProvider, obs: Sequence[Any]) -> list[bool]:
-    provider.reset()
+def _decisions_calibrated(
+    provider: MeasurementProvider, traces: Sequence[Sequence[Any]]
+) -> list[bool]:
     out = []
-    for o in obs:
-        m = provider.measure(o)
-        out.append(trigger_state(m))  # calibrated: uses decision/probability
+    for obs in traces:
+        provider.reset()
+        for o in obs:
+            m = provider.measure(o)
+            out.append(trigger_state(m))  # calibrated: uses decision/probability
     return out
 
 
 def _decisions_at_threshold(
-    provider: MeasurementProvider, obs: Sequence[Any], threshold: float
+    provider: MeasurementProvider, traces: Sequence[Sequence[Any]], threshold: float
 ) -> list[bool]:
-    provider.reset()
     out = []
-    for o in obs:
-        m = provider.measure(o)
-        try:
-            out.append(trigger_state(m, threshold=threshold))
-        except ThresholdRequired:
-            out.append(False)
+    for obs in traces:
+        provider.reset()
+        for o in obs:
+            m = provider.measure(o)
+            try:
+                out.append(trigger_state(m, threshold=threshold))
+            except ThresholdRequired:
+                out.append(False)
     return out
 
 
@@ -125,8 +129,14 @@ def evaluate_provider(
     still usually loses to a calibrated one. That generosity is the point: even
     handed its best threshold in hindsight, a proxy that does not model the
     construct tends to trail a measurement that does.
+
+    Providers are reset between traces: each trace is an independent episode,
+    and a stateful provider's baseline from one episode must not bleed into the
+    next. (One threshold is still swept across ALL traces for uncalibrated
+    providers — the threshold is a deployment-time constant, the state is not.)
     """
-    obs = [o for tr in traces for o in tr.observations]
+    per_trace_obs = [list(tr.observations) for tr in traces]
+    obs = [o for tr in per_trace_obs for o in tr]
     truth = [bool(l) for tr in traces for l in tr.labels]
     if not obs:
         raise ValueError("no observations to evaluate")
@@ -137,7 +147,7 @@ def evaluate_provider(
     provider.reset()
 
     if sample.is_calibrated():
-        pred = _decisions_calibrated(provider, obs)
+        pred = _decisions_calibrated(provider, per_trace_obs)
         precision, recall, f1, accuracy = _prf(pred, truth)
         return ProviderScore(
             provider=provider.name,
@@ -155,7 +165,7 @@ def evaluate_provider(
     grid = threshold_grid if threshold_grid is not None else [i / 20 for i in range(1, 20)]
     best: tuple[float, tuple[float, float, float, float]] | None = None
     for th in grid:
-        pred = _decisions_at_threshold(provider, obs, th)
+        pred = _decisions_at_threshold(provider, per_trace_obs, th)
         scores = _prf(pred, truth)
         if best is None or scores[2] > best[1][2]:  # compare F1
             best = (th, scores)

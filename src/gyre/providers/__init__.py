@@ -18,6 +18,7 @@ from typing import Callable
 from gyre.measurement import MeasurementProvider
 from gyre.providers.naive import (
     DiffNoveltyProvider,
+    EvidenceNoveltyProvider,
     RollingBrierProvider,
     ZScoreDeviationProvider,
 )
@@ -50,6 +51,7 @@ def available(loop_id: str | None = None) -> list[str]:
 
 # --- register the public naive baselines ---
 register("naive:diff-novelty", DiffNoveltyProvider)
+register("naive:evidence-novelty", EvidenceNoveltyProvider)
 register("naive:rolling-brier", RollingBrierProvider)
 register("naive:zscore-deviation", ZScoreDeviationProvider)
 
@@ -68,6 +70,7 @@ __all__ = [
     "get_provider",
     "available",
     "DiffNoveltyProvider",
+    "EvidenceNoveltyProvider",
     "RollingBrierProvider",
     "ZScoreDeviationProvider",
     "RemoteMeasurementProvider",

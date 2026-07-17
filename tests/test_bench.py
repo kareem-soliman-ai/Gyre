@@ -71,3 +71,17 @@ def test_calibrated_beats_naive_on_a_labelled_trace():
     # Sorted best-F1 first; the sensor that models the construct wins.
     assert ranked[0].provider == "fake:semantic"
     assert ranked[0].f1 >= ranked[1].f1
+
+
+def test_stateful_providers_are_reset_between_traces():
+    """Each trace is an independent episode: state from one must not bleed into
+    the next. The first observation of every trace should read as maximally
+    novel to a fresh DiffNoveltyProvider, so an identical two-trace corpus gets
+    the same predictions for both traces."""
+    tr = _trace()
+    single = evaluate_provider(DiffNoveltyProvider(), [tr])
+    doubled = evaluate_provider(DiffNoveltyProvider(), [tr, tr])
+    # With per-trace reset the doubled corpus is two independent copies:
+    # identical precision/recall, not a contaminated second pass.
+    assert doubled.precision == single.precision
+    assert doubled.recall == single.recall
