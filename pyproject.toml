@@ -22,9 +22,9 @@ classifiers = [
 dependencies = []
 
 [project.urls]
-Homepage = "https://github.com/<owner>/gyre"
-Documentation = "https://github.com/<owner>/gyre/tree/main/loops"
-Issues = "https://github.com/<owner>/gyre/issues"
+Homepage = "https://github.com/kareem-soliman-ai/Gyre"
+Documentation = "https://github.com/kareem-soliman-ai/Gyre/tree/main/loops"
+Issues = "https://github.com/kareem-soliman-ai/Gyre/issues"
 
 [project.optional-dependencies]
 dev = ["pytest>=7.0"]
