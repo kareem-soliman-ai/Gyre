@@ -57,7 +57,7 @@ def print_score_table(scores, out) -> None:
     print("| Provider | Type | F1 | Precision | Recall | Accuracy | Calibrated? |", file=out)
     print("| --- | --- | ---: | ---: | ---: | ---: | --- |", file=out)
     for s in scores:
-        cal = "Self-deciding" if s.calibrated else f"Swept (θ={s.best_threshold:.2f})"
+        cal = "Self-deciding" if s.calibrated else f"Swept (theta={s.best_threshold:.2f})"
         prov_type = "proprietary" if s.provider.startswith("psy:") else "naive"
         print(
             f"| {s.provider} | {prov_type} | {s.f1:.3f} | {s.precision:.3f} | "
@@ -74,8 +74,8 @@ def print_score_table(scores, out) -> None:
         best_raw = max(raw_scores, key=lambda s: s.f1)
         gap = best_cal.f1 - best_raw.f1
         print(f"**Best calibrated:** {best_cal.provider} (F1={best_cal.f1:.3f})", file=out)
-        print(f"**Best naive:** {best_raw.provider} (F1={best_raw.f1:.3f}, θ={best_raw.best_threshold:.2f})", file=out)
-        print(f"**Gap:** ΔF1 = {gap:+.3f}", file=out)
+        print(f"**Best naive:** {best_raw.provider} (F1={best_raw.f1:.3f}, theta={best_raw.best_threshold:.2f})", file=out)
+        print(f"**Gap:** dF1 = {gap:+.3f}", file=out)
         if gap > 0:
             print(f"The calibrated sensor beats the naive baseline by {gap:.1%}.", file=out)
         else:
@@ -113,6 +113,13 @@ def main() -> int:
     total_steps = sum(len(t.labels) for t in traces)
     total_pos = sum(sum(t.labels) for t in traces)
     print(f"[INFO] Loaded {len(traces)} traces ({total_steps} steps, {total_pos} ruminating)", file=sys.stderr)
+    if total_pos == 0:
+        print(
+            "[WARN] Scoring set has ZERO positive (ruminating) labels. F1 is degenerate "
+            "(no true positives possible); all providers will report F1=0.00. "
+            "Label at least one ruminating step before trusting this comparison.",
+            file=sys.stderr,
+        )
 
     if args.provider:
         provider_names = args.provider

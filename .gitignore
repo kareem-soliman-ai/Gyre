@@ -56,3 +56,6 @@ dist/
 Thumbs.db
 .idea/
 .vscode/
+
+# Private sensor/controller tests (filenames + contents would reveal the instruments)
+tests/test_proprietary_*.py
