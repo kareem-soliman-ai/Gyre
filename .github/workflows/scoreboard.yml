@@ -1,0 +1,50 @@
+name: scoreboard
+
+# Verify contributed scoreboard entries by RE-DERIVING them, never by trusting
+# the number in the pull request. This is the claims-gate philosophy applied to
+# outsiders: a submitted score is a hypothesis until CI reproduces it.
+#
+# SECURITY NOTE, and it matters. This uses `pull_request`, NOT
+# `pull_request_target`. A fork PR therefore runs with a read-only token and no
+# access to repository secrets, which is the correct posture when the job's
+# whole purpose is to execute code a stranger wrote. Never switch this to
+# `pull_request_target` to "make secrets available" - that runs untrusted code
+# with write permissions against this repo.
+
+on:
+  pull_request:
+    paths:
+      - "docs/scoreboard.json"
+      - "contenders/**"
+      - "src/gyre/**"
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install (stdlib-only public tier, no network needed)
+        run: pip install -e .
+
+      - name: Test suite
+        run: python -m pytest -q
+
+      - name: Claims are tagged to the ledger
+        run: python scripts/check_claims.py
+
+      - name: Claimed figures still reproduce
+        run: python scripts/verify_claims_evidence.py
+
+      - name: Re-derive the scoreboard and diff it against the committed one
+        run: python scripts/verify_scoreboard.py

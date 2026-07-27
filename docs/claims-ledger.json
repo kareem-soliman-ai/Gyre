@@ -1,0 +1,100 @@
+{
+  "_comment": "The single source of citable figures for public Gyre docs. A public claim must carry an inline tag <!-- claim:GYR-NN --> bound to an entry here; scripts/check_claims.py enforces it (see docs/measurement-stance.md for the posture). Statuses: confirmed | provisional | contested | cannot-claim. Numbers here are RESULTS on the stated tier, not instrument parameters.",
+  "claims": {
+    "GYR-01": {
+      "statement": "On synthetic ground truth, the sensor ladder improves pooled F1 from 0.87 (best naive baseline, oracle-thresholded) to 0.94 (evidence-x-semantic, self-deciding).",
+      "status": "confirmed",
+      "public_allowed": true,
+      "tier": "synthetic",
+      "evidence": "scripts/eval_synthetic.py + gyre.bench (per-trace reset default); internal E1 record 2026-07-17",
+      "caveat_markers": [
+        "synthetic"
+      ],
+      "verify": {
+        "source": "docs/scoreboard.json",
+        "checks": [
+          {
+            "provider": "psy:evi-semantic",
+            "corpus": "evidence",
+            "metric": "f1",
+            "expect": 0.955,
+            "tolerance": 0.01
+          },
+          {
+            "provider": "naive:evidence-novelty",
+            "corpus": "evidence",
+            "metric": "f1",
+            "expect": 0.925,
+            "tolerance": 0.01
+          },
+          {
+            "provider": "naive:diff-novelty",
+            "corpus": "evidence",
+            "metric": "f1",
+            "expect": 0.886,
+            "tolerance": 0.01
+          }
+        ],
+        "note": "the ladder's ordering is the claim: instrument > evidence-naive > diff-naive on the evidence corpus"
+      }
+    },
+    "GYR-02": {
+      "statement": "Across cost regimes in the E2/E4 simulator, adaptive control's worst-case regret is 0.15-0.17 vs 0.50 for the best fixed policy and 0.76 for the best blind heuristic.",
+      "status": "confirmed",
+      "public_allowed": true,
+      "tier": "simulator",
+      "evidence": "scripts/exp_controller_gap.py + standard-practice ladder (E4); internal record 2026-07-17",
+      "caveat_markers": [
+        "simulator",
+        "simulated",
+        "synthetic"
+      ]
+    },
+    "GYR-03": {
+      "statement": "On synthetic ground truth, a local instrument (F1 0.94) beats a per-step LLM judge (F1 0.92) with better precision at roughly 1/1000 the cost, and the judge fails the construct-subtle cells.",
+      "status": "confirmed",
+      "public_allowed": true,
+      "tier": "synthetic",
+      "evidence": "E7 LLM-judge baseline run, 2026-07-17",
+      "caveat_markers": [
+        "synthetic"
+      ]
+    },
+    "GYR-04": {
+      "statement": "Real-trace validity: incidence of loop pathologies in real agent traces, and sensor performance on them.",
+      "status": "cannot-claim",
+      "public_allowed": false,
+      "tier": "real-trace",
+      "evidence": "PINNED until expert anchoring and maintainer sign-off. Preliminary panel-labelled and outcome-labelled real-trace results exist internally (2026-07) but are not publicly assertable.",
+      "caveat_markers": []
+    },
+    "GYR-05": {
+      "statement": "The reasoning-loop demo cuts a circling thinking stream at onset, saving ~47% of the demo's thinking tokens.",
+      "status": "provisional",
+      "public_allowed": true,
+      "tier": "constructed-demo",
+      "evidence": "scripts/demo_reasoning_loop.py (constructed representative trace, EXP-RT-01)",
+      "caveat_markers": [
+        "demo",
+        "constructed",
+        "synthetic"
+      ]
+    },
+    "GYR-06": {
+      "statement": "A judge panel absorbs a measurable fraction of human verification burden.",
+      "status": "cannot-claim",
+      "public_allowed": false,
+      "tier": "outer-loop",
+      "evidence": "PINNED. A burden-reduction figure is only assertable when published TOGETHER with a Wilson upper bound on the escape rate, measured by expert audit of a RANDOM sample of the AUTO-APPROVED stratum (gyre.verification_audit). Burden reduction alone is gameable: auto-approving everything scores 100%. Ceiling and audit size must be pre-registered; audit_sample_size_for inverts the exact bound the gate enforces (35 items for a 10% ceiling, 73 for 5%).",
+      "caveat_markers": []
+    }
+  },
+  "forbidden_phrases": [
+    "real-trace validated",
+    "production-proven",
+    "validated on real agent traces",
+    "% of real agent iterations",
+    "of human review",
+    "human review burden"
+  ]
+}
