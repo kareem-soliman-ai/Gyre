@@ -156,6 +156,28 @@ def gen_edge(n: int = 5) -> SyntheticTrace:
     return SyntheticTrace(LabelledTrace(_obs(texts), labels, "L1", "edge:progress"), "edge")
 
 
+def gen_depletion(
+    concept: str = "null_check", n_productive: int = 3, n_stale: int = 3
+) -> SyntheticTrace:
+    """Productive prefix, then a stale tail: the rumination MORPHOLOGY the
+    easy/hard/edge cells lack.
+
+    Steps 0..n_productive-1 are genuinely distinct progress; then one fix is
+    stated once (a clean first attempt) and repeated identically n_stale times
+    (rumination). This is the pattern a marginal-rate sensor is built for: the
+    loop WAS paying and then stops, so the tail's gain falls below the trace's own
+    productive rate. An absolute-staleness sensor also catches identical repeats,
+    but can false-fire on the genuinely novel prefix — so this cell is where the
+    two sensor families are told apart (see internal EXP-VN-01)."""
+    prefix = _DISTINCT[:n_productive]
+    fix = _CONCEPTS[concept][0]
+    texts = prefix + [fix] * (n_stale + 1)
+    labels = [False] * n_productive + [False] + [True] * n_stale
+    return SyntheticTrace(
+        LabelledTrace(_obs(texts), labels, "L1", f"depletion:{concept}"), "depletion"
+    )
+
+
 # --- evidence-channel cells ---------------------------------------------------
 # The information-arrival hypothesis, made falsifiable: rumination is not low
 # *output* novelty, it is low *information* arrival, and the environment's
@@ -246,13 +268,16 @@ def gen_l1_evidence_corpus() -> list[SyntheticTrace]:
 
 
 def gen_l1_corpus() -> list[SyntheticTrace]:
-    """A small, balanced synthetic corpus across the three difficulty levels."""
+    """A small, balanced synthetic corpus across the difficulty levels, including
+    the depletion morphology (productive-then-stale) added after EXP-VN-01."""
     out: list[SyntheticTrace] = []
     for concept in _CONCEPTS:
         out.append(gen_easy(concept))
         out.append(gen_hard(concept))
     out.append(gen_edge(5))
     out.append(gen_edge(4))
+    out.append(gen_depletion("null_check"))
+    out.append(gen_depletion("cache_key"))
     return out
 
 

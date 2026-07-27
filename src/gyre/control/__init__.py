@@ -196,6 +196,13 @@ register("fixed:escalate", lambda: FixedRouteController(ExitReason.ESCALATE))
 register("fixed:abandon", lambda: FixedRouteController(ExitReason.ABANDON))
 register("l5-informed", L5RouteController)
 
+# --- register the meta-bandit L7 controller (F1 from the taxonomy) ---
+try:
+    from gyre.control.meta_bandit import register_controllers as _register_bandit
+    _register_bandit(register)
+except Exception:
+    pass
+
 # --- best-effort: let a gitignored proprietary layer register itself ------------
 try:  # pragma: no cover - present only in a checkout that has the private layer
     from gyre.control import proprietary as _proprietary
