@@ -1,7 +1,14 @@
-"""Embedding backend tests (no model download, no network)."""
+"""Embedding backend tests (no model download, no network).
 
-import numpy as np
+Embedding backends live behind the optional ``semantic`` extra, so numpy is not
+guaranteed in a public checkout. Skipping the module when it is absent is what
+keeps "the public tier is stdlib-only and the suite runs anywhere" true rather
+than merely intended - a clean CI runner caught this claim being false.
+"""
+
 import pytest
+
+np = pytest.importorskip("numpy", reason="embedding backends need the semantic extra")
 
 from gyre.embedding import hash_embed, make_embedder
 

@@ -76,7 +76,11 @@ for attempt in agent_attempts:
 
 Swap `DiffNoveltyProvider` for a sensor you build, and the loop code does not change. The naive baselines are real and honest about being crude; a good measurement fills in things they leave blank (a calibrated probability, a baseline-relative score, an estimate of its own reliability) and the loop starts firing earlier and more precisely. Want to know how much better your measurement is than the baseline? Score them head to head with `gyre.bench`. The value gap is runnable, not asserted.
 
+**See it on a reasoning loop.** Run `python scripts/demo_reasoning_loop.py`. It watches a reasoning model circle between two framings ("actually… however… actually…") and cuts the thinking short when the loop stops adding information. Rumination does not need tool calls: it happens in the thinking stream, where the tokens are pure cost and nobody reads them. The demo also shows the honest catch, a consecutive lexical sensor is fooled by the rewording, while comparing each thought against everything thought so far catches the circle. That gap is the whole argument for taking measurement seriously.
+
 To build your own sensor, start with [docs/building-measurements.md](docs/building-measurements.md). For the architecture in full, [docs/architecture.md](docs/architecture.md). A sensor can also run behind an API rather than in your process, so a validated instrument can be used without being shipped: see [docs/hosted-measurements.md](docs/hosted-measurements.md).
+
+**Think you can do better? You probably can — prove it.** `python scripts/challenge.py --contender yourmodule:build` scores your sensor on the labelled corpora against the published scoreboard, per cell, with the trap cells shown so a surface-form win cannot hide. The bench hindsight-sweeps your thresholds (it is deliberately generous to challengers) and the published instruments get no such favour. Rules and standing invitation: [docs/challenge.md](docs/challenge.md).
 
 ---
 

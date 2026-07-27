@@ -35,16 +35,23 @@ class TraceStep:
 
 @dataclass
 class RawTrace:
-    """An ordered sequence of steps from one agent episode, unlabelled."""
+    """An ordered sequence of steps from one agent episode, unlabelled.
+
+    ``meta`` carries run-level facts that arrived with the trace (outcome labels
+    like verifier pass/fail, token counts, dollar cost). Sensors never see it;
+    evaluation harnesses use it as ground truth for predictive-validity checks.
+    """
 
     steps: list[TraceStep]
     source: str = ""
     trace_id: str = ""
+    meta: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "trace_id": self.trace_id,
             "source": self.source,
+            "meta": self.meta,
             "steps": [asdict(s) for s in self.steps],
         }
 
@@ -54,6 +61,7 @@ class RawTrace:
             steps=[TraceStep(**s) for s in d.get("steps", [])],
             source=d.get("source", ""),
             trace_id=d.get("trace_id", ""),
+            meta=d.get("meta", {}),
         )
 
 
@@ -277,6 +285,79 @@ def from_claude_code_jsonl(
                 )
             )
     return RawTrace(steps=steps, source=str(p), trace_id=trace_id or p.stem)
+
+
+_RUN_META_KEYS = (
+    "model",
+    "repeat",
+    "passed",
+    "tokens_in",
+    "tokens_out",
+    "cost_usd",
+    "error",
+    "verifier_errors",
+)
+
+
+def _summarize_agentic_action(action: Any) -> str:
+    """Compact one structured tool action to a rumination-legible line.
+
+    Same principle as ``_summarize_tool``: the action name plus its target(s),
+    because rumination in an act/observe loop is the same action re-issued at the
+    same target with nothing new coming back.
+    """
+    if not isinstance(action, dict):
+        return " ".join(str(action).split())[:120]
+    name = action.get("action") or action.get("name") or action.get("tool") or "action"
+    parts: list[str] = []
+    for key, value in action.items():
+        if key in ("action", "name", "tool"):
+            continue
+        if isinstance(value, (str, int, float, bool)):
+            compact = " ".join(str(value).split())
+            parts.append(f"{key}={compact[:80]}")
+    return f"{name} " + " ".join(parts) if parts else str(name)
+
+
+def from_agentic_run(
+    run: dict[str, Any] | str | Path,
+    *,
+    trace_id: str = "",
+    obs_chars: int = 240,
+) -> RawTrace:
+    """Ingest one act/observe agent run (dict or JSON file) into a RawTrace.
+
+    Expected shape (tolerant): ``{"trace": [{"action": {...}, "observation": str,
+    ...}], "passed": bool, "tokens_out": int, "cost_usd": float, ...}`` — the
+    common output of benchmark harnesses that drive a model through a tool loop
+    and verify the outcome. Each step's text is the summarized action plus a
+    truncated observation (so evidence-arrival sensors can see what came back);
+    run-level outcome fields land in ``RawTrace.meta`` as ground truth for
+    predictive-validity evaluation.
+    """
+    source = ""
+    if isinstance(run, (str, Path)):
+        p = Path(run)
+        source = str(p)
+        trace_id = trace_id or p.stem
+        run_d: dict[str, Any] = json.loads(p.read_text(encoding="utf-8"))
+    else:
+        run_d = run
+    if not source:
+        source = str(run_d.get("model", ""))
+
+    steps: list[TraceStep] = []
+    for entry in run_d.get("trace") or []:
+        if not isinstance(entry, dict):
+            continue
+        text = _summarize_agentic_action(entry.get("action"))
+        obs = entry.get("observation")
+        if isinstance(obs, str) and obs.strip():
+            text += "\n[obs] " + " ".join(obs.split())[:obs_chars]
+        steps.append(TraceStep(text=text, index=len(steps)))
+
+    meta = {k: run_d.get(k) for k in _RUN_META_KEYS if k in run_d}
+    return RawTrace(steps=steps, source=source, trace_id=trace_id, meta=meta)
 
 
 def save_traces(traces: Iterable[Any], path: str | Path) -> None:

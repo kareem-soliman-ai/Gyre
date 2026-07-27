@@ -2,6 +2,7 @@
 
 from gyre.synthetic import (
     by_difficulty,
+    gen_depletion,
     gen_easy,
     gen_edge,
     gen_hard,
@@ -29,8 +30,20 @@ def test_edge_has_no_rumination():
     assert st.trace.labels == [False] * 5       # genuine progress, nothing recycled
 
 
+def test_depletion_prefix_clean_tail_ruminating():
+    st = gen_depletion(n_productive=3, n_stale=3)
+    assert st.difficulty == "depletion"
+    labels = st.trace.labels
+    # productive prefix + the clean first statement of the stale fix
+    assert labels[:4] == [False, False, False, False]
+    # the identical repeats after it are rumination
+    assert labels[4:] == [True, True, True]
+    # the tail really is a different artifact from the productive prefix
+    assert st.trace.observations[0].artifact != st.trace.observations[-1].artifact
+
+
 def test_corpus_covers_all_difficulties():
     corpus = gen_l1_corpus()
     groups = by_difficulty(corpus)
-    assert set(groups) == {"easy", "hard", "edge"}
+    assert set(groups) == {"easy", "hard", "edge", "depletion"}
     assert all(t.loop_id == "L1" for g in groups.values() for t in g)

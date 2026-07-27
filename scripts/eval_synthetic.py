@@ -27,11 +27,19 @@ if str(_src) not in sys.path:
 
 from gyre.bench import compare_providers
 from gyre.providers import DiffNoveltyProvider
+from gyre.providers.mvt_rumination import MvtRuminationSensor
 from gyre.synthetic import by_difficulty, gen_l1_corpus
 
 
 def build_providers(api_model: str | None):
     providers = [DiffNoveltyProvider()]
+    # Aurora-derived MVT sensor (top-level gyre.providers, stdlib-only).
+    # This is the one built this session; it was previously NOT in any harness.
+    try:
+        mvt = MvtRuminationSensor()
+        providers.append(mvt)
+    except Exception as e:  # noqa: BLE001
+        print(f"[info] skipping mvt:rumination: {e}", file=sys.stderr)
     try:
         from gyre.embedding import make_embedder
         from gyre.providers.proprietary.mvt_rumination import (

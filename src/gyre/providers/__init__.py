@@ -55,6 +55,44 @@ register("naive:evidence-novelty", EvidenceNoveltyProvider)
 register("naive:rolling-brier", RollingBrierProvider)
 register("naive:zscore-deviation", ZScoreDeviationProvider)
 
+# --- register the sequential-change sensors (A1, A2 from the taxonomy) ---
+from gyre.providers.sequential import CusumSensor, SprtSensor  # noqa: E402
+register("cusum:gain-shift", CusumSensor)
+register("sprt:gain-shift", SprtSensor)
+
+# --- register the AR(1) residual sensor (B1 from the taxonomy) ---
+from gyre.providers.residual import Ar1ResidualSensor  # noqa: E402
+register("ar1:residual", Ar1ResidualSensor)
+
+# --- register the fusion gate (B4 from the taxonomy) ---
+from gyre.providers.fusion import SensorFusionGate  # noqa: E402
+
+# --- register the MVT rumination sensor (A4 from the taxonomy) ---
+# Imported from Aurora's npbi.navigation.marginal_value; refactored
+# behind the MeasurementProvider seam.
+from gyre.providers.mvt_rumination import MvtRuminationSensor  # noqa: E402
+register("mvt:rumination", MvtRuminationSensor)
+
+# --- register the VoI stopping sensor (A6 from the taxonomy) ---
+# Ported from Aurora's npbi.inference.value_of_information; wired behind the
+# L2 (calibration) seam.
+from gyre.providers.value_of_information import ValueOfInformationProvider  # noqa: E402
+register("voi:commit-stop", ValueOfInformationProvider)
+
+# --- register the self-calibrating decision layer (per-trace baseline) ---
+from gyre.providers.selfcal import SelfBaselineProvider  # noqa: E402
+
+register("selfcal:diff-novelty", lambda: SelfBaselineProvider(DiffNoveltyProvider()))
+register(
+    "selfcal:evidence-novelty",
+    lambda: SelfBaselineProvider(EvidenceNoveltyProvider()),
+)
+
+# --- register the slope-of-gain sensor (trend, not level) ---
+from gyre.providers.gain_slope import GainSlopeSensor  # noqa: E402
+
+register("pcr:gain-slope", lambda: GainSlopeSensor(EvidenceNoveltyProvider()))
+
 # --- best-effort: let a gitignored proprietary layer register itself ---
 try:  # pragma: no cover - present only in a checkout that has the private layer
     from gyre.providers import proprietary as _proprietary

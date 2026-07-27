@@ -125,8 +125,19 @@ class Measurement:
     def is_calibrated(self) -> bool:
         """True if this provider offers a principled decision boundary, so a loop
         does not have to invent a threshold. Used by loops to decide whether to
-        trust the provider's own call or apply a configured threshold."""
-        return self.decision is not None or self.probability is not None
+        trust the provider's own call or apply a configured threshold.
+
+        ``standardized`` counts. A baseline-relative score says "this reading is
+        three sigma below what this trace normally does", and firing at a
+        conventional sigma bound is a principled boundary rather than a guess -
+        which is precisely why ``trigger_state`` has always had a rung for it.
+        Leaving it out here meant the benchmark swept raw-value thresholds for
+        such sensors, scoring a decision rule they do not implement."""
+        return (
+            self.decision is not None
+            or self.probability is not None
+            or self.standardized is not None
+        )
 
     def to_dict(self) -> dict[str, Any]:
         """JSON-safe representation, for sending a reading over the wire.

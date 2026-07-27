@@ -49,7 +49,15 @@ def trigger_state(
         return m.probability >= prob_threshold
 
     if m.standardized is not None:
-        return _directional(m.standardized, m.meaning, z_threshold)
+        # z is signed in the VALUE's own direction, so "unhealthy" is a
+        # significant departure from the trace's own baseline TOWARD the
+        # unhealthy side. z = 0 means "at baseline" and must never fire.
+        z = m.standardized
+        if m.meaning is Meaning.DEVIATION:
+            return abs(z) >= z_threshold
+        if m.meaning is Meaning.LOWER_IS_HEALTHIER:
+            return z >= z_threshold
+        return z <= -z_threshold  # HIGHER_IS_HEALTHIER: well below own baseline
 
     if threshold is None:
         raise ThresholdRequired(
