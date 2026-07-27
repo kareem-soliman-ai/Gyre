@@ -34,8 +34,8 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install (stdlib-only public tier, no network needed)
-        run: pip install -e .
+      - name: Install (stdlib-only public tier; dev extra brings pytest)
+        run: pip install -e ".[dev]"
 
       - name: Test suite
         run: python -m pytest -q
