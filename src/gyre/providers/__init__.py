@@ -88,6 +88,11 @@ register(
     lambda: SelfBaselineProvider(EvidenceNoveltyProvider()),
 )
 
+# --- register the slope-of-gain sensor (trend, not level) ---
+from gyre.providers.gain_slope import GainSlopeSensor  # noqa: E402
+
+register("pcr:gain-slope", lambda: GainSlopeSensor(EvidenceNoveltyProvider()))
+
 # --- best-effort: let a gitignored proprietary layer register itself ---
 try:  # pragma: no cover - present only in a checkout that has the private layer
     from gyre.providers import proprietary as _proprietary

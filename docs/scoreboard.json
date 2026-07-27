@@ -124,6 +124,37 @@
       }
     },
     {
+      "provider": "pcr:gain-slope",
+      "corpora": {
+        "difficulty": {
+          "f1": 0.4,
+          "precision": 0.875,
+          "recall": 0.259,
+          "calibrated": true,
+          "cells": {
+            "depletion": 1.0,
+            "easy": 0.0,
+            "edge": 0.0,
+            "hard": 0.182
+          }
+        },
+        "evidence": {
+          "f1": 0.059,
+          "precision": 1.0,
+          "recall": 0.03,
+          "calibrated": true,
+          "cells": {
+            "evid-easy": 0.0,
+            "evid-hard": 0.2,
+            "evid-pivot": 0.0,
+            "evid-progress": 0.0,
+            "evid-retry": 0.0
+          }
+        }
+      },
+      "note": "measures the TREND in information gain, so it is structurally blind to a loop that was unproductive from step one - there is no decline to detect. Owns the depletion cell (1.00) where level sensors false-fire"
+    },
+    {
       "provider": "psy:diffusion-rumination",
       "corpora": {
         "difficulty": {
@@ -341,7 +372,7 @@
           "f1": 0.0,
           "precision": 0.0,
           "recall": 0.0,
-          "calibrated": false,
+          "calibrated": true,
           "cells": {
             "depletion": 0.0,
             "easy": 0.0,
@@ -353,7 +384,7 @@
           "f1": 0.0,
           "precision": 0.0,
           "recall": 0.0,
-          "calibrated": false,
+          "calibrated": true,
           "cells": {
             "evid-easy": 0.0,
             "evid-hard": 0.0,
@@ -372,7 +403,7 @@
           "f1": 0.0,
           "precision": 0.0,
           "recall": 0.0,
-          "calibrated": false,
+          "calibrated": true,
           "cells": {
             "depletion": 0.0,
             "easy": 0.0,
@@ -384,7 +415,7 @@
           "f1": 0.0,
           "precision": 0.0,
           "recall": 0.0,
-          "calibrated": false,
+          "calibrated": true,
           "cells": {
             "evid-easy": 0.0,
             "evid-hard": 0.0,

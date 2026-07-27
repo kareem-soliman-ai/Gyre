@@ -66,6 +66,11 @@ PROVIDER_NOTES = {
         "its burn-in exceeds these 4-5 step synthetic traces"
     ),
     "mvt:": "measures relative depletion, structurally blind to rumination-from-start",
+    "pcr:gain-slope": (
+        "measures the TREND in information gain, so it is structurally blind to a "
+        "loop that was unproductive from step one - there is no decline to detect. "
+        "Owns the depletion cell (1.00) where level sensors false-fire"
+    ),
     "psy:mvt-rumination": "measures relative depletion, structurally blind to rumination-from-start",
 }
 

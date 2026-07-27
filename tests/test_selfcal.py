@@ -122,3 +122,16 @@ def test_registered_variants_exist():
 def test_rejects_baseline_shorter_than_two():
     with pytest.raises(ValueError):
         SelfBaselineProvider(DiffNoveltyProvider(), baseline_steps=1)
+
+
+def test_a_baseline_relative_score_counts_as_calibrated():
+    # REGRESSION GUARD. trigger_state walks decision -> probability ->
+    # standardized -> value, but is_calibrated() once stopped at probability.
+    # The bench therefore treated z-score sensors as raw and swept thresholds on
+    # their raw values, scoring a decision rule the sensor does not implement.
+    m = Measurement(value=0.5, meaning=Meaning.HIGHER_IS_HEALTHIER, standardized=-3.0)
+    assert m.is_calibrated(), "a baseline-relative score IS a principled boundary"
+
+
+def test_a_bare_value_is_still_uncalibrated():
+    assert not Measurement(value=0.5, meaning=Meaning.HIGHER_IS_HEALTHIER).is_calibrated()
