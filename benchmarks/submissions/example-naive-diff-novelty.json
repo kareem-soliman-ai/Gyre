@@ -47,7 +47,7 @@
   "scorer": {
     "command": "python scripts/challenge.py",
     "files_sha256": {
-      "scripts/challenge.py": "f65ae2bf6b3fc6fd9f690e9b84c55cd923530db6026c8ab05012880e725c8161",
+      "scripts/challenge.py": "184a4a29c428656a5fbe3a40bcea349d90dc5a7b4cac09415ef6e42778493725",
       "src/gyre/bench.py": "e235d2c5c4441265c66a852d8deb10550d36509d87ba390b991ac49b28a96abd",
       "src/gyre/synthetic.py": "cb02dfe6392c924eddd7a4d053c95f9bc5b81328e6a078b16324a142ff36bf17"
     }

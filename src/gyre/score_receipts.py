@@ -27,11 +27,13 @@ VERIFICATION_CLASSES = {
 
 
 def sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+    """Hash a source file with its line endings normalised to LF.
+
+    Git may convert line endings between a Windows working copy and the
+    committed blob. A byte-exact hash would then report an unchanged scorer as
+    changed on another platform, so CRLF and LF checkouts must hash alike.
+    """
+    return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
 
 
 def scorer_manifest(repo: Path) -> dict[str, str]:

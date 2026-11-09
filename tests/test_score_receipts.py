@@ -7,10 +7,26 @@ import subprocess
 import sys
 from pathlib import Path
 
-from gyre.score_receipts import build_receipt, validate_receipt_shape
+from gyre.score_receipts import build_receipt, scorer_manifest, validate_receipt_shape
 
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_scorer_manifest_ignores_line_endings(tmp_path):
+    """A receipt written on a CRLF checkout must verify on an LF one.
+
+    Git may convert line endings between a Windows working copy and the
+    committed blob, so a byte-exact hash made the same scorer look "changed"
+    on the Linux CI runner.
+    """
+    scorer_files = ("scripts/challenge.py", "src/gyre/bench.py", "src/gyre/synthetic.py")
+    for name, newline in (("lf", b"\n"), ("crlf", b"\r\n")):
+        for relative in scorer_files:
+            target = tmp_path / name / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(b"x = 1" + newline + b"y = 2" + newline)
+    assert scorer_manifest(tmp_path / "lf") == scorer_manifest(tmp_path / "crlf")
 
 
 def _score(provider: str = "example:sensor") -> dict:
