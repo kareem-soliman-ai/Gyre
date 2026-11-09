@@ -1,8 +1,8 @@
 """Propagating measurement unreliability into the decision, not just the estimate.
 
-The PCR/Aletheia estate implements reliability -> corrected EFFECT ESTIMATE
-(attenuation correction, disattenuated correlation, credal sigma envelopes).
-What it does not implement anywhere is reliability -> adjusted DECISION: given
+Error-in-variables methods can propagate reliability into a corrected effect
+estimate (attenuation correction, disattenuated correlation, credal sigma
+envelopes). This test asks a different question: given
 that a sensor reading is noisy at a known rate, where should the controller's
 threshold actually sit, and when should it decline to decide at all?
 

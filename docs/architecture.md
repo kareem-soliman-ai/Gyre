@@ -122,3 +122,85 @@ architecture.
 See [building-measurements.md](building-measurements.md) to build a sensor and
 [measurement-stance.md](measurement-stance.md) for why the validated ones are held
 back until they are validated.
+
+## The third seam: graphs and coordination
+
+A graph composes nodes, state, and transitions. Some nodes are deterministic,
+some are model calls, and some contain complete agent loops. Gyre does not need
+to become a graph framework to govern that composition.
+
+Every conditional transition can be split the same way as a loop:
+
+```text
+graph state -> sensor -> Measurement -> routing policy -> next node
+```
+
+That makes the existing seams recursive. A node may contain a `LoopMonitor`; a
+graph-level sensor may consume several `LoopVerdict` values; a routing policy
+may be a fixed public baseline or a validated controller behind the private
+registry. Context and consequence enter at the controller layer, never inside
+the measurement.
+
+The framework-agnostic design contract is documented in
+[loop-and-graph-engineering.md](loop-and-graph-engineering.md). The public
+[`loop-engineer` skill](../skills/loop-engineer/SKILL.md) turns that contract
+into a machine-checked JSON manifest. The experimental
+[`compile-joint-control` skill](../skills/compile-joint-control/SKILL.md) adds a
+slower developmental layer around it:
+
+```text
+system-observable unknowns -> autonomous preflight
+human-held unknowns        -> one upfront question batch
+verified task state        -> fast bounded task controller
+human observation          -> scoped raw or calibrated measurement
+human decision boundary    -> supervisory human control menu
+predictions + outcomes     -> slow capability and calibration update
+```
+
+The developmental layer keeps task outcome, human acceptance, system
+capability, human capability, and joint capability as separate constructs. A
+correct prediction that the user will accept an output calibrates acceptance,
+not objective quality. A human choice is a control transition, not an objective
+outcome label. The human controller can request evidence, revise the criterion,
+change authority, delegate bounded work, pause an action, or terminate the goal
+instead of receiving only an approval switch. Framework adapters should consume
+these manifests; they should not redefine sensor, authority, budget, or evidence
+boundaries.
+
+The [first-principles control note](first-principles-loop-control.md) documents
+the reciprocal measurement argument. The
+[Loop Control Lab](loop-control-playground.md) makes it executable with editable
+cases and deliberately naive public policies.
+
+## The fourth seam: measurement can be an intervention
+
+The earlier diagrams treat observation as a read-only edge. That assumption is
+sometimes false. A probe can change the measurand, change the mechanism through
+which later controls act, or change the bias of future observations:
+
+```text
+measurement node -> reported observation
+                 -> object state
+                 -> mechanism state
+                 -> instrument state
+```
+
+Gyre models those edges explicitly in
+`gyre.challenge.observer_effects`. The response profile belongs to the world,
+not the sensor interface or controller. The controller chooses the instrument
+and intensity; the evaluator owns latent state; a renewable reference probe
+provides a negative control. This preserves the separation between what was
+observed, what the observation changed, and how the controller acted on both.
+
+The Alien Factory wrapper adds another separation:
+
+```text
+immutable phenomenon ID != participant alias != evaluator state
+```
+
+Aliases and explanations live in a revisable field notebook. They cannot alter
+the simulator or objective score. Their value comes only from better
+prospective prediction and control.
+
+See [observer-effects-challenge.md](observer-effects-challenge.md) for the
+disclosure policy, qualification receipt, and graph-engineering implications.

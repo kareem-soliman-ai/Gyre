@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/kareem-soliman-ai/Gyre/benchmarks/score-receipt.schema.json",
+  "title": "Gyre sensor score receipt",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "receipt_type",
+    "created_at",
+    "submitter",
+    "provider",
+    "implementation",
+    "verification",
+    "score",
+    "scorer",
+    "environment",
+    "git"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "receipt_type": { "const": "gyre-sensor-score" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "submitter": { "type": "string", "minLength": 1 },
+    "provider": { "type": "string", "minLength": 1 },
+    "implementation": {
+      "type": "object",
+      "required": ["visibility", "factory"],
+      "properties": {
+        "visibility": { "enum": ["public", "private"] },
+        "factory": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "verification": {
+      "type": "object",
+      "required": ["class", "ranking_eligible", "evidence_scope", "statement"],
+      "properties": {
+        "class": {
+          "enum": [
+            "public-reproducible",
+            "sealed-evaluator-attested",
+            "self-reported"
+          ]
+        },
+        "ranking_eligible": { "type": "boolean" },
+        "evidence_scope": { "type": "string" },
+        "statement": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "score": { "type": "object" },
+    "scorer": {
+      "type": "object",
+      "required": ["command", "files_sha256"]
+    },
+    "environment": { "type": "object" },
+    "git": { "type": "object" }
+  }
+}

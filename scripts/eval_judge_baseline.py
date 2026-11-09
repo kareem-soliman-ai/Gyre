@@ -3,7 +3,7 @@
 The sensors in eval_evidence.py beat naive baselines WE wrote. The strongest
 baseline a good engineer would actually reach for today is different: ask a
 frontier-ish LLM, per step, "is this rumination?" — the rubric-as-prompt
-pattern. If a validated local instrument cannot at least approach that on
+pattern. If a qualified local instrument cannot at least approach that on
 accuracy while beating it wildly on cost and latency, the instrument story is
 weak. If it can, the economics write the pitch: an LLM call per loop iteration
 is exactly the token burn the sensor exists to prevent.
@@ -35,7 +35,12 @@ if str(_src) not in sys.path:
 from gyre.bench import compare_providers, evaluate_provider
 from gyre.labeling import OpenRouterJudge
 from gyre.measurement import Meaning, Measurement
-from gyre.providers import DiffNoveltyProvider, EvidenceNoveltyProvider
+from gyre.providers import (
+    DiffNoveltyProvider,
+    EvidenceNoveltyProvider,
+    available,
+    get_provider,
+)
 from gyre.synthetic import by_difficulty, gen_l1_corpus, gen_l1_evidence_corpus
 
 FALLBACK_MODELS = [
@@ -93,15 +98,10 @@ class JudgeSensor:
 
 def build_local_sensors():
     sensors = [DiffNoveltyProvider(), EvidenceNoveltyProvider()]
-    try:
-        from gyre.embedding import make_embedder
-        from gyre.providers.proprietary.evi_semantic import EviSemanticProvider
-
-        p = EviSemanticProvider(embed=make_embedder("local"))
-        p.name = "psy:evi-semantic(local)"
-        sensors.append(p)
-    except Exception as exc:  # noqa: BLE001
-        print(f"[info] proprietary layer not present ({exc})", file=sys.stderr)
+    if "psy:evi-semantic" in available("L1"):
+        sensors.append(get_provider("psy:evi-semantic"))
+    else:
+        print("[info] protected provider not present", file=sys.stderr)
     return sensors
 
 

@@ -1,7 +1,7 @@
 """Non-compensatory verdict ceiling with separated poles.
 
-Vendored from Criterion Labs' profile_code severity logic, including the bug it
-documents: an earlier version took min(capability_credit, ceiling), which let a
+Includes a regression test for an earlier bug: taking
+min(capability_credit, ceiling) let a
 single MINOR gap score BELOW an artefact containing a live critical defect — a
 straight inversion. The fix is that the verdict IS the ceiling, with coverage
 reported alongside and never multiplied or min'd in.

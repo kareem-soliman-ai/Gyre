@@ -1,0 +1,32 @@
+{
+  "frozen_at": "2026-07-28T03:25:26.3055613Z",
+  "status": "frozen_before_smoke_or_evaluation calls",
+  "sha256": {
+    "config.json": "bd659436b917d34d2b0fa39020a50015d7d696c7189adc4fd268bbbbac7f3be1",
+    "scripts/run_evaluation.py": "be8e5d5c60f8ed470ac09d3949b850521c7e40d0f6000da8204b9671cf26bbbd",
+    "docs/PREREGISTRATION.md": "dc24f3517dafbd7f59ca28e53474e501753e73a1fb592e02892b12e106a97930"
+  },
+  "amendments": [
+    {
+      "reason": "Documented privacy-isolation vocabulary false negative after two cells; see PROTOCOL_DEVIATIONS.md.",
+      "scripts/run_evaluation.py_sha256": "a8ab160ee87c6ca4457929daaa06e1b15aa0e3e3c548461a78fb084ae880a689",
+      "docs/PROTOCOL_DEVIATIONS.md_sha256": "c1e14a3c8d08f1a345449e248d2369cf3fcc66ed6bbc0d2aa515cf548b1efcf1"
+    },
+    {
+      "reason": "Made held-out checks total over malformed nested sections and added recovery receipts for two lost bare-arm responses; see PROTOCOL_DEVIATIONS.md.",
+      "scripts/run_evaluation.py_sha256": "7ebe22b7f86d4c949595ca998829a957d7cda246795ab7c1ccfa554fcf22715b",
+      "docs/PROTOCOL_DEVIATIONS.md_sha256": "8a96cd3d3ff039a6b7aad843611d753fe2ba0287fd3684fa74c9dceebdd89221"
+    },
+    {
+      "reason": "Replaced an unavailable Gemini secondary judge with Mistral after deterministic outcomes were frozen; see PROTOCOL_DEVIATIONS.md.",
+      "config.json_sha256": "70eea991ffb8dc18e0683b514cf9a8e8156d8e6291f9a72d737fd7d3c8564739",
+      "docs/PROTOCOL_DEVIATIONS.md_sha256": "04de88a75e35bcf544740e5f3fe9bbfe8694109537f4fad48eae7db1949ef26f"
+    },
+    {
+      "reason": "Narrowed analytics role selection after a post-aggregation false positive; see PROTOCOL_DEVIATIONS.md.",
+      "scripts/run_evaluation.py_sha256": "320ad6694b4470d2db38dd2dacaa26989cb5e62fbcd58d24a1f849d3b61a973d",
+      "docs/PROTOCOL_DEVIATIONS.md_sha256": "0028f4fe504c2df32f5b35056a5d275f43180c87bf1f1a240e37008eceda76a0"
+    }
+  ],
+  "note": "The timestamp records the freeze date and ordering, not an external notarisation. Git and raw receipt times provide the audit trail."
+}

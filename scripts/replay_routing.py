@@ -46,10 +46,21 @@ if str(_src) not in sys.path:
     sys.path.insert(0, str(_src))
 
 from gyre.bench import LabelledTrace, evaluate_provider
-from gyre.control import ControlContext, FixedRouteController, L5RouteController
+from gyre.control import (
+    ControlContext,
+    FixedRouteController,
+    L5RouteController,
+    available as available_controllers,
+    get_controller,
+)
 from gyre.interfaces import ExitReason
 from gyre.loops.rumination import RuminationMonitor
-from gyre.providers import DiffNoveltyProvider, EvidenceNoveltyProvider
+from gyre.providers import (
+    DiffNoveltyProvider,
+    EvidenceNoveltyProvider,
+    available as available_providers,
+    get_provider,
+)
 
 # Cost model, from the eval spec.
 COST_MEASURE = 1
@@ -98,15 +109,10 @@ def load_corpus() -> tuple[str, list[LabelledTrace]]:
 
 def build_sensors():
     sensors = [DiffNoveltyProvider(), EvidenceNoveltyProvider()]
-    try:
-        from gyre.embedding import make_embedder
-        from gyre.providers.proprietary.evi_semantic import EviSemanticProvider
-
-        p = EviSemanticProvider(embed=make_embedder("local"))
-        p.name = "psy:evi-semantic(local)"
-        sensors.append(p)
-    except Exception as exc:  # noqa: BLE001 - public checkout
-        print(f"[info] proprietary sensor layer not present ({exc})", file=sys.stderr)
+    if "psy:evi-semantic" in available_providers("L1"):
+        sensors.append(get_provider("psy:evi-semantic"))
+    else:
+        print("[info] protected sensor not present", file=sys.stderr)
     return sensors
 
 
@@ -133,18 +139,14 @@ def step_rates(provider, traces, threshold):
 
 def build_controllers(tpr: float, fpr: float, threshold: float | None):
     controllers = [FixedRouteController(ExitReason.REFRAME), L5RouteController()]
-    try:
-        from gyre.control.proprietary.adaptive_ev import AdaptiveEVController
-
-        controllers.append(
-            AdaptiveEVController(
-                sensor_tpr=max(tpr, 0.05),  # a zero-TPR sensor breaks the filter; floor it
-                sensor_fpr=min(max(fpr, 0.0), 0.9),
-                flag_threshold=threshold,
-            )
-        )
-    except Exception as exc:  # noqa: BLE001 - public checkout
-        print(f"[info] proprietary controller layer not present ({exc})", file=sys.stderr)
+    if "psy:adaptive-ev" in available_controllers():
+        controller = get_controller("psy:adaptive-ev")
+        controller.sensor_tpr = max(tpr, 0.05)
+        controller.sensor_fpr = min(max(fpr, 0.0), 0.9)
+        controller.flag_threshold = threshold
+        controllers.append(controller)
+    else:
+        print("[info] protected controller not present", file=sys.stderr)
     return controllers
 
 

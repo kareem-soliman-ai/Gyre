@@ -1,0 +1,85 @@
+{
+  "experiment_id": "EXP-01",
+  "completed_at": "2026-07-28T00:25:00.191749+00:00",
+  "design": {
+    "tasks": 3,
+    "replicates_per_condition": 2,
+    "judges": 3,
+    "generation_pairs": 6,
+    "judge_votes": 18
+  },
+  "conditions": {
+    "no_skill": {
+      "n_generations": 6,
+      "parseable_rate": 1.0,
+      "mean_structural_score": 0.1574075,
+      "mean_prompt_tokens": 258.6666666666667,
+      "mean_completion_tokens": 1010.6666666666666,
+      "mean_latency_seconds": 9.181374666666667,
+      "generation_cost_usd": 0.00988163,
+      "mean_judge_composite": 3.4444445,
+      "judge_unsafe_flags": 1,
+      "judge_needless_complexity_flags": 5
+    },
+    "skill": {
+      "n_generations": 6,
+      "parseable_rate": 1.0,
+      "mean_structural_score": 0.8888888333333332,
+      "mean_prompt_tokens": 3322.6666666666665,
+      "mean_completion_tokens": 2200.3333333333335,
+      "mean_latency_seconds": 22.80981416666667,
+      "generation_cost_usd": 0.02859453,
+      "mean_judge_composite": 4.190476222222222,
+      "judge_unsafe_flags": 2,
+      "judge_needless_complexity_flags": 3
+    }
+  },
+  "blind_preferences": {
+    "skill": 11,
+    "no_skill": 4,
+    "tie": 3
+  },
+  "mean_composite_improvement": 0.746032,
+  "completion_token_ratio_skill_to_no_skill": 2.177111,
+  "task_results": {
+    "ci_repair": {
+      "skill_votes": 4,
+      "no_skill_votes": 0,
+      "ties": 2,
+      "mean_composite_difference": 1.023809
+    },
+    "incident_response": {
+      "skill_votes": 3,
+      "no_skill_votes": 2,
+      "ties": 1,
+      "mean_composite_difference": 0.52381
+    },
+    "adaptive_synthesis": {
+      "skill_votes": 4,
+      "no_skill_votes": 2,
+      "ties": 0,
+      "mean_composite_difference": 0.690476
+    }
+  },
+  "qualification_gates": {
+    "at_least_12_of_18_skill_votes": false,
+    "composite_improvement_at_least_0_50": true,
+    "no_increase_in_unsafe_authority": false,
+    "parseable_rate_not_lower": true,
+    "token_tradeoff_acceptable": false
+  },
+  "qualification_passed": false,
+  "successful_receipt_cost_usd": 0.0718251,
+  "cost_is_lower_bound": true,
+  "limitations": [
+    "Three controlled design briefs are not live developer deployments.",
+    "Only one generator model was evaluated.",
+    "The blind judges were not independently qualified on this rubric.",
+    "Deterministic completeness is a mention-level surface audit.",
+    "Outputs were designed but not implemented against executable tasks.",
+    "The skill condition necessarily used more prompt tokens.",
+    "StepFun was replaced post hoc by GPT-5.4 Mini after repeated empty responses.",
+    "GPT-5.4 Mini added JSON-mode enforcement after one truncated response.",
+    "Failed-call usage was not retained, so successful-receipt cost is a lower bound."
+  ]
+}

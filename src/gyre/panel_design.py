@@ -24,8 +24,8 @@ immediately and are easy to get wrong by intuition:
    invariant to specificity and is the number to compare panels on; the escape
    rate is what you must bound for a given deployment, not a league table.
 
-Pattern vendored from Criterion Labs' agreement-sensitivity sweep, which used
-the same closed-form-grid move to show that at 1% prevalence Cohen's kappa
+The closed-form grid makes the metric-choice problem concrete: at 1% prevalence
+Cohen's kappa
 reads 0.14 where Gwet's AC1 reads 0.89 — a metric-choice argument settled for
 $0 before any judge ran.
 

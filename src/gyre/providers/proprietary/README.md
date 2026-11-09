@@ -14,13 +14,10 @@ measurements that actually estimate a latent construct (rumination, calibration,
 rupture) with known reliability, rather than a raw proxy that correlates with it
 until it doesn't.
 
-That is the open-core line. Free razor, and the loops are a genuinely good razor.
-The validated psychometric blade is the part with a price on it.
-
-If that reads as mercenary, look at what is actually free: every loop, the whole
-interface, working naive measurements, and a benchmark that will honestly tell you
-how good *your* measurement is. The only thing behind the fence is the validated
-instrument, and an unvalidated instrument should not be trusted anyway (see
+That is the open-core line: the methods, interfaces, baselines, and falsification
+harness are public; fitted instruments and protected validation assets are not.
+Protection is not evidence of validity. A provider still has to earn its claims
+against an appropriate holdout and outcome criterion (see
 [docs/measurement-stance.md](../../../../docs/measurement-stance.md)).
 
 ## How to use this directory
@@ -50,12 +47,11 @@ The public `gyre.providers` package calls `register_all` best-effort on import, 
 a provider dropped here is available by name without any public code referencing
 it. A clean public checkout has none of this and runs on the naive baselines.
 
-## The difference a real provider makes
+## What a qualified provider must add
 
-A proprietary L1 provider does not return a lexical diff ratio. It returns a
-`Measurement` with the calibration fields *filled in*: a `probability` that the
-loop is ruminating, a `standardized` score against a modelled baseline, a
-`decision` it has earned the right to make, and a `measurement_error` that reports
-its own reliability. The loop code does not change. It just starts firing earlier,
-more precisely, and with a number you can defend. That gap, made runnable, is the
-point of the whole architecture.
+A protected L1 provider can return a `Measurement` with calibration fields
+filled in: a probability, a standardised score against a modelled baseline, a
+decision, and measurement error. Those fields are only trustworthy to the
+extent supported by validation. The loop code does not change, which allows a
+public baseline and a protected candidate to be compared through the same seam
+without distributing the protected implementation.

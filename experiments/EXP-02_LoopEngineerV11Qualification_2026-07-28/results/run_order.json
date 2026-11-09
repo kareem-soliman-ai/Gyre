@@ -1,0 +1,290 @@
+[
+  {
+    "task_id": "adaptive_batch",
+    "model": "deepseek/deepseek-v3.2",
+    "seed": 733,
+    "arm": "template"
+  },
+  {
+    "task_id": "adaptive_batch",
+    "model": "deepseek/deepseek-v3.2",
+    "seed": 311,
+    "arm": "bare"
+  },
+  {
+    "task_id": "privacy_onboarding",
+    "model": "qwen/qwen3-coder",
+    "seed": 733,
+    "arm": "skill"
+  },
+  {
+    "task_id": "privacy_onboarding",
+    "model": "qwen/qwen3-coder",
+    "seed": 311,
+    "arm": "skill"
+  },
+  {
+    "task_id": "privacy_onboarding",
+    "model": "deepseek/deepseek-v3.2",
+    "seed": 311,
+    "arm": "bare"
+  },
+  {
+    "task_id": "database_migration",
+    "model": "deepseek/deepseek-v3.2",
+    "seed": 311,
+    "arm": "bare"
+  },
+  {
+    "task_id": "adaptive_batch",
+    "model": "qwen/qwen3-coder",
+    "seed": 733,
+    "arm": "template"
+  },
+  {
+    "task_id": "database_migration",
+    "model": "deepseek/deepseek-v3.2",
+    "seed": 733,
+    "arm": "bare"
+  },
+  {
+    "task_id": "adaptive_batch",
+    "model": "qwen/qwen3-coder",
+    "seed": 311,
+    "arm": "template"
+  },
+  {
+    "task_id": "privacy_onboarding",
+    "model": "qwen/qwen3-coder",
+    "seed": 311,
+    "arm": "bare"
+  },
+  {
+    "task_id": "privacy_onboarding",
+    "model": "deepseek/deepseek-v3.2",
+    "seed": 733,
+    "arm": "bare"
+  },
+  {
+    "task_id": "database_migration",
+    "model": "qwen/qwen3-coder",
+    "seed": 311,
+    "arm": "bare"
+  },
+  {
+    "task_id": "evaluation_adjudication",
+    "model": "qwen/qwen3-coder",
+    "seed": 311,
+    "arm": "template"
+  },
+  {
+    "task_id": "adaptive_batch",
+    "model": "deepseek/deepseek-v3.2",
+    "seed": 311,
+    "arm": "skill"
+  },
+  {
+    "task_id": "database_migration",
+    "model": "qwen/qwen3-coder",
+    "seed": 311,
+    "arm": "template"
+  },
+  {
+    "task_id": "database_migration",
+    "model": "qwen/qwen3-coder",
+    "seed": 311,
+    "arm": "skill"
+  },
+  {
+    "task_id": "evaluation_adjudication",
+    "model": "deepseek/deepseek-v3.2",
+    "seed": 733,
+    "arm": "bare"
+  },
+  {
+    "task_id": "evaluation_adjudication",
+    "model": "deepseek/deepseek-v3.2",
+    "seed": 311,
+    "arm": "skill"
+  },
+  {
+    "task_id": "database_migration",
+    "model": "deepseek/deepseek-v3.2",
+    "seed": 311,
+    "arm": "skill"
+  },
+  {
+    "task_id": "adaptive_batch",
+    "model": "qwen/qwen3-coder",
+    "seed": 311,
+    "arm": "skill"
+  },
+  {
+    "task_id": "evaluation_adjudication",
+    "model": "deepseek/deepseek-v3.2",
+    "seed": 311,
+    "arm": "template"
+  },
+  {
+    "task_id": "privacy_onboarding",
+    "model": "deepseek/deepseek-v3.2",
+    "seed": 733,
+    "arm": "template"
+  },
+  {
+    "task_id": "evaluation_adjudication",
+    "model": "qwen/qwen3-coder",
+    "seed": 733,
+    "arm": "bare"
+  },
+  {
+    "task_id": "database_migration",
+    "model": "deepseek/deepseek-v3.2",
+    "seed": 733,
+    "arm": "template"
+  },
+  {
+    "task_id": "adaptive_batch",
+    "model": "qwen/qwen3-coder",
+    "seed": 733,
+    "arm": "bare"
+  },
+  {
+    "task_id": "adaptive_batch",
+    "model": "qwen/qwen3-coder",
+    "seed": 733,
+    "arm": "skill"
+  },
+  {
+    "task_id": "privacy_onboarding",
+    "model": "qwen/qwen3-coder",
+    "seed": 733,
+    "arm": "template"
+  },
+  {
+    "task_id": "evaluation_adjudication",
+    "model": "deepseek/deepseek-v3.2",
+    "seed": 733,
+    "arm": "skill"
+  },
+  {
+    "task_id": "database_migration",
+    "model": "qwen/qwen3-coder",
+    "seed": 733,
+    "arm": "bare"
+  },
+  {
+    "task_id": "privacy_onboarding",
+    "model": "qwen/qwen3-coder",
+    "seed": 311,
+    "arm": "template"
+  },
+  {
+    "task_id": "database_migration",
+    "model": "qwen/qwen3-coder",
+    "seed": 733,
+    "arm": "template"
+  },
+  {
+    "task_id": "privacy_onboarding",
+    "model": "deepseek/deepseek-v3.2",
+    "seed": 311,
+    "arm": "template"
+  },
+  {
+    "task_id": "evaluation_adjudication",
+    "model": "qwen/qwen3-coder",
+    "seed": 733,
+    "arm": "template"
+  },
+  {
+    "task_id": "evaluation_adjudication",
+    "model": "qwen/qwen3-coder",
+    "seed": 311,
+    "arm": "bare"
+  },
+  {
+    "task_id": "adaptive_batch",
+    "model": "deepseek/deepseek-v3.2",
+    "seed": 733,
+    "arm": "bare"
+  },
+  {
+    "task_id": "adaptive_batch",
+    "model": "deepseek/deepseek-v3.2",
+    "seed": 733,
+    "arm": "skill"
+  },
+  {
+    "task_id": "database_migration",
+    "model": "qwen/qwen3-coder",
+    "seed": 733,
+    "arm": "skill"
+  },
+  {
+    "task_id": "adaptive_batch",
+    "model": "qwen/qwen3-coder",
+    "seed": 311,
+    "arm": "bare"
+  },
+  {
+    "task_id": "database_migration",
+    "model": "deepseek/deepseek-v3.2",
+    "seed": 733,
+    "arm": "skill"
+  },
+  {
+    "task_id": "privacy_onboarding",
+    "model": "deepseek/deepseek-v3.2",
+    "seed": 733,
+    "arm": "skill"
+  },
+  {
+    "task_id": "evaluation_adjudication",
+    "model": "qwen/qwen3-coder",
+    "seed": 311,
+    "arm": "skill"
+  },
+  {
+    "task_id": "evaluation_adjudication",
+    "model": "qwen/qwen3-coder",
+    "seed": 733,
+    "arm": "skill"
+  },
+  {
+    "task_id": "privacy_onboarding",
+    "model": "deepseek/deepseek-v3.2",
+    "seed": 311,
+    "arm": "skill"
+  },
+  {
+    "task_id": "evaluation_adjudication",
+    "model": "deepseek/deepseek-v3.2",
+    "seed": 733,
+    "arm": "template"
+  },
+  {
+    "task_id": "evaluation_adjudication",
+    "model": "deepseek/deepseek-v3.2",
+    "seed": 311,
+    "arm": "bare"
+  },
+  {
+    "task_id": "adaptive_batch",
+    "model": "deepseek/deepseek-v3.2",
+    "seed": 311,
+    "arm": "template"
+  },
+  {
+    "task_id": "privacy_onboarding",
+    "model": "qwen/qwen3-coder",
+    "seed": 733,
+    "arm": "bare"
+  },
+  {
+    "task_id": "database_migration",
+    "model": "deepseek/deepseek-v3.2",
+    "seed": 311,
+    "arm": "template"
+  }
+]

@@ -1,0 +1,58 @@
+{
+  "experiment_id": "EXP-01",
+  "name": "Loop Engineer Skill Qualification",
+  "date": "2026-07-28",
+  "random_seed": 20260728,
+  "generator": {
+    "model": "qwen/qwen3-coder",
+    "temperature": 0.2,
+    "max_tokens": 3500,
+    "replicate_seeds": [101, 202]
+  },
+  "judges": {
+    "models": [
+      "google/gemma-4-31b-it",
+      "deepseek/deepseek-v4-flash",
+      "openai/gpt-5.4-mini"
+    ],
+    "temperature": 0.0,
+    "max_tokens": 1000,
+    "request_overrides": {
+      "openai/gpt-5.4-mini": {
+        "response_format": {
+          "type": "json_object"
+        }
+      }
+    }
+  },
+  "prices_usd_per_token": {
+    "qwen/qwen3-coder": {"prompt": 0.0000003, "completion": 0.000001},
+    "google/gemma-4-31b-it": {"prompt": 0.00000014, "completion": 0.0000004},
+    "deepseek/deepseek-v4-flash": {"prompt": 0.00000014, "completion": 0.00000028},
+    "stepfun/step-3.7-flash": {"prompt": 0.0000002, "completion": 0.00000115},
+    "openai/gpt-5.4-mini": {"prompt": 0.00000075, "completion": 0.0000045}
+  },
+  "max_cost_usd": 0.5,
+  "frozen": {
+    "skill_sha256": "dd589770ce28d8a8579f07a7051467cf0a1d7e5007eed34f25de32d303d53b07",
+    "asset_sha256": "87fd0299a1f8003e906e96d128c18d2a22c04577ae0c21e868f103d71f8ed9d5",
+    "base_commit": "dc0b8f0bbae108436a1b50887d4bfa36a9df5b1f"
+  },
+  "tasks": [
+    {
+      "id": "ci_repair",
+      "title": "Bounded Python CI repair loop",
+      "brief": "Design the control architecture for a coding agent maintaining a Python library. The agent may edit src/ and tests/ but may not change CI, release, dependency-lock, or repository-policy files. It runs pytest after each accepted change. Some failures are flaky and one possible failure is caused by an unavailable external service, so repeated red tests do not necessarily mean the patch is wrong. Preserve a last-good checkpoint. A green trustworthy suite is completion; otherwise the system must stop, reframe, seek evidence, or escalate without editing outside its authority."
+    },
+    {
+      "id": "incident_response",
+      "title": "Consequential SaaS incident-response graph",
+      "brief": "Design an agent graph for a SaaS incident. It must intake alerts, reproduce the fault, inspect logs, maintain competing diagnoses, propose a patch, validate it, and coordinate within 30 minutes. Investigators share evolving evidence and may disagree. Only a human incident commander may approve deployment or customer communication. The design must prevent duplicate actions, silent overwrites, and a confident but weak diagnosis from routing the entire response."
+    },
+    {
+      "id": "adaptive_synthesis",
+      "title": "Adaptive technical evidence-synthesis graph",
+      "brief": "Design a research-agent graph that produces a technical recommendation from up to 25 sources within 90,000 tokens and 20 minutes. It may recommend fan-out to at most four workers when coverage is low, but many retrieved sources may come from the same model or publication family and therefore are not independent corroboration. Dynamic scaling must begin without controlling the live route. Account for worker-start and state-merge costs, avoid topology thrashing, and retain human approval before external publication."
+    }
+  ]
+}

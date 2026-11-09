@@ -1,0 +1,4 @@
+interface:
+  display_name: "Joint Capability Compiler"
+  short_description: "Compile measured human-agent control and value"
+  default_prompt: "Use $compile-joint-control to design a long-horizon agent loop with capability-aware autonomy, independently locked human and system forecasts, explicit action values, and one upfront decision batch."

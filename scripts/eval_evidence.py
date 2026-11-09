@@ -37,26 +37,26 @@ if str(_src) not in sys.path:
 
 from gyre.bench import compare_providers
 from gyre.loops._policy import ThresholdRequired, trigger_state
-from gyre.providers import DiffNoveltyProvider, EvidenceNoveltyProvider
+from gyre.providers import (
+    DiffNoveltyProvider,
+    EvidenceNoveltyProvider,
+    available,
+    get_provider,
+)
 from gyre.synthetic import by_difficulty, gen_l1_corpus, gen_l1_evidence_corpus
 
 
 def build_providers():
     providers = [DiffNoveltyProvider(), EvidenceNoveltyProvider()]
-    try:
-        from gyre.embedding import make_embedder
-        from gyre.providers.proprietary.evi_semantic import EviSemanticProvider
-        from gyre.providers.proprietary.semantic_novelty import SemanticNoveltyProvider
-
-        embed = make_embedder("local")
-        s = SemanticNoveltyProvider(embed=embed)
-        s.name = "psy:semantic-novelty(local)"
-        providers.append(s)
-        e = EviSemanticProvider(embed=embed)
-        e.name = "psy:evi-semantic(local)"
-        providers.append(e)
-    except Exception as exc:  # noqa: BLE001 - public checkout has no proprietary layer
-        print(f"[info] proprietary layer not present ({exc}); naive sensors only", file=sys.stderr)
+    registered = set(available("L1"))
+    protected = [
+        name
+        for name in ("psy:semantic-novelty", "psy:evi-semantic")
+        if name in registered
+    ]
+    providers.extend(get_provider(name) for name in protected)
+    if not protected:
+        print("[info] protected providers not present; public sensors only", file=sys.stderr)
     return providers
 
 

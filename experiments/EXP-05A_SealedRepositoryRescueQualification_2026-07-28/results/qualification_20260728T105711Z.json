@@ -1,0 +1,236 @@
+{
+  "experiment": "EXP-05A",
+  "run_at": "2026-07-28T10:57:11.627311+00:00",
+  "development_seeds": [
+    419,
+    919,
+    1429
+  ],
+  "matrix": {
+    "reference": {
+      "419": {
+        "score": 100.0,
+        "categories": {
+          "behavioral_conformance": 55.0,
+          "regression_preservation": 15.0,
+          "robustness_metamorphic": 15.0,
+          "recovery_replay_idempotency": 10.0,
+          "performance_boundary": 5.0
+        },
+        "elapsed_seconds": 0.11591359999147244
+      },
+      "919": {
+        "score": 100.0,
+        "categories": {
+          "behavioral_conformance": 55.0,
+          "regression_preservation": 15.0,
+          "robustness_metamorphic": 15.0,
+          "recovery_replay_idempotency": 10.0,
+          "performance_boundary": 5.0
+        },
+        "elapsed_seconds": 0.12158340000314638
+      },
+      "1429": {
+        "score": 100.0,
+        "categories": {
+          "behavioral_conformance": 55.0,
+          "regression_preservation": 15.0,
+          "robustness_metamorphic": 15.0,
+          "recovery_replay_idempotency": 10.0,
+          "performance_boundary": 5.0
+        },
+        "elapsed_seconds": 0.10481659998185933
+      }
+    },
+    "alternate_correct": {
+      "419": {
+        "score": 100.0,
+        "categories": {
+          "behavioral_conformance": 55.0,
+          "regression_preservation": 15.0,
+          "robustness_metamorphic": 15.0,
+          "recovery_replay_idempotency": 10.0,
+          "performance_boundary": 5.0
+        },
+        "elapsed_seconds": 0.07908799999859184
+      },
+      "919": {
+        "score": 100.0,
+        "categories": {
+          "behavioral_conformance": 55.0,
+          "regression_preservation": 15.0,
+          "robustness_metamorphic": 15.0,
+          "recovery_replay_idempotency": 10.0,
+          "performance_boundary": 5.0
+        },
+        "elapsed_seconds": 0.08463060000212863
+      },
+      "1429": {
+        "score": 100.0,
+        "categories": {
+          "behavioral_conformance": 55.0,
+          "regression_preservation": 15.0,
+          "robustness_metamorphic": 15.0,
+          "recovery_replay_idempotency": 10.0,
+          "performance_boundary": 5.0
+        },
+        "elapsed_seconds": 0.09121179999783635
+      }
+    },
+    "broken_starter": {
+      "419": {
+        "score": 30.357142857142858,
+        "categories": {
+          "behavioral_conformance": 7.857142857142857,
+          "regression_preservation": 15.0,
+          "robustness_metamorphic": 0.0,
+          "recovery_replay_idempotency": 2.5,
+          "performance_boundary": 5.0
+        },
+        "elapsed_seconds": 0.08333740002126433
+      },
+      "919": {
+        "score": 30.357142857142858,
+        "categories": {
+          "behavioral_conformance": 7.857142857142857,
+          "regression_preservation": 15.0,
+          "robustness_metamorphic": 0.0,
+          "recovery_replay_idempotency": 2.5,
+          "performance_boundary": 5.0
+        },
+        "elapsed_seconds": 0.08227059998898767
+      },
+      "1429": {
+        "score": 30.357142857142858,
+        "categories": {
+          "behavioral_conformance": 7.857142857142857,
+          "regression_preservation": 15.0,
+          "robustness_metamorphic": 0.0,
+          "recovery_replay_idempotency": 2.5,
+          "performance_boundary": 5.0
+        },
+        "elapsed_seconds": 0.0828070999996271
+      }
+    },
+    "mutant_no_summary": {
+      "419": {
+        "score": 21.476190476190474,
+        "categories": {
+          "behavioral_conformance": 10.476190476190476,
+          "regression_preservation": 0.0,
+          "robustness_metamorphic": 6.0,
+          "recovery_replay_idempotency": 5.0,
+          "performance_boundary": 0.0
+        },
+        "elapsed_seconds": 0.11848720000125468
+      },
+      "919": {
+        "score": 21.476190476190474,
+        "categories": {
+          "behavioral_conformance": 10.476190476190476,
+          "regression_preservation": 0.0,
+          "robustness_metamorphic": 6.0,
+          "recovery_replay_idempotency": 5.0,
+          "performance_boundary": 0.0
+        },
+        "elapsed_seconds": 0.10570889999507926
+      },
+      "1429": {
+        "score": 21.476190476190474,
+        "categories": {
+          "behavioral_conformance": 10.476190476190476,
+          "regression_preservation": 0.0,
+          "robustness_metamorphic": 6.0,
+          "recovery_replay_idempotency": 5.0,
+          "performance_boundary": 0.0
+        },
+        "elapsed_seconds": 0.10345799999777228
+      }
+    },
+    "mutant_no_checkpoint": {
+      "419": {
+        "score": 92.5,
+        "categories": {
+          "behavioral_conformance": 55.0,
+          "regression_preservation": 15.0,
+          "robustness_metamorphic": 15.0,
+          "recovery_replay_idempotency": 2.5,
+          "performance_boundary": 5.0
+        },
+        "elapsed_seconds": 0.10504319999017753
+      },
+      "919": {
+        "score": 92.5,
+        "categories": {
+          "behavioral_conformance": 55.0,
+          "regression_preservation": 15.0,
+          "robustness_metamorphic": 15.0,
+          "recovery_replay_idempotency": 2.5,
+          "performance_boundary": 5.0
+        },
+        "elapsed_seconds": 0.11421289999270812
+      },
+      "1429": {
+        "score": 92.5,
+        "categories": {
+          "behavioral_conformance": 55.0,
+          "regression_preservation": 15.0,
+          "robustness_metamorphic": 15.0,
+          "recovery_replay_idempotency": 2.5,
+          "performance_boundary": 5.0
+        },
+        "elapsed_seconds": 0.11020599998300895
+      }
+    },
+    "mutant_input_order": {
+      "419": {
+        "score": 30.357142857142858,
+        "categories": {
+          "behavioral_conformance": 7.857142857142857,
+          "regression_preservation": 15.0,
+          "robustness_metamorphic": 0.0,
+          "recovery_replay_idempotency": 2.5,
+          "performance_boundary": 5.0
+        },
+        "elapsed_seconds": 0.08549540000967681
+      },
+      "919": {
+        "score": 30.357142857142858,
+        "categories": {
+          "behavioral_conformance": 7.857142857142857,
+          "regression_preservation": 15.0,
+          "robustness_metamorphic": 0.0,
+          "recovery_replay_idempotency": 2.5,
+          "performance_boundary": 5.0
+        },
+        "elapsed_seconds": 0.07919109999784268
+      },
+      "1429": {
+        "score": 30.357142857142858,
+        "categories": {
+          "behavioral_conformance": 7.857142857142857,
+          "regression_preservation": 15.0,
+          "robustness_metamorphic": 0.0,
+          "recovery_replay_idempotency": 2.5,
+          "performance_boundary": 5.0
+        },
+        "elapsed_seconds": 0.08088920000591315
+      }
+    }
+  },
+  "engineering_gate": {
+    "alternate_correct_acceptance": true,
+    "declared_invalid_rejection": true,
+    "passed": true
+  },
+  "public_benchmark_gate": {
+    "passed": false,
+    "open_requirements": [
+      "three independent fairness reviewers",
+      "clean-container parity",
+      "genuinely sealed post-freeze seeds",
+      "anti-tamper review"
+    ]
+  },
+  "claim_boundary": "Engineering qualification only; not independent benchmark, controller-promotion, or joint-capability evidence."
+}

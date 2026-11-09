@@ -13,8 +13,8 @@ authors:
   - family-names: Soliman
     given-names: Kareem
     orcid: "https://orcid.org/0009-0006-7204-1129"
-repository-code: "https://github.com/<owner>/gyre"
-url: "https://github.com/<owner>/gyre"
+repository-code: "https://github.com/kareem-soliman-ai/Gyre"
+url: "https://github.com/kareem-soliman-ai/Gyre"
 keywords:
   - AI agents
   - loop engineering

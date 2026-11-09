@@ -1,0 +1,129 @@
+{
+  "experiment": "EXP-10",
+  "run_at": "2026-07-29T02:18:27.483676+00:00",
+  "recovery_from": "EXP-09",
+  "version": "2.2.1",
+  "frozen_repair": "base_multiplier = 1 + 1.5 * (v2.2 base_multiplier - 1)",
+  "frozen_parameters": {
+    "seeds": [
+      0,
+      199
+    ],
+    "seed_count": 200,
+    "weather_contexts": [
+      0.2,
+      0.5,
+      0.8
+    ],
+    "load_contexts": [
+      0.25,
+      0.75
+    ],
+    "policies": [
+      "idle",
+      "fixed_first",
+      "rotating_units"
+    ],
+    "variants_per_family": 3,
+    "units_per_variant": 4,
+    "intended_exception_fraction": 0.25
+  },
+  "hierarchy": {
+    "probe_rows": 72000,
+    "family_shapes": {
+      "food": [
+        [
+          3,
+          4
+        ]
+      ],
+      "cargo": [
+        [
+          3,
+          4
+        ]
+      ],
+      "crew": [
+        [
+          3,
+          4
+        ]
+      ],
+      "power": [
+        [
+          3,
+          4
+        ]
+      ],
+      "drive": [
+        [
+          3,
+          4
+        ]
+      ]
+    },
+    "minimum_within_variant_sd": 0.0736449817253921,
+    "median_within_variant_sd": 0.11404202441790193,
+    "global_r_squared": 0.0,
+    "variant_context_r_squared": 0.6211079797401096,
+    "unit_identity_r_squared": 1.0,
+    "unit_identity_incremental_r_squared": 0.37889202025989044,
+    "global_mae": 0.16044861111111108,
+    "variant_context_mae": 0.10370822222222223,
+    "variant_mae_improvement": 0.35363589934471906,
+    "operational_exception_fraction": 0.25
+  },
+  "ecology": {
+    "families_have_four_individuals": true,
+    "families_have_one_exception": true,
+    "opposite_or_zero_signed_response_rate": 1.0,
+    "nonzero_response_difference_rate": 1.0
+  },
+  "missions": {
+    "summaries": {
+      "idle": {
+        "mission_accomplishment_rate": 0.0,
+        "mean_mission_score": 0.0,
+        "mission_score_sd": 0.0,
+        "mean_food": 0.0,
+        "mean_cargo": 0.0
+      },
+      "fixed_first": {
+        "mission_accomplishment_rate": 0.395,
+        "mean_mission_score": 97.2355286977489,
+        "mission_score_sd": 3.695392375226055,
+        "mean_food": 23.85606086157605,
+        "mean_cargo": 25.87240604322213
+      },
+      "rotating_units": {
+        "mission_accomplishment_rate": 0.735,
+        "mean_mission_score": 99.66608148039805,
+        "mission_score_sd": 0.8160015755016654,
+        "mean_food": 23.592998895837972,
+        "mean_cargo": 25.632630082682244
+      }
+    },
+    "fixed_rotating_terminal_difference_rate": 1.0
+  },
+  "contract_tests": {
+    "passed": true,
+    "returncode": 0,
+    "stdout": ".......................                                                  [100%]\n23 passed in 0.16s",
+    "stderr": ""
+  },
+  "gates": {
+    "five_families_are_three_by_four": true,
+    "minimum_within_variant_sd_at_least_0_04": true,
+    "variant_model_r2_between_0_50_and_0_95": true,
+    "unit_identity_adds_at_least_0_08_r2": true,
+    "variant_model_mae_improves_at_least_15_percent": true,
+    "operational_exception_fraction_between_0_20_and_0_30": true,
+    "ecology_is_four_with_one_exception": true,
+    "ecological_signed_difference_at_least_0_95": true,
+    "idle_accomplishes_zero": true,
+    "fixed_rotating_terminal_difference_at_least_0_80": true,
+    "version_contract_tests_pass": true
+  },
+  "qualification_passed": true,
+  "claim_boundary": "Recovery on reused public development seeds after observing EXP-09. This is not independent confirmation and does not establish ecological validity or improved joint capability."
+}

@@ -14,8 +14,8 @@ the spec approves its own output. So:
 - **A risk is a violation PRESENT or an applicable protection ABSENT.** The
   hardcoded-secret case has nothing firing; a protection is simply missing.
   Treating only "present violations" as risks silently passes it.
-- **Coverage is reported alongside, never folded in.** Criterion Labs' original
-  implementation took ``min(capability_credit, ceiling)``; a lone MINOR gap with
+- **Coverage is reported alongside, never folded in.** An earlier implementation
+  took ``min(capability_credit, ceiling)``; a lone MINOR gap with
   no other coverage then scored BELOW an artefact carrying a live critical
   exploit — a straight inversion. ``test_the_min_inversion_bug_cannot_recur``
   is the regression guard so this is not rediscovered.

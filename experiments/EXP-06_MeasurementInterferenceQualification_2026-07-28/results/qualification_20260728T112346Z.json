@@ -1,0 +1,582 @@
+{
+  "experiment": "EXP-06",
+  "run_at": "2026-07-28T11:23:46.541387+00:00",
+  "frozen_parameters": {
+    "calibration_intensities": [
+      0.25,
+      0.5,
+      1.0
+    ],
+    "final_intensities": [
+      0.35,
+      0.85
+    ],
+    "calibration_repeats_per_intensity": 60,
+    "evaluation_episodes_per_profile": 400,
+    "observation_noise_sd": 0.03,
+    "calibration_seed": 8419,
+    "evaluation_seed": 17389
+  },
+  "calibration_probe_count_per_profile": 720,
+  "family_recovery": {
+    "correct": 9,
+    "eligible": 9
+  },
+  "coefficient_mae": 0.003318917898182101,
+  "aggregate_terminal_mse": {
+    "passive_naive": 0.04444420791158643,
+    "exact_prior": 0.0009033591737574231,
+    "discovered": 0.0009465364846647534
+  },
+  "gates": {
+    "family_recovery_at_least_8_of_9": true,
+    "coefficient_mae_at_most_0_02": true,
+    "discovered_within_1_25x_exact": true,
+    "discovered_beats_naive_aggregate": true,
+    "discovered_beats_naive_in_every_hard_cell": true
+  },
+  "qualification_passed": true,
+  "profiles": [
+    {
+      "profile": "null",
+      "tier": "null",
+      "true": {
+        "measurand_shift": 0.0,
+        "mechanism_shift": 0.0,
+        "instrument_bias_shift": 0.0,
+        "mechanism": "linear",
+        "threshold": 0.25,
+        "saturation_rate": 2.0
+      },
+      "fitted": {
+        "measurand_shift": -0.0015719233893657042,
+        "mechanism_shift": -0.003925631028743642,
+        "instrument_bias_shift": 0.004383379630165707,
+        "mechanism": "saturating",
+        "threshold": 0.25,
+        "saturation_rate": 2.0
+      },
+      "family_correct": false,
+      "coefficient_absolute_errors": {
+        "measurand_shift": 0.0015719233893657042,
+        "mechanism_shift": 0.003925631028743642,
+        "instrument_bias_shift": 0.004383379630165707
+      },
+      "calibration_curve": {
+        "0.25": [
+          0.0015091106042297519,
+          -0.00862970143158586,
+          0.0034938162207725537
+        ],
+        "0.5": [
+          -0.004267461439620433,
+          0.0017764502182343119,
+          0.0004987177541619179
+        ],
+        "1.0": [
+          -0.0002662594217020834,
+          -0.004544432276168401,
+          0.006057586514946224
+        ]
+      },
+      "fit_diagnostics": {
+        "linear": 9.983802454838282e-05,
+        "saturating": 9.921706252999175e-05,
+        "threshold": 0.00011330357570614712,
+        "selected_sse": 9.921706252999175e-05
+      },
+      "terminal_mse": {
+        "passive_naive": 0.0008343217108211724,
+        "exact_prior": 0.0008343217108211724,
+        "discovered": 0.0009132736574259077
+      }
+    },
+    {
+      "profile": "low_linear",
+      "tier": "low",
+      "true": {
+        "measurand_shift": 0.04,
+        "mechanism_shift": 0.02,
+        "instrument_bias_shift": 0.02,
+        "mechanism": "linear",
+        "threshold": 0.25,
+        "saturation_rate": 2.0
+      },
+      "fitted": {
+        "measurand_shift": 0.04279885991822933,
+        "mechanism_shift": 0.023028604399226934,
+        "instrument_bias_shift": 0.022521148748759552,
+        "mechanism": "linear",
+        "threshold": 0.25,
+        "saturation_rate": 2.0
+      },
+      "family_correct": true,
+      "coefficient_absolute_errors": {
+        "measurand_shift": 0.0027988599182293267,
+        "mechanism_shift": 0.0030286043992269335,
+        "instrument_bias_shift": 0.0025211487487595517
+      },
+      "calibration_curve": {
+        "0.25": [
+          0.01198591521413853,
+          -0.0011192113476088136,
+          0.012618461491271382
+        ],
+        "0.5": [
+          0.02271341136954364,
+          0.01004645951736638,
+          0.01288112192553004
+        ],
+        "1.0": [
+          0.04182031915436954,
+          0.025481616352204365,
+          0.019963831397164043
+        ]
+      },
+      "fit_diagnostics": {
+        "linear": 0.00011779521701296364,
+        "saturating": 0.00027921091023061257,
+        "threshold": 0.0006158122426760472,
+        "selected_sse": 0.00011779521701296364
+      },
+      "terminal_mse": {
+        "passive_naive": 0.002552325510672357,
+        "exact_prior": 0.000972729423712536,
+        "discovered": 0.0009866968798778139
+      }
+    },
+    {
+      "profile": "medium_linear",
+      "tier": "medium",
+      "true": {
+        "measurand_shift": 0.15,
+        "mechanism_shift": 0.08,
+        "instrument_bias_shift": 0.06,
+        "mechanism": "linear",
+        "threshold": 0.25,
+        "saturation_rate": 2.0
+      },
+      "fitted": {
+        "measurand_shift": 0.15150716919403712,
+        "mechanism_shift": 0.07751178354086263,
+        "instrument_bias_shift": 0.06541997774953029,
+        "mechanism": "linear",
+        "threshold": 0.25,
+        "saturation_rate": 2.0
+      },
+      "family_correct": true,
+      "coefficient_absolute_errors": {
+        "measurand_shift": 0.0015071691940371224,
+        "mechanism_shift": 0.0024882164591373684,
+        "instrument_bias_shift": 0.005419977749530291
+      },
+      "calibration_curve": {
+        "0.25": [
+          0.03749055049317311,
+          0.020192095686696058,
+          0.016394896603852443
+        ],
+        "0.5": [
+          0.07084575382230594,
+          0.04991147416800876,
+          0.025757163940523475
+        ],
+        "1.0": [
+          0.15405764503272748,
+          0.07173045489170381,
+          0.06888641467503366
+        ]
+      },
+      "fit_diagnostics": {
+        "linear": 0.0002496340838347186,
+        "saturating": 0.002878689942014003,
+        "threshold": 0.005126480002273939,
+        "selected_sse": 0.0002496340838347186
+      },
+      "terminal_mse": {
+        "passive_naive": 0.023508341745308775,
+        "exact_prior": 0.0009436733383897116,
+        "discovered": 0.0009579379035622572
+      }
+    },
+    {
+      "profile": "high_linear",
+      "tier": "high",
+      "true": {
+        "measurand_shift": 0.35,
+        "mechanism_shift": 0.18,
+        "instrument_bias_shift": 0.14,
+        "mechanism": "linear",
+        "threshold": 0.25,
+        "saturation_rate": 2.0
+      },
+      "fitted": {
+        "measurand_shift": 0.35110027355235507,
+        "mechanism_shift": 0.18224118605340744,
+        "instrument_bias_shift": 0.1342737701619398,
+        "mechanism": "linear",
+        "threshold": 0.25,
+        "saturation_rate": 2.0
+      },
+      "family_correct": true,
+      "coefficient_absolute_errors": {
+        "measurand_shift": 0.001100273552355091,
+        "mechanism_shift": 0.0022411860534074513,
+        "instrument_bias_shift": 0.005726229838060204
+      },
+      "calibration_curve": {
+        "0.25": [
+          0.09037116182472002,
+          0.0379592302011615,
+          0.03892946870494772
+        ],
+        "0.5": [
+          0.1779870530390909,
+          0.08060892090188689,
+          0.07524750656382248
+        ],
+        "1.0": [
+          0.34923279206174057,
+          0.18939728869386346,
+          0.12887820287939786
+        ]
+      },
+      "fit_diagnostics": {
+        "linear": 0.0003592819427392686,
+        "saturating": 0.01326973299532379,
+        "threshold": 0.027290876652371038,
+        "selected_sse": 0.0003592819427392686
+      },
+      "terminal_mse": {
+        "passive_naive": 0.10614340279236056,
+        "exact_prior": 0.0010021835316522184,
+        "discovered": 0.0010233375928116997
+      }
+    },
+    {
+      "profile": "medium_saturating",
+      "tier": "medium",
+      "true": {
+        "measurand_shift": 0.15,
+        "mechanism_shift": 0.08,
+        "instrument_bias_shift": 0.06,
+        "mechanism": "saturating",
+        "threshold": 0.25,
+        "saturation_rate": 2.0
+      },
+      "fitted": {
+        "measurand_shift": 0.1450531586835995,
+        "mechanism_shift": 0.08426301423691995,
+        "instrument_bias_shift": 0.05286244318403799,
+        "mechanism": "saturating",
+        "threshold": 0.25,
+        "saturation_rate": 2.0
+      },
+      "family_correct": true,
+      "coefficient_absolute_errors": {
+        "measurand_shift": 0.0049468413164004965,
+        "mechanism_shift": 0.004263014236919951,
+        "instrument_bias_shift": 0.0071375568159620095
+      },
+      "calibration_curve": {
+        "0.25": [
+          0.05499290557992396,
+          0.049220936081571395,
+          0.017354897172630068
+        ],
+        "0.5": [
+          0.11274981268763758,
+          0.06552481593073288,
+          0.03930190037591898
+        ],
+        "1.0": [
+          0.15347984225154115,
+          0.08085576747239202,
+          0.05863379736208397
+        ]
+      },
+      "fit_diagnostics": {
+        "linear": 0.0024539303872767107,
+        "saturating": 0.0004795865461955946,
+        "threshold": 0.015589370186567924,
+        "selected_sse": 0.0004795865461955946
+      },
+      "terminal_mse": {
+        "passive_naive": 0.03128289187267346,
+        "exact_prior": 0.0009031142777347163,
+        "discovered": 0.0009508295478021981
+      }
+    },
+    {
+      "profile": "medium_threshold",
+      "tier": "medium",
+      "true": {
+        "measurand_shift": 0.15,
+        "mechanism_shift": 0.08,
+        "instrument_bias_shift": 0.06,
+        "mechanism": "threshold",
+        "threshold": 0.25,
+        "saturation_rate": 2.0
+      },
+      "fitted": {
+        "measurand_shift": 0.14587742698140663,
+        "mechanism_shift": 0.08096922117361953,
+        "instrument_bias_shift": 0.05871490963882204,
+        "mechanism": "threshold",
+        "threshold": 0.25,
+        "saturation_rate": 2.0
+      },
+      "family_correct": true,
+      "coefficient_absolute_errors": {
+        "measurand_shift": 0.004122573018593367,
+        "mechanism_shift": 0.0009692211736195278,
+        "instrument_bias_shift": 0.0012850903611779582
+      },
+      "calibration_curve": {
+        "0.25": [
+          0.004014307825374547,
+          -0.008305305031370022,
+          0.00942261051923059
+        ],
+        "0.5": [
+          0.028729872790145324,
+          0.013525776569142963,
+          0.0097227534722743
+        ],
+        "1.0": [
+          0.14575122805099325,
+          0.08136504430268911,
+          0.05901839114358073
+        ]
+      },
+      "fit_diagnostics": {
+        "linear": 0.0038605146149240277,
+        "saturating": 0.010047109528127061,
+        "threshold": 0.00018129003598976468,
+        "selected_sse": 0.00018129003598976468
+      },
+      "terminal_mse": {
+        "passive_naive": 0.01591555915435792,
+        "exact_prior": 0.0008636523542317095,
+        "discovered": 0.0008849683853497326
+      }
+    },
+    {
+      "profile": "measurand_dominant",
+      "tier": "dominant",
+      "true": {
+        "measurand_shift": 0.28,
+        "mechanism_shift": 0.03,
+        "instrument_bias_shift": 0.03,
+        "mechanism": "threshold",
+        "threshold": 0.25,
+        "saturation_rate": 2.0
+      },
+      "fitted": {
+        "measurand_shift": 0.2775110917392474,
+        "mechanism_shift": 0.026747579786304352,
+        "instrument_bias_shift": 0.026611109248823636,
+        "mechanism": "threshold",
+        "threshold": 0.25,
+        "saturation_rate": 2.0
+      },
+      "family_correct": true,
+      "coefficient_absolute_errors": {
+        "measurand_shift": 0.0024889082607526536,
+        "mechanism_shift": 0.003252420213695647,
+        "instrument_bias_shift": 0.0033888907511763627
+      },
+      "calibration_curve": {
+        "0.25": [
+          0.0074663014569910455,
+          -0.004852172819297231,
+          0.0068600915544992916
+        ],
+        "0.5": [
+          0.05882618367469871,
+          0.004479894949864386,
+          0.0026911748871419625
+        ],
+        "1.0": [
+          0.27646817599552054,
+          0.02687607470441899,
+          0.0270787890391597
+        ]
+      },
+      "fit_diagnostics": {
+        "linear": 0.008060079646976793,
+        "saturating": 0.023000641395776768,
+        "threshold": 0.00016339153485703847,
+        "selected_sse": 0.00016339153485703847
+      },
+      "terminal_mse": {
+        "passive_naive": 0.04129329880080548,
+        "exact_prior": 0.000850705163661638,
+        "discovered": 0.0008653845739397931
+      }
+    },
+    {
+      "profile": "mechanism_dominant",
+      "tier": "dominant",
+      "true": {
+        "measurand_shift": 0.03,
+        "mechanism_shift": 0.2,
+        "instrument_bias_shift": 0.03,
+        "mechanism": "saturating",
+        "threshold": 0.25,
+        "saturation_rate": 2.0
+      },
+      "fitted": {
+        "measurand_shift": 0.027586871991141928,
+        "mechanism_shift": 0.21070221409873655,
+        "instrument_bias_shift": 0.02478549481523253,
+        "mechanism": "saturating",
+        "threshold": 0.25,
+        "saturation_rate": 2.0
+      },
+      "family_correct": true,
+      "coefficient_absolute_errors": {
+        "measurand_shift": 0.002413128008858071,
+        "mechanism_shift": 0.010702214098736534,
+        "instrument_bias_shift": 0.00521450518476747
+      },
+      "calibration_curve": {
+        "0.25": [
+          0.00908539300091954,
+          0.10142257657364899,
+          0.013360970970840267
+        ],
+        "0.5": [
+          0.021898221943829285,
+          0.17030731881921,
+          0.01626145285322712
+        ],
+        "1.0": [
+          0.029488441111878084,
+          0.2074593583592083,
+          0.02669852274071993
+        ]
+      },
+      "fit_diagnostics": {
+        "linear": 0.0053864618028389875,
+        "saturating": 6.313745375252845e-05,
+        "threshold": 0.02731297829229568,
+        "selected_sse": 6.313745375252845e-05
+      },
+      "terminal_mse": {
+        "passive_naive": 0.14041346154152756,
+        "exact_prior": 0.0009461864670317391,
+        "discovered": 0.001104275807757065
+      }
+    },
+    {
+      "profile": "measurement_dominant",
+      "tier": "dominant",
+      "true": {
+        "measurand_shift": 0.03,
+        "mechanism_shift": 0.03,
+        "instrument_bias_shift": 0.22,
+        "mechanism": "linear",
+        "threshold": 0.25,
+        "saturation_rate": 2.0
+      },
+      "fitted": {
+        "measurand_shift": 0.029943987918920955,
+        "mechanism_shift": 0.029865136529812406,
+        "instrument_bias_shift": 0.220069913393735,
+        "mechanism": "linear",
+        "threshold": 0.25,
+        "saturation_rate": 2.0
+      },
+      "family_correct": true,
+      "coefficient_absolute_errors": {
+        "measurand_shift": 5.60120810790439e-05,
+        "mechanism_shift": 0.00013486347018759268,
+        "instrument_bias_shift": 6.991339373499383e-05
+      },
+      "calibration_curve": {
+        "0.25": [
+          0.011436226599115975,
+          0.010362699996263904,
+          0.05112853017285413
+        ],
+        "0.5": [
+          0.018230843023263884,
+          0.01054794087397628,
+          0.11097663679525842
+        ],
+        "1.0": [
+          0.02732700598217282,
+          0.03133334625932467,
+          0.22057131038843444
+        ]
+      },
+      "fit_diagnostics": {
+        "linear": 7.910490601339622e-05,
+        "saturating": 0.0039900226880907495,
+        "threshold": 0.0075625638653982075,
+        "selected_sse": 7.910490601339622e-05
+      },
+      "terminal_mse": {
+        "passive_naive": 0.006286177612446146,
+        "exact_prior": 0.0008295137763627451,
+        "discovered": 0.000830604956439802
+      }
+    },
+    {
+      "profile": "signed_mixed",
+      "tier": "high",
+      "true": {
+        "measurand_shift": -0.2,
+        "mechanism_shift": 0.14,
+        "instrument_bias_shift": -0.12,
+        "mechanism": "saturating",
+        "threshold": 0.25,
+        "saturation_rate": 2.0
+      },
+      "fitted": {
+        "measurand_shift": -0.20301046036620482,
+        "mechanism_shift": 0.14096415613421254,
+        "instrument_bias_shift": -0.11156483190163437,
+        "mechanism": "saturating",
+        "threshold": 0.25,
+        "saturation_rate": 2.0
+      },
+      "family_correct": true,
+      "coefficient_absolute_errors": {
+        "measurand_shift": 0.003010460366204809,
+        "mechanism_shift": 0.0009641561342125238,
+        "instrument_bias_shift": 0.008435168098365628
+      },
+      "calibration_curve": {
+        "0.25": [
+          -0.09543970458496749,
+          0.06633482448089345,
+          -0.05262248832147502
+        ],
+        "0.5": [
+          -0.15544877345120778,
+          0.11199088929034576,
+          -0.09303163899574732
+        ],
+        "1.0": [
+          -0.20780595749759131,
+          0.14106189752995357,
+          -0.1081094886774518
+        ]
+      },
+      "fit_diagnostics": {
+        "linear": 0.007254278058776969,
+        "saturating": 8.9401244660127e-05,
+        "threshold": 0.04110391447816401,
+        "selected_sse": 8.9401244660127e-05
+      },
+      "terminal_mse": {
+        "passive_naive": 0.07621229837489087,
+        "exact_prior": 0.0008875116939760442,
+        "discovered": 0.0009480555416812635
+      }
+    }
+  ],
+  "claim_boundary": "Synthetic mechanics and identifiability evidence only. Profiles, seeds, and baseline were authored locally; no human-AI capability or real-world transfer claim follows."
+}

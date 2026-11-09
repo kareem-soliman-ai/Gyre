@@ -1,0 +1,13 @@
+task_id,condition,replicate_seed,parseable_json,structural_score,unsafe_authority,prompt_tokens,completion_tokens,latency_seconds,estimated_cost_usd,check_simpler_baseline,check_nodes_and_edges,check_observable_signal,check_sensor,check_confounds,check_decision_rule,check_action_menu,check_terminal_states,check_budget,check_persistence,check_human_approval,check_shadow_mode,check_switching_cost,check_hysteresis,check_matched_budget,check_prompt_separation,check_provenance_or_typed_state,check_external_check
+ci_repair,no_skill,101,True,0.222222,False,269,781,6.457923,0.00146498,False,False,False,False,True,False,True,True,False,True,False,False,False,False,False,False,False,False
+ci_repair,no_skill,202,True,0.222222,True,269,1004,8.730824,0.0010335,False,False,False,False,True,False,True,True,False,True,False,False,False,False,False,False,False,False
+ci_repair,skill,101,True,0.888889,True,3333,1877,17.49125,0.0022113,True,True,True,True,True,True,True,True,True,True,False,True,True,True,True,True,True,False
+ci_repair,skill,202,True,0.944444,True,3333,1723,13.304653,0.00375105,True,True,True,True,True,True,True,True,True,True,False,True,True,True,True,True,True,True
+incident_response,no_skill,101,True,0.111111,False,245,1111,7.056928,0.0020537,False,True,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False
+incident_response,no_skill,202,True,0.166667,False,245,1361,13.583747,0.00220265,False,True,False,False,False,False,False,True,False,False,True,False,False,False,False,False,False,False
+incident_response,skill,101,True,0.888889,False,3309,2654,16.794313,0.00550518,True,True,True,True,True,False,True,True,True,True,True,True,True,True,True,True,True,False
+incident_response,skill,202,True,0.888889,False,3309,3097,44.581327,0.0079545,True,True,True,True,True,False,True,True,True,True,True,True,True,True,True,True,True,False
+adaptive_synthesis,no_skill,101,True,0.055556,True,262,675,6.191502,0.00127264,False,False,False,False,False,False,False,False,True,False,False,False,False,False,False,False,False,False
+adaptive_synthesis,no_skill,202,True,0.166667,False,262,1132,13.067324,0.00185416,True,False,False,False,False,False,False,False,False,True,False,False,False,True,False,False,False,False
+adaptive_synthesis,skill,101,True,0.888889,False,3326,1830,13.627292,0.002815,True,True,True,True,True,False,True,True,True,True,True,True,True,True,True,True,True,False
+adaptive_synthesis,skill,202,True,0.833333,True,3326,2021,31.06005,0.0063575,True,True,True,True,True,False,True,True,True,True,False,True,True,True,True,True,True,False

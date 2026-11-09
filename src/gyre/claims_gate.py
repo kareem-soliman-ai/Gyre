@@ -1,7 +1,7 @@
 """Claims-integrity gate: a public claim cannot outlive its evidence.
 
-Vendored pattern from facet's science-bundle (where the same gate demonstrably
-forced public claims to be withdrawn when the science moved). Gyre's version
+Adapted from an earlier science-bundle gate that forced public claims to be
+withdrawn when their evidence changed. Gyre's version
 binds the repo's headline numbers — the sensor ladder, the regret table, the
 demo savings — to a machine-checked ledger:
 

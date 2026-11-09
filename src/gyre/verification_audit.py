@@ -101,8 +101,7 @@ def escape_rate_bound(*, audited: int, escapes: int) -> EscapeBound:
 MIN_CLUSTERS = 10
 """Minimum independent work products before a clustered bound may be asserted at
 all. A structural refusal, not a caveat in prose: with fewer clusters the
-resampling distribution is too coarse for the interval to mean anything.
-(Vendored from Criterion Labs' bootstrap_gate_cis MIN_CLUSTERS precondition.)"""
+resampling distribution is too coarse for the interval to mean anything."""
 
 
 def cluster_bootstrap_upper(

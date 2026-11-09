@@ -280,7 +280,7 @@ def _parse_verdict(content: str) -> JudgeVerdict:
     return JudgeVerdict(is_ruminating=False, confidence=0.0, rationale="unparseable judge output")
 
 
-# --- deterministic judge-quality axes (vendored from the Firasa EQA harness) ---
+# --- deterministic judge-quality axes ---
 
 
 def quote_is_verbatim(quote: str, source_text: str) -> bool:
@@ -402,7 +402,7 @@ def minority_recall(judge_labels: Sequence[bool], human_labels: Sequence[bool]) 
 def retest_agreement(pass1: Sequence[bool], pass2: Sequence[bool]) -> float:
     """Repeatability: raw agreement between two independent judge passes over the
     SAME items. This is reliability (same answer twice), kept separate from
-    validity (agreement with the gold set) — the facet reliability-gate design.
+    validity (agreement with the gold set).
     (Named to avoid the ``test_`` prefix, which pytest would try to collect.)"""
     if len(pass1) != len(pass2):
         raise ValueError("pass1 and pass2 must be the same length")
@@ -437,7 +437,7 @@ def qualify_judge(
       agreement number hides exactly this; the bar is the guard against it.
     - Test-retest (optional): if a repeatability score from a second pass is
       supplied, it must clear its own floor. Validity (agreement with the gold
-      set) kept separate from reliability (same answer twice), per facet's design.
+      set) kept separate from reliability (same answer twice).
 
     Floors default to substantial (0.6 agreement, 0.5 minority recall, 0.9
     repeatability); raise them for higher-stakes use.
@@ -486,7 +486,7 @@ def qualify_judge(
     )
 
 
-# --- leave-one-out consensus grading (vendored from Criterion Labs) ------------
+# --- leave-one-out consensus grading -----------------------------------------
 #
 # The circularity a judge panel walks into by default: the panel's own consensus
 # becomes the label set, and then each judge is scored against that consensus —
@@ -582,15 +582,15 @@ def qualify_panel_loo(
     return results
 
 
-# --- design-tagged per-cell qualification (vendored from ConstructLens EQA) ----
+# --- design-tagged per-cell qualification ------------------------------------
 #
 # Pooled bars hide two specific judge failures the corpus cells can expose:
 # (1) a judge blind to the minority class in ONE cell (e.g. depletion) can hide
 #     inside a pooled minority recall carried by the easy cells;
 # (2) a judge that fires on healthy-but-superficially-pathological traps as
 #     readily as on real positives passes every agreement bar while measuring
-#     surface form, not the construct (ConstructLens's fluency-bias hard gate;
-#     lineage: Criterion Labs rejected a 0.95-agreement judge on exactly this).
+#     surface form, not the construct (a fluency-bias hard gate catches this
+#     even when aggregate agreement looks excellent).
 # Gyre's synthetic corpus already carries design tags (easy/hard/edge/depletion/
 # evid-*), so the import is the gating, not the cells.
 
@@ -687,10 +687,10 @@ def qualify_judge_by_cell(
     )
 
 
-# --- per-cell judge profiles, SWA, and routing (vendored from Firasa EQA) ------
+# --- per-cell judge profiles, SWA, and routing -------------------------------
 #
-# The twice-replicated finding behind this block (Firasa Evaluations,
-# cross-construct-judge-analysis.md): there is NO universal best judge — the
+# The replicated finding behind this block is that there is NO universal best
+# judge: the
 # overall-kappa leader won only 1 of 5 sub-construct cells. So qualification
 # should produce a per-cell capability PROFILE, generalist ranking should use the
 # profile's FLOOR (never the mean, which hides per-construct failures), and panel
@@ -864,14 +864,14 @@ def step_probs_from_verdicts(verdicts: Sequence[JudgeVerdict]) -> list[float]:
     return out
 
 
-# --- decision-focused acquisition (Wave A3, shape from Aurora navigation) -------
+# --- decision-focused acquisition -------------------------------------------
 
 
 def _step_admissible(text: str, *, min_chars: int = 1) -> tuple[bool, str]:
     """Hard gate before a step can be a human-label candidate. Returns
     ``(admissible, reason)``: an inadmissible step is EXCLUDED WITH A REASON, so
-    'not labelled' and 'not labelable' never look the same (Aurora's admissibility
-    gate). Default only excludes empty/whitespace; raise ``min_chars`` to drop
+    'not labelled' and 'not labelable' never look the same. Default only
+    excludes empty/whitespace; raise ``min_chars`` to drop
     over-truncated snippets."""
     t = (text or "").strip()
     if not t:
@@ -884,11 +884,12 @@ def _step_admissible(text: str, *, min_chars: int = 1) -> tuple[bool, str]:
 @dataclass
 class AcquisitionCandidate:
     """A step considered for a human label, scored by named decision-value terms
-    (the SHAPE of Aurora's decision-focused acquisition), not entropy alone.
+    rather than entropy alone.
 
     Priority = ``Σ weightᵢ·termᵢ − cost − harm``, evaluated only for admissible
     steps. ``decision_gain`` is the information a label resolves (entropy is the
-    honest default — Aurora never beat it behaviourally, so it stays the anchor
+    honest default — earlier alternatives did not beat it behaviourally, so it
+    stays the anchor
     term); ``model_discovery`` is whether this looks like a candidate NEW rumination
     sub-mode (rubric-incompleteness proxy); ``coverage`` is under-sampling of
     trace-space (0 until corpus stats exist); ``harm`` covers adversarial/unsafe
@@ -949,7 +950,7 @@ def rank_acquisition(
 
 @dataclass(frozen=True)
 class UncertaintyAxes:
-    """Why a panel step is uncertain, factorised (after Aurora's UncertaintyState).
+    """Why a panel step is uncertain, factorised.
 
     A single credal width conflates three genuinely different situations that want
     different downstream actions:
@@ -987,9 +988,9 @@ class PanelStep:
     The envelope is computed over **source families**, not individual judges:
     judges that share a base-model lineage (e.g. two distills of the same teacher)
     are collapsed to one vote first, because their agreement is copied evidence,
-    not corroboration, and would otherwise fake-narrow the interval. (Vendored
-    structural finding from Aurora EXP-UN-02: copied-source agreement is not a
-    quorum.) ``p_rum`` is the point estimate over families; ``[lower, upper]`` is
+    not corroboration, and would otherwise fake-narrow the interval.
+    Copied-source agreement is not a quorum. ``p_rum`` is the point estimate
+    over families; ``[lower, upper]`` is
     the credal envelope over families; ``votes`` is one boolean per family;
     ``n_families`` is how many independent families spoke. A narrow envelope over
     ENOUGH families means the step can be auto-labelled; a wide one, or too few
@@ -1122,7 +1123,7 @@ def panel_to_voi_inputs(panel: Sequence[PanelStep]) -> tuple[list[float], list[f
 # DIVERSE families (different failure modes), not the cheapest three of one family.
 DEFAULT_JUDGE_MODELS: tuple[str, ...] = (
     # The rumination-qualified CHEAP tier (EXP-JQ-02, 2026-07-19; cross-checked
-    # against the Criterion Labs judge frontier). All three hit F1 0.943 / kappa
+    # against an independent judge frontier). All three hit F1 0.943 / kappa
     # 0.85 on the subtle cells with the GENERIC rubric, are 3 distinct families,
     # and are cheap. Premium buys nothing here; the persona prompt HURT most
     # already-qualified models (catastrophic on kimi-k3), so the default stays

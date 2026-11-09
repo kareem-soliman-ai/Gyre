@@ -1,13 +1,12 @@
 """E5 — the hosted-instrument round trip, live.
 
 The claim in docs/hosted-measurements.md, demonstrated end to end on one
-machine: a validated sensor can run BEHIND AN API and the loop cannot tell.
+machine: a measurement provider can run BEHIND AN API and the loop cannot tell.
 This script
 
 1. starts a local HTTP scoring service (stdlib http.server) that holds the
-   best sensor available in this checkout server-side — the proprietary
-   ``psy:evi-semantic`` when the private layer is present, the public
-   ``naive:evidence-novelty`` otherwise (same demo, humbler instrument);
+   best sensor available in this checkout server-side — a protected candidate
+   when one is registered, the public ``naive:evidence-novelty`` otherwise;
 2. builds a ``RemoteMeasurementProvider`` pointed at it — the exact client an
    engineer would get with an API key: transport + serialisation, no scoring,
    no thresholds, no model;
@@ -37,22 +36,18 @@ if str(_src) not in sys.path:
 
 from gyre.bench import evaluate_provider
 from gyre.loops.rumination import IterationObservation
-from gyre.providers import EvidenceNoveltyProvider
+from gyre.providers import EvidenceNoveltyProvider, available, get_provider
 from gyre.providers.remote import RemoteMeasurementProvider, http_transport
 from gyre.synthetic import gen_l1_corpus, gen_l1_evidence_corpus
 
 
 def make_server_side_sensor():
     """The instrument that stays on the server. Best available in this checkout."""
-    try:
-        from gyre.embedding import make_embedder
-        from gyre.providers.proprietary.evi_semantic import EviSemanticProvider
-
-        p = EviSemanticProvider(embed=make_embedder("local"))
-        p.name = "psy:evi-semantic"
-        return p
-    except Exception:  # noqa: BLE001 - public checkout: host the naive sensor instead
-        return EvidenceNoveltyProvider()
+    registered = set(available("L1"))
+    for name in ("psy:joint-sensor-v1", "psy:evi-semantic"):
+        if name in registered:
+            return get_provider(name)
+    return EvidenceNoveltyProvider()
 
 
 class ScoringHandler(BaseHTTPRequestHandler):

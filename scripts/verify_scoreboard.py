@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-"""Re-derive the scoreboard and fail if the committed file disagrees.
+"""Re-derive every locally available scoreboard entry and fail on disagreement.
 
-The point of a published scoreboard is that nobody has to trust it. So a
-submitted entry is not accepted because someone reported a number; it is
-accepted because this script recomputes the number from the corpora in the repo
-and gets the same answer. A contributor cannot inflate their score, and the
-maintainer cannot quietly leave a stale one in place.
+A public or contributed entry is not accepted because someone reported a
+number; this script recomputes it from the corpora and requires the same answer.
+A contributor cannot inflate a score, and the maintainer cannot quietly leave a
+recomputable entry stale.
 
-Entries for providers that are not registered in this checkout (the private
-instrument tier) are skipped rather than failed - a public checkout cannot
-recompute them, and pretending otherwise would either break every fork or
-require shipping the instruments.
+Every row must declare a verification class. A ``public-reproducible`` row must
+name code that this checkout can import, and disagreement or absence is a
+failure. A ``self-reported`` row is skipped and must be ineligible for the
+verified ranking. Private code becomes independently verifiable only through a
+future signed ``sealed-evaluator-attested`` receipt.
 
 Usage:
     python scripts/verify_scoreboard.py
@@ -20,6 +20,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import importlib
 import json
 import sys
 from pathlib import Path
@@ -31,6 +32,12 @@ if str(_root / "src") not in sys.path:
 from gyre.providers import available, get_provider  # noqa: E402
 
 SCOREBOARD = _root / "docs" / "scoreboard.json"
+
+
+def load_factory(spec: str):
+    module_name, _, attribute = spec.partition(":")
+    module = importlib.import_module(module_name)
+    return getattr(module, attribute or "build")
 
 
 def main() -> int:
@@ -47,15 +54,55 @@ def main() -> int:
     board = json.loads(SCOREBOARD.read_text(encoding="utf-8"))
     registered = set(available())
     failures: list[str] = []
-    checked = skipped = 0
+    checked = self_reported = 0
 
     for entry in board.get("entries", []):
         name = entry["provider"]
-        if name not in registered:
-            skipped += 1
+        verification = entry.get("verification")
+        if not isinstance(verification, dict):
+            failures.append(f"{name}: missing verification metadata")
+            continue
+        vclass = verification.get("class")
+        ranking_eligible = verification.get("ranking_eligible")
+        if vclass == "self-reported":
+            self_reported += 1
+            if ranking_eligible:
+                failures.append(
+                    f"{name}: self-reported entries cannot be ranking eligible"
+                )
+            continue
+        if vclass == "sealed-evaluator-attested":
+            failures.append(
+                f"{name}: sealed attestation verification is not implemented yet"
+            )
+            continue
+        if vclass != "public-reproducible":
+            failures.append(f"{name}: unknown verification class {vclass!r}")
+            continue
+        if not ranking_eligible:
+            failures.append(
+                f"{name}: public-reproducible entries must be ranking eligible"
+            )
+            continue
+
+        if name in registered:
+            factory = lambda n=name: get_provider(n)
+        elif entry.get("factory"):
+            try:
+                factory = load_factory(entry["factory"])
+            except Exception as exc:  # noqa: BLE001 - contributor import is the gate
+                failures.append(
+                    f"{name}: public factory {entry['factory']!r} is unavailable: {exc}"
+                )
+                continue
+        else:
+            failures.append(
+                f"{name}: public-reproducible entry has no registered provider "
+                "or factory specification"
+            )
             continue
         checked += 1
-        fresh = score_provider(lambda n=name: get_provider(n))
+        fresh = score_provider(factory, name_hint=entry.get("factory", name))
         for corpus, claimed in entry.get("corpora", {}).items():
             got = fresh["corpora"].get(corpus, {})
             for metric in ("f1", "precision", "recall"):
@@ -78,7 +125,7 @@ def main() -> int:
         return 1
     print(
         f"scoreboard: OK ({checked} entries recomputed and matched, "
-        f"{skipped} skipped as not registered in this checkout)"
+        f"{self_reported} self-reported entries visibly excluded from ranking)"
     )
     return 0
 

@@ -1,0 +1,62 @@
+[
+  {
+    "task_id": "ci_repair",
+    "condition": "no_skill",
+    "replicate_seed": 101
+  },
+  {
+    "task_id": "adaptive_synthesis",
+    "condition": "no_skill",
+    "replicate_seed": 101
+  },
+  {
+    "task_id": "adaptive_synthesis",
+    "condition": "no_skill",
+    "replicate_seed": 202
+  },
+  {
+    "task_id": "incident_response",
+    "condition": "skill",
+    "replicate_seed": 101
+  },
+  {
+    "task_id": "ci_repair",
+    "condition": "skill",
+    "replicate_seed": 202
+  },
+  {
+    "task_id": "incident_response",
+    "condition": "no_skill",
+    "replicate_seed": 202
+  },
+  {
+    "task_id": "incident_response",
+    "condition": "no_skill",
+    "replicate_seed": 101
+  },
+  {
+    "task_id": "adaptive_synthesis",
+    "condition": "skill",
+    "replicate_seed": 202
+  },
+  {
+    "task_id": "ci_repair",
+    "condition": "no_skill",
+    "replicate_seed": 202
+  },
+  {
+    "task_id": "adaptive_synthesis",
+    "condition": "skill",
+    "replicate_seed": 101
+  },
+  {
+    "task_id": "incident_response",
+    "condition": "skill",
+    "replicate_seed": 202
+  },
+  {
+    "task_id": "ci_repair",
+    "condition": "skill",
+    "replicate_seed": 101
+  }
+]

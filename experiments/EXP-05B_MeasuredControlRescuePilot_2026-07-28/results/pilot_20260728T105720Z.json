@@ -1,0 +1,126 @@
+{
+  "experiment": "EXP-05B",
+  "run_at": "2026-07-28T10:57:20.974773+00:00",
+  "condition": "measured-control mechanics pilot",
+  "final_seed_receipts": [
+    {
+      "seed": 2909,
+      "score": 100.0,
+      "categories": {
+        "behavioral_conformance": 55.0,
+        "regression_preservation": 15.0,
+        "robustness_metamorphic": 15.0,
+        "recovery_replay_idempotency": 10.0,
+        "performance_boundary": 5.0
+      },
+      "elapsed_seconds": 0.10660289999214001
+    },
+    {
+      "seed": 3251,
+      "score": 100.0,
+      "categories": {
+        "behavioral_conformance": 55.0,
+        "regression_preservation": 15.0,
+        "robustness_metamorphic": 15.0,
+        "recovery_replay_idempotency": 10.0,
+        "performance_boundary": 5.0
+      },
+      "elapsed_seconds": 0.11286410002503544
+    },
+    {
+      "seed": 4001,
+      "score": 100.0,
+      "categories": {
+        "behavioral_conformance": 55.0,
+        "regression_preservation": 15.0,
+        "robustness_metamorphic": 15.0,
+        "recovery_replay_idempotency": 10.0,
+        "performance_boundary": 5.0
+      },
+      "elapsed_seconds": 0.10830150000401773
+    }
+  ],
+  "verified_outcome_score": {
+    "mean": 100.0,
+    "min": 100.0,
+    "max": 100.0
+  },
+  "prospective_forecast": {
+    "locked_before_final_evaluation": true,
+    "forecaster": "system",
+    "calibration_status": "uncalibrated_on_this_task_family",
+    "expected_score": 97.0,
+    "score_band_probabilities": {
+      "0-79": 0.03,
+      "80-94": 0.12,
+      "95-100": 0.85
+    },
+    "category_pass_probabilities": {
+      "behavioral_conformance": 0.97,
+      "regression_preservation": 0.99,
+      "robustness_metamorphic": 0.94,
+      "recovery_replay_idempotency": 0.93,
+      "performance_boundary": 0.98
+    },
+    "human_forecast": null,
+    "human_forecast_note": "No independent task-outcome forecast was collected before this run.",
+    "probe_value_estimate": {
+      "expected_score_gain": 0.5,
+      "decision": "do_not_probe",
+      "reason": "The candidate already passes fresh local contract tests; a development probe has low expected value and consumes optionality."
+    }
+  },
+  "forecast_result": {
+    "observed_band": "95-100",
+    "multiclass_brier": 0.03780000000000001,
+    "calibration_claim": "none; one forecast is not calibration evidence"
+  },
+  "control_receipts": [
+    {
+      "action": "do_not_probe",
+      "basis": {
+        "expected_score_gain": 0.5,
+        "decision": "do_not_probe",
+        "reason": "The candidate already passes fresh local contract tests; a development probe has low expected value and consumes optionality."
+      }
+    },
+    {
+      "action": "submit",
+      "basis": "fresh deterministic contract tests passed and no unresolved high-stakes ambiguity remained"
+    },
+    {
+      "action": "do_not_promote_controller",
+      "basis": [
+        "no_independent_matched_counterfactual_receipts",
+        "insufficient_independent_domains"
+      ]
+    }
+  ],
+  "source_reliability": {
+    "source_id": "sealed-category-scorer",
+    "posterior_mean": 0.8,
+    "resolved_outcomes": 3,
+    "claim": "descriptive only; three same-family outcomes do not establish transfer"
+  },
+  "promotion_report": {
+    "eligible": false,
+    "qualifying_domains": [],
+    "reasons": [
+      "no_independent_matched_counterfactual_receipts",
+      "insufficient_independent_domains"
+    ]
+  },
+  "efficiency": {
+    "wall_seconds": 0.3278305999992881,
+    "final_scorer_calls": 3,
+    "validation_probes": 0,
+    "active_human_minutes": null,
+    "api_cost_usd": null
+  },
+  "joint_capability": {
+    "score_available": 100.0,
+    "joint_capability_gain": null,
+    "reason": "No matched human-only, system-only, or ordinary-chat baselines; the user's design contribution is real but not separately estimable."
+  },
+  "claim_boundary": "Preliminary mechanics score on development seeds. The candidate and scorer were built in the same session, so this is not independent benchmark evidence."
+}

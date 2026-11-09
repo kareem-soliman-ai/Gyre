@@ -1,4 +1,4 @@
-"""Classical item analysis over a judged corpus (vendored from Firasa/Criterion).
+"""Classical item analysis over a judged corpus.
 
 Turns "a pile of steps" into a calibrated item bank: per-item difficulty across
 a judge roster, point-biserial discrimination against judge ability, and flags

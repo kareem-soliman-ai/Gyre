@@ -1,0 +1,117 @@
+[
+  {
+    "id": "accepted-but-objectively-failing",
+    "title": "The user likes it, but the tests fail",
+    "description": "A polished parser refactor is accepted on first inspection, while two independent fixtures still fail.",
+    "learning_goal": "Human acceptance and objective task outcome can move in opposite directions.",
+    "decision_kind": "technical",
+    "consequence": "low",
+    "ambiguity": "low",
+    "reversible": true,
+    "independently_verifiable": true,
+    "recovery_available": true,
+    "capability_lead": "system",
+    "objective_outcome": {
+      "status": "fail",
+      "criterion": "All frozen parser fixtures pass.",
+      "evidence": "18 of 20 fixtures pass."
+    },
+    "human_acceptance": {
+      "status": "accepted",
+      "criterion": "The user accepts the refactor.",
+      "evidence": "The user said the result looked good."
+    }
+  },
+  {
+    "id": "verifier-drift",
+    "title": "The verifier is stale",
+    "description": "A long-running audit detects that the source snapshot changed after the verifier was configured.",
+    "learning_goal": "Stop the affected action, recover verification, and avoid disturbing the human while bounded recovery remains.",
+    "decision_kind": "technical",
+    "consequence": "medium",
+    "ambiguity": "low",
+    "reversible": true,
+    "independently_verifiable": true,
+    "recovery_available": true,
+    "capability_lead": "system",
+    "objective_outcome": {
+      "status": "verifier_untrusted",
+      "criterion": "The audit and verifier use the same immutable source snapshot.",
+      "evidence": "The current source hash differs from the checkpoint hash."
+    },
+    "human_acceptance": {
+      "status": "unknown",
+      "criterion": "The user accepts the completed audit.",
+      "evidence": "No completed audit has been presented."
+    }
+  },
+  {
+    "id": "taste-boundary",
+    "title": "The system can make options; the user owns the taste",
+    "description": "A visual treatment passes accessibility and format checks, but several equally safe aesthetic directions remain.",
+    "learning_goal": "Generate low-consequence options autonomously and interrupt only when the final taste decision is ready.",
+    "decision_kind": "taste",
+    "consequence": "low",
+    "ambiguity": "medium",
+    "reversible": true,
+    "independently_verifiable": true,
+    "recovery_available": true,
+    "capability_lead": "human",
+    "objective_outcome": {
+      "status": "pass",
+      "criterion": "Every option meets accessibility and format requirements.",
+      "evidence": "Automated checks pass for the current option set."
+    },
+    "human_acceptance": {
+      "status": "unknown",
+      "criterion": "The user prefers the final visual direction.",
+      "evidence": "The final options have not yet been curated."
+    }
+  },
+  {
+    "id": "high-stakes-ambiguity",
+    "title": "A consequential release with conflicting evidence",
+    "description": "A policy brief could affect real people, and the evidence supports two materially different interpretations.",
+    "learning_goal": "High consequence plus unresolved ambiguity creates a human authority floor.",
+    "decision_kind": "release",
+    "consequence": "high",
+    "ambiguity": "high",
+    "reversible": false,
+    "independently_verifiable": false,
+    "recovery_available": false,
+    "capability_lead": "unclear",
+    "objective_outcome": {
+      "status": "unknown",
+      "criterion": "The published claim is accurate and does not create material harm.",
+      "evidence": "Two credible sources support conflicting interpretations."
+    },
+    "human_acceptance": {
+      "status": "unknown",
+      "criterion": "The accountable owner accepts the release.",
+      "evidence": "No release decision has been made."
+    }
+  },
+  {
+    "id": "verified-reversible-autonomy",
+    "title": "A verified, reversible maintenance fix",
+    "description": "The system has repaired a local configuration, all independent checks pass, and rollback is available.",
+    "learning_goal": "Low-consequence work can remain autonomous when capability, reversibility, and verification align.",
+    "decision_kind": "technical",
+    "consequence": "low",
+    "ambiguity": "low",
+    "reversible": true,
+    "independently_verifiable": true,
+    "recovery_available": true,
+    "capability_lead": "system",
+    "objective_outcome": {
+      "status": "pass",
+      "criterion": "The configuration loads and the regression suite passes.",
+      "evidence": "The frozen regression suite passes and a rollback patch exists."
+    },
+    "human_acceptance": {
+      "status": "unknown",
+      "criterion": "The user accepts the maintenance outcome.",
+      "evidence": "The user has not been interrupted for routine implementation detail."
+    }
+  }
+]
