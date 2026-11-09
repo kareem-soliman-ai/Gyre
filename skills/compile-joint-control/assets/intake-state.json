@@ -1,0 +1,54 @@
+{
+  "kind": "joint-control-intake",
+  "status": "needs_input",
+  "goal": {
+    "outcome": "Produce a checked research brief without unauthorized publication.",
+    "done_when": "The brief passes checks and reaches its approved delivery boundary."
+  },
+  "known": {
+    "stakes": "Drafting is reversible; external publication is consequential.",
+    "human_strengths": [
+      "audience taste",
+      "final publication judgement"
+    ],
+    "system_evidence": [
+      "prior source audits passed deterministic citation checks"
+    ],
+    "verification_available": [
+      "citation checker",
+      "human publication review"
+    ],
+    "ambiguity_policy": "Navigate consequential ambiguity jointly.",
+    "interruption_policy": "Interrupt only for declared boundary crossings or unanticipated consequential ambiguity.",
+    "learning_preference": "Explain unfamiliar research functions while demonstrating them."
+  },
+  "anticipated_decisions": [
+    {
+      "id": "publish",
+      "description": "Whether to release the final brief outside the workspace.",
+      "consequence": "high",
+      "uncertainty": "medium",
+      "reversibility": "low",
+      "missing": [
+        "publication authority"
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "id": "publication-authority",
+      "question": "May the system publish, or may it only prepare a draft?",
+      "decisions_affected": [
+        "publish"
+      ],
+      "route_effect": "Changes the publication route from mandatory human action to bounded system eligibility.",
+      "default_if_unanswered": "Prepare a private draft and require explicit approval.",
+      "risk_of_default": "Slower delivery without an unauthorized external action.",
+      "answer_source": "human"
+    }
+  ],
+  "preflight_checks": [],
+  "assumptions": [
+    "The system may create and verify local drafts."
+  ]
+}

@@ -1,0 +1,386 @@
+[
+  {
+    "task_id": "policy_brief",
+    "model": "qwen/qwen3-coder",
+    "seed": 919,
+    "arm": "legacy_v11"
+  },
+  {
+    "task_id": "policy_brief",
+    "model": "qwen/qwen3-coder",
+    "seed": 919,
+    "arm": "bare"
+  },
+  {
+    "task_id": "archive_audit",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 463,
+    "arm": "legacy_v11"
+  },
+  {
+    "task_id": "policy_brief",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 919,
+    "arm": "compiler_skill"
+  },
+  {
+    "task_id": "parser_refactor",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 919,
+    "arm": "bare"
+  },
+  {
+    "task_id": "poster_directions",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 463,
+    "arm": "legacy_v11"
+  },
+  {
+    "task_id": "poster_directions",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 919,
+    "arm": "bare"
+  },
+  {
+    "task_id": "parser_refactor",
+    "model": "qwen/qwen3-coder",
+    "seed": 463,
+    "arm": "compiler_skill"
+  },
+  {
+    "task_id": "policy_brief",
+    "model": "qwen/qwen3-coder",
+    "seed": 463,
+    "arm": "bare"
+  },
+  {
+    "task_id": "parser_refactor",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 463,
+    "arm": "compiler_template"
+  },
+  {
+    "task_id": "archive_audit",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 919,
+    "arm": "compiler_template"
+  },
+  {
+    "task_id": "archive_audit",
+    "model": "qwen/qwen3-coder",
+    "seed": 919,
+    "arm": "compiler_template"
+  },
+  {
+    "task_id": "parser_refactor",
+    "model": "qwen/qwen3-coder",
+    "seed": 463,
+    "arm": "compiler_template"
+  },
+  {
+    "task_id": "poster_directions",
+    "model": "qwen/qwen3-coder",
+    "seed": 463,
+    "arm": "compiler_template"
+  },
+  {
+    "task_id": "parser_refactor",
+    "model": "qwen/qwen3-coder",
+    "seed": 463,
+    "arm": "legacy_v11"
+  },
+  {
+    "task_id": "poster_directions",
+    "model": "qwen/qwen3-coder",
+    "seed": 919,
+    "arm": "bare"
+  },
+  {
+    "task_id": "parser_refactor",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 919,
+    "arm": "compiler_template"
+  },
+  {
+    "task_id": "parser_refactor",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 463,
+    "arm": "bare"
+  },
+  {
+    "task_id": "policy_brief",
+    "model": "qwen/qwen3-coder",
+    "seed": 463,
+    "arm": "compiler_skill"
+  },
+  {
+    "task_id": "poster_directions",
+    "model": "qwen/qwen3-coder",
+    "seed": 463,
+    "arm": "compiler_skill"
+  },
+  {
+    "task_id": "archive_audit",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 919,
+    "arm": "legacy_v11"
+  },
+  {
+    "task_id": "policy_brief",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 919,
+    "arm": "bare"
+  },
+  {
+    "task_id": "archive_audit",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 919,
+    "arm": "compiler_skill"
+  },
+  {
+    "task_id": "parser_refactor",
+    "model": "qwen/qwen3-coder",
+    "seed": 463,
+    "arm": "bare"
+  },
+  {
+    "task_id": "poster_directions",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 463,
+    "arm": "bare"
+  },
+  {
+    "task_id": "archive_audit",
+    "model": "qwen/qwen3-coder",
+    "seed": 463,
+    "arm": "legacy_v11"
+  },
+  {
+    "task_id": "poster_directions",
+    "model": "qwen/qwen3-coder",
+    "seed": 919,
+    "arm": "compiler_skill"
+  },
+  {
+    "task_id": "policy_brief",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 919,
+    "arm": "legacy_v11"
+  },
+  {
+    "task_id": "archive_audit",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 919,
+    "arm": "bare"
+  },
+  {
+    "task_id": "archive_audit",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 463,
+    "arm": "compiler_template"
+  },
+  {
+    "task_id": "archive_audit",
+    "model": "qwen/qwen3-coder",
+    "seed": 463,
+    "arm": "compiler_skill"
+  },
+  {
+    "task_id": "poster_directions",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 919,
+    "arm": "compiler_skill"
+  },
+  {
+    "task_id": "poster_directions",
+    "model": "qwen/qwen3-coder",
+    "seed": 919,
+    "arm": "compiler_template"
+  },
+  {
+    "task_id": "policy_brief",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 463,
+    "arm": "legacy_v11"
+  },
+  {
+    "task_id": "policy_brief",
+    "model": "qwen/qwen3-coder",
+    "seed": 919,
+    "arm": "compiler_skill"
+  },
+  {
+    "task_id": "archive_audit",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 463,
+    "arm": "bare"
+  },
+  {
+    "task_id": "parser_refactor",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 463,
+    "arm": "legacy_v11"
+  },
+  {
+    "task_id": "archive_audit",
+    "model": "qwen/qwen3-coder",
+    "seed": 919,
+    "arm": "legacy_v11"
+  },
+  {
+    "task_id": "archive_audit",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 463,
+    "arm": "compiler_skill"
+  },
+  {
+    "task_id": "poster_directions",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 919,
+    "arm": "compiler_template"
+  },
+  {
+    "task_id": "policy_brief",
+    "model": "qwen/qwen3-coder",
+    "seed": 919,
+    "arm": "compiler_template"
+  },
+  {
+    "task_id": "policy_brief",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 463,
+    "arm": "compiler_skill"
+  },
+  {
+    "task_id": "policy_brief",
+    "model": "qwen/qwen3-coder",
+    "seed": 463,
+    "arm": "legacy_v11"
+  },
+  {
+    "task_id": "parser_refactor",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 919,
+    "arm": "legacy_v11"
+  },
+  {
+    "task_id": "policy_brief",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 919,
+    "arm": "compiler_template"
+  },
+  {
+    "task_id": "parser_refactor",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 463,
+    "arm": "compiler_skill"
+  },
+  {
+    "task_id": "policy_brief",
+    "model": "qwen/qwen3-coder",
+    "seed": 463,
+    "arm": "compiler_template"
+  },
+  {
+    "task_id": "policy_brief",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 463,
+    "arm": "compiler_template"
+  },
+  {
+    "task_id": "parser_refactor",
+    "model": "qwen/qwen3-coder",
+    "seed": 919,
+    "arm": "legacy_v11"
+  },
+  {
+    "task_id": "archive_audit",
+    "model": "qwen/qwen3-coder",
+    "seed": 463,
+    "arm": "bare"
+  },
+  {
+    "task_id": "parser_refactor",
+    "model": "qwen/qwen3-coder",
+    "seed": 919,
+    "arm": "compiler_skill"
+  },
+  {
+    "task_id": "policy_brief",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 463,
+    "arm": "bare"
+  },
+  {
+    "task_id": "poster_directions",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 919,
+    "arm": "legacy_v11"
+  },
+  {
+    "task_id": "poster_directions",
+    "model": "qwen/qwen3-coder",
+    "seed": 463,
+    "arm": "bare"
+  },
+  {
+    "task_id": "poster_directions",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 463,
+    "arm": "compiler_skill"
+  },
+  {
+    "task_id": "parser_refactor",
+    "model": "qwen/qwen3-coder",
+    "seed": 919,
+    "arm": "compiler_template"
+  },
+  {
+    "task_id": "poster_directions",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 463,
+    "arm": "compiler_template"
+  },
+  {
+    "task_id": "archive_audit",
+    "model": "qwen/qwen3-coder",
+    "seed": 919,
+    "arm": "bare"
+  },
+  {
+    "task_id": "archive_audit",
+    "model": "qwen/qwen3-coder",
+    "seed": 463,
+    "arm": "compiler_template"
+  },
+  {
+    "task_id": "poster_directions",
+    "model": "qwen/qwen3-coder",
+    "seed": 463,
+    "arm": "legacy_v11"
+  },
+  {
+    "task_id": "poster_directions",
+    "model": "qwen/qwen3-coder",
+    "seed": 919,
+    "arm": "legacy_v11"
+  },
+  {
+    "task_id": "parser_refactor",
+    "model": "openai/gpt-5.4-mini",
+    "seed": 919,
+    "arm": "compiler_skill"
+  },
+  {
+    "task_id": "parser_refactor",
+    "model": "qwen/qwen3-coder",
+    "seed": 919,
+    "arm": "bare"
+  },
+  {
+    "task_id": "archive_audit",
+    "model": "qwen/qwen3-coder",
+    "seed": 919,
+    "arm": "compiler_skill"
+  }
+]

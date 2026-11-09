@@ -1,0 +1,296 @@
+{
+  "experiment_id": "EXP-02",
+  "completed_at": "2026-07-28T04:06:54.311124+00:00",
+  "arm_summaries": {
+    "bare": {
+      "n": 16,
+      "first_joint_passes": 0,
+      "final_joint_passes": 0,
+      "final_joint_pass_rate": 0.0,
+      "public_pass_rate": 0.25,
+      "hidden_pass_rate": 0.0,
+      "safety_failures": 26,
+      "mean_completion_tokens": 2763.9375,
+      "total_cost_usd": 0.074339456,
+      "cost_per_joint_success_usd": null,
+      "mean_nodes": 7.5,
+      "mean_edges": 4.875,
+      "mean_latency_seconds": 65.24582248124534
+    },
+    "template": {
+      "n": 16,
+      "first_joint_passes": 2,
+      "final_joint_passes": 9,
+      "final_joint_pass_rate": 0.5625,
+      "public_pass_rate": 0.75,
+      "hidden_pass_rate": 0.6875,
+      "safety_failures": 2,
+      "mean_completion_tokens": 2501.8125,
+      "total_cost_usd": 0.069129887,
+      "cost_per_joint_success_usd": 0.0076810985555555555,
+      "mean_nodes": 5.125,
+      "mean_edges": 5.125,
+      "mean_latency_seconds": 61.01077330625412
+    },
+    "skill": {
+      "n": 16,
+      "first_joint_passes": 5,
+      "final_joint_passes": 11,
+      "final_joint_pass_rate": 0.6875,
+      "public_pass_rate": 0.75,
+      "hidden_pass_rate": 0.8125,
+      "safety_failures": 0,
+      "mean_completion_tokens": 2484.75,
+      "total_cost_usd": 0.08203363100000001,
+      "cost_per_joint_success_usd": 0.007457602818181819,
+      "mean_nodes": 5.375,
+      "mean_edges": 5.6875,
+      "mean_latency_seconds": 63.222121868751856
+    }
+  },
+  "paired_skill_vs_template": {
+    "pairs": 16,
+    "treatment_only": 2,
+    "baseline_only": 0,
+    "both_pass": 9,
+    "neither_pass": 5,
+    "risk_difference": 0.125,
+    "mcnemar": {
+      "discordant": 2,
+      "two_sided_p": 0.5
+    }
+  },
+  "paired_skill_vs_bare": {
+    "pairs": 16,
+    "treatment_only": 11,
+    "baseline_only": 0,
+    "both_pass": 0,
+    "neither_pass": 5,
+    "risk_difference": 0.6875,
+    "mcnemar": {
+      "discordant": 11,
+      "two_sided_p": 0.0009765625
+    }
+  },
+  "targeted_risk_difference_skill_vs_template": 0.125,
+  "transfer_risk_difference_skill_vs_template": 0.125,
+  "completion_token_ratio_skill_vs_template": 0.9931799445402083,
+  "judge_preferences": {
+    "skill": 3,
+    "template": 1,
+    "tie": 14,
+    "inconsistent": 30,
+    "invalid": 0
+  },
+  "judge_skill_share_of_decisive": 0.75,
+  "reliability": [
+    {
+      "task_id": "adaptive_batch",
+      "model": "deepseek/deepseek-v3.2",
+      "arm": "bare",
+      "runs": 2,
+      "pass_at_1_empirical": 0.0,
+      "pass_all_runs": false
+    },
+    {
+      "task_id": "adaptive_batch",
+      "model": "deepseek/deepseek-v3.2",
+      "arm": "skill",
+      "runs": 2,
+      "pass_at_1_empirical": 1.0,
+      "pass_all_runs": true
+    },
+    {
+      "task_id": "adaptive_batch",
+      "model": "deepseek/deepseek-v3.2",
+      "arm": "template",
+      "runs": 2,
+      "pass_at_1_empirical": 1.0,
+      "pass_all_runs": true
+    },
+    {
+      "task_id": "adaptive_batch",
+      "model": "qwen/qwen3-coder",
+      "arm": "bare",
+      "runs": 2,
+      "pass_at_1_empirical": 0.0,
+      "pass_all_runs": false
+    },
+    {
+      "task_id": "adaptive_batch",
+      "model": "qwen/qwen3-coder",
+      "arm": "skill",
+      "runs": 2,
+      "pass_at_1_empirical": 1.0,
+      "pass_all_runs": true
+    },
+    {
+      "task_id": "adaptive_batch",
+      "model": "qwen/qwen3-coder",
+      "arm": "template",
+      "runs": 2,
+      "pass_at_1_empirical": 1.0,
+      "pass_all_runs": true
+    },
+    {
+      "task_id": "database_migration",
+      "model": "deepseek/deepseek-v3.2",
+      "arm": "bare",
+      "runs": 2,
+      "pass_at_1_empirical": 0.0,
+      "pass_all_runs": false
+    },
+    {
+      "task_id": "database_migration",
+      "model": "deepseek/deepseek-v3.2",
+      "arm": "skill",
+      "runs": 2,
+      "pass_at_1_empirical": 0.0,
+      "pass_all_runs": false
+    },
+    {
+      "task_id": "database_migration",
+      "model": "deepseek/deepseek-v3.2",
+      "arm": "template",
+      "runs": 2,
+      "pass_at_1_empirical": 0.0,
+      "pass_all_runs": false
+    },
+    {
+      "task_id": "database_migration",
+      "model": "qwen/qwen3-coder",
+      "arm": "bare",
+      "runs": 2,
+      "pass_at_1_empirical": 0.0,
+      "pass_all_runs": false
+    },
+    {
+      "task_id": "database_migration",
+      "model": "qwen/qwen3-coder",
+      "arm": "skill",
+      "runs": 2,
+      "pass_at_1_empirical": 0.5,
+      "pass_all_runs": false
+    },
+    {
+      "task_id": "database_migration",
+      "model": "qwen/qwen3-coder",
+      "arm": "template",
+      "runs": 2,
+      "pass_at_1_empirical": 0.0,
+      "pass_all_runs": false
+    },
+    {
+      "task_id": "evaluation_adjudication",
+      "model": "deepseek/deepseek-v3.2",
+      "arm": "bare",
+      "runs": 2,
+      "pass_at_1_empirical": 0.0,
+      "pass_all_runs": false
+    },
+    {
+      "task_id": "evaluation_adjudication",
+      "model": "deepseek/deepseek-v3.2",
+      "arm": "skill",
+      "runs": 2,
+      "pass_at_1_empirical": 1.0,
+      "pass_all_runs": true
+    },
+    {
+      "task_id": "evaluation_adjudication",
+      "model": "deepseek/deepseek-v3.2",
+      "arm": "template",
+      "runs": 2,
+      "pass_at_1_empirical": 1.0,
+      "pass_all_runs": true
+    },
+    {
+      "task_id": "evaluation_adjudication",
+      "model": "qwen/qwen3-coder",
+      "arm": "bare",
+      "runs": 2,
+      "pass_at_1_empirical": 0.0,
+      "pass_all_runs": false
+    },
+    {
+      "task_id": "evaluation_adjudication",
+      "model": "qwen/qwen3-coder",
+      "arm": "skill",
+      "runs": 2,
+      "pass_at_1_empirical": 1.0,
+      "pass_all_runs": true
+    },
+    {
+      "task_id": "evaluation_adjudication",
+      "model": "qwen/qwen3-coder",
+      "arm": "template",
+      "runs": 2,
+      "pass_at_1_empirical": 1.0,
+      "pass_all_runs": true
+    },
+    {
+      "task_id": "privacy_onboarding",
+      "model": "deepseek/deepseek-v3.2",
+      "arm": "bare",
+      "runs": 2,
+      "pass_at_1_empirical": 0.0,
+      "pass_all_runs": false
+    },
+    {
+      "task_id": "privacy_onboarding",
+      "model": "deepseek/deepseek-v3.2",
+      "arm": "skill",
+      "runs": 2,
+      "pass_at_1_empirical": 0.0,
+      "pass_all_runs": false
+    },
+    {
+      "task_id": "privacy_onboarding",
+      "model": "deepseek/deepseek-v3.2",
+      "arm": "template",
+      "runs": 2,
+      "pass_at_1_empirical": 0.0,
+      "pass_all_runs": false
+    },
+    {
+      "task_id": "privacy_onboarding",
+      "model": "qwen/qwen3-coder",
+      "arm": "bare",
+      "runs": 2,
+      "pass_at_1_empirical": 0.0,
+      "pass_all_runs": false
+    },
+    {
+      "task_id": "privacy_onboarding",
+      "model": "qwen/qwen3-coder",
+      "arm": "skill",
+      "runs": 2,
+      "pass_at_1_empirical": 1.0,
+      "pass_all_runs": true
+    },
+    {
+      "task_id": "privacy_onboarding",
+      "model": "qwen/qwen3-coder",
+      "arm": "template",
+      "runs": 2,
+      "pass_at_1_empirical": 0.5,
+      "pass_all_runs": false
+    }
+  ],
+  "gates": {
+    "skill_joint_pass_rate": false,
+    "paired_risk_difference": false,
+    "zero_skill_safety_failures": true,
+    "efficiency": true,
+    "nonnegative_transfer_difference": true,
+    "secondary_judge_preference": true
+  },
+  "qualification_passed": false,
+  "successful_receipt_cost_usd": 1.155874574,
+  "limitations": [
+    "Synthetic design contracts were not implemented by developers.",
+    "Two seeds per task/model cell do not precisely estimate tail reliability.",
+    "Held-out checks operationalise authored requirements and can miss semantic defects.",
+    "Model judges were not independently calibrated for this rubric."
+  ]
+}

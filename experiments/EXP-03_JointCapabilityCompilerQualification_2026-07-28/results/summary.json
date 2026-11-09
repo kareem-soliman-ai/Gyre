@@ -1,0 +1,128 @@
+{
+  "experiment_id": "EXP-03",
+  "created_at": "2026-07-28T07:08:41.338707+00:00",
+  "arm_summaries": {
+    "bare": {
+      "n": 16,
+      "joint_passes": 0,
+      "joint_pass_rate": 0.0,
+      "joint_pass_wilson_95_ci": [
+        0.0,
+        0.1936076805344365
+      ],
+      "final_contract_pass_rate": 0.125,
+      "critical_question_recall": 0.32142857142857145,
+      "question_precision": 0.09345794392523364,
+      "runtime_route_accuracy": 0.6875,
+      "unsafe_routes": 0,
+      "prompt_tokens": 19771,
+      "completion_tokens": 35417,
+      "cost_usd": 0.122043,
+      "cost_per_joint_success": null,
+      "error_cells": 0
+    },
+    "legacy_v11": {
+      "n": 16,
+      "joint_passes": 0,
+      "joint_pass_rate": 0.0,
+      "joint_pass_wilson_95_ci": [
+        0.0,
+        0.1936076805344365
+      ],
+      "final_contract_pass_rate": 0.125,
+      "critical_question_recall": 0.5,
+      "question_precision": 0.23232323232323232,
+      "runtime_route_accuracy": 0.7083333333333333,
+      "unsafe_routes": 2,
+      "prompt_tokens": 112270,
+      "completion_tokens": 55296,
+      "cost_usd": 0.22349464999999996,
+      "cost_per_joint_success": null,
+      "error_cells": 0
+    },
+    "compiler_template": {
+      "n": 16,
+      "joint_passes": 0,
+      "joint_pass_rate": 0.0,
+      "joint_pass_wilson_95_ci": [
+        0.0,
+        0.1936076805344365
+      ],
+      "final_contract_pass_rate": 0.1875,
+      "critical_question_recall": 0.35714285714285715,
+      "question_precision": 0.2641509433962264,
+      "runtime_route_accuracy": 0.7083333333333333,
+      "unsafe_routes": 0,
+      "prompt_tokens": 59453,
+      "completion_tokens": 67359,
+      "cost_usd": 0.2322761,
+      "cost_per_joint_success": null,
+      "error_cells": 0
+    },
+    "compiler_skill": {
+      "n": 16,
+      "joint_passes": 0,
+      "joint_pass_rate": 0.0,
+      "joint_pass_wilson_95_ci": [
+        0.0,
+        0.1936076805344365
+      ],
+      "final_contract_pass_rate": 0.3125,
+      "critical_question_recall": 0.42857142857142855,
+      "question_precision": 0.2608695652173913,
+      "runtime_route_accuracy": 0.7083333333333334,
+      "unsafe_routes": 0,
+      "prompt_tokens": 96621,
+      "completion_tokens": 66313,
+      "cost_usd": 0.24418120000000004,
+      "cost_per_joint_success": null,
+      "error_cells": 0
+    }
+  },
+  "paired_compiler_vs_template": {
+    "n": 16,
+    "primary_only": 0,
+    "baseline_only": 0,
+    "risk_difference": 0.0,
+    "bootstrap_95_ci": [
+      0.0,
+      0.0
+    ],
+    "mcnemar_two_sided_p": 1.0
+  },
+  "paired_compiler_vs_legacy": {
+    "n": 16,
+    "primary_only": 0,
+    "baseline_only": 0,
+    "risk_difference": 0.0,
+    "bootstrap_95_ci": [
+      0.0,
+      0.0
+    ],
+    "mcnemar_two_sided_p": 1.0
+  },
+  "model_risk_differences_vs_template": {
+    "qwen/qwen3-coder": 0.0,
+    "openai/gpt-5.4-mini": 0.0
+  },
+  "completion_token_ratio_vs_template": 0.9844712659035912,
+  "gates": {
+    "minimum_joint_pass_rate": false,
+    "risk_difference_vs_template": false,
+    "risk_difference_vs_legacy": true,
+    "critical_question_recall": false,
+    "question_precision": false,
+    "runtime_route_accuracy": false,
+    "zero_unsafe_routes": true,
+    "efficiency": true,
+    "model_non_regression": true
+  },
+  "qualification_passed": false,
+  "successful_receipt_cost_usd": 0.8219949500000001,
+  "limitations": [
+    "Synthetic contracts do not prove live execution quality.",
+    "The common envelope exposes target constructs to every arm.",
+    "Frozen regex patterns can miss legitimate paraphrases.",
+    "Two models and two seeds do not estimate rare failure tails."
+  ]
+}

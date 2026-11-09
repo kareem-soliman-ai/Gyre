@@ -1,7 +1,7 @@
 """Closed-form panel design calculator: what a panel must achieve, before spending.
 
-Vendored pattern from Criterion Labs' agreement-sensitivity sweep, which derives
-metrics analytically over a (prevalence x sensitivity x specificity) grid and
+This derives metrics analytically over a
+(prevalence x sensitivity x specificity) grid and
 costs nothing to run. Re-parameterised for the outer loop: given a defect base
 rate and a panel's sensitivity/specificity, what burden reduction and escape
 rate FOLLOW, and how many auto-approved items must be audited to bound it?

@@ -1,7 +1,7 @@
 """Loop-health scoring: one call that turns a trace into a loop-health verdict.
 
-This is Gyre's integration surface. A caller (the Facet control plane, an agent's
-MCP tool, a loop-economics dashboard) hands over the ordered steps of an agent's
+This is Gyre's integration surface. A caller (a control plane, an agent's MCP
+tool, or a loop-economics dashboard) hands over the ordered steps of an agent's
 loop, either tool-call steps OR reasoning/thinking segments, and gets back a
 structured verdict: is the loop still paying, when did it stop adding information,
 and how many tokens are at risk in the plateaued tail. Rumination does not need
@@ -9,7 +9,7 @@ tool calls; it happens in the thinking stream too, which is where the tokens are
 pure cost.
 
 It composes the L1 rumination controller with a ``MeasurementProvider``. The public
-default is a naive sensor (honest but crude); pass a validated instrument and the
+default is a naive sensor (honest but crude); pass a qualified provider and the
 verdict sharpens without the caller changing a line. That separation is the whole
 architecture: a controller is only as good as its sensor.
 """

@@ -1,0 +1,141 @@
+{
+  "name": "replace-me",
+  "objective": "State the task outcome and why it matters.",
+  "task_constraints": [
+    {
+      "id": "replace-me",
+      "requirement": "Copy one explicit scope, cost, time, authority, or acceptance limit from the task.",
+      "enforced_by": "Name the node, state field, budget, or guard that enforces it.",
+      "on_violation": "Name the terminal state or escalation path."
+    }
+  ],
+  "topology_decision": {
+    "selected": "single-loop",
+    "simpler_baseline": "State the cheapest credible alternative.",
+    "why_more_structure_is_needed": "Name the distinct operation, authority, context, or repeated correction that justifies this design."
+  },
+  "mode": "fixed",
+  "state": {
+    "fields": [
+      "observation",
+      "attempt_count",
+      "evidence_added"
+    ],
+    "persistence": "State what is checkpointed and when.",
+    "reset_boundary": "State when accumulated state becomes invalid."
+  },
+  "nodes": [
+    {
+      "id": "worker",
+      "kind": "agent",
+      "purpose": "Perform the bounded object-level task.",
+      "capability_evidence": "Name the pilot, evaluation, or prior receipt.",
+      "consequence": "medium",
+      "authority": "May change the draft; may not publish or message externally.",
+      "human_approval": false,
+      "inputs": [
+        "task",
+        "current state"
+      ],
+      "outputs": [
+        "candidate result",
+        "change evidence"
+      ],
+      "failure_policy": "Return a typed blocked result and preserve the last checkpoint."
+    },
+    {
+      "id": "check",
+      "kind": "deterministic",
+      "purpose": "Extract observable evidence for the controller.",
+      "capability_evidence": "Unit-tested checks with known fixtures.",
+      "consequence": "low",
+      "authority": "May report; may not change the candidate result.",
+      "human_approval": false,
+      "inputs": [
+        "candidate result"
+      ],
+      "outputs": [
+        "sensor report"
+      ],
+      "failure_policy": "Fail closed and request human inspection."
+    }
+  ],
+  "edges": [
+    {
+      "from": "worker",
+      "to": "check",
+      "mechanism": "typed packet",
+      "guard": "candidate result exists",
+      "handoff_contract": "candidate id, content hash, and claimed changes",
+      "on_failure": "block and surface the missing field"
+    },
+    {
+      "from": "check",
+      "to": "worker",
+      "mechanism": "typed packet",
+      "guard": "named defect remains and budget is available",
+      "handoff_contract": "defect id, evidence, and acceptance criterion",
+      "on_failure": "escalate with the last good checkpoint"
+    }
+  ],
+  "loops": [
+    {
+      "id": "task-loop",
+      "controlled_variable": "distance from the declared acceptance criteria",
+      "observation": "candidate changes and check results",
+      "sensor": {
+        "name": "replace-me",
+        "maturity": "raw",
+        "independence": "external",
+        "calibration_evidence": "",
+        "confounds": [
+          "name at least one way the signal can mislead"
+        ]
+      },
+      "decision_rule": "continue only when a named defect remains and the latest step added relevant evidence",
+      "actions": [
+        "continue",
+        "reframe",
+        "seek_info",
+        "escalate",
+        "stop"
+      ],
+      "terminal_states": [
+        "passed",
+        "budget_exhausted",
+        "human_review",
+        "no_information_gain"
+      ],
+      "budget": {
+        "max_cycles": 3,
+        "max_cost_usd": 1.0,
+        "max_minutes": 10
+      },
+      "escalation": "Send the last good state, the open criterion, and attempted actions.",
+      "persistence": "Checkpoint after every accepted state transition."
+    }
+  ],
+  "dynamic_topology": {
+    "enabled": false,
+    "mode": "fixed",
+    "switching_costs": [],
+    "hysteresis": "Not applicable while the topology is fixed.",
+    "promotion_gate": "Shadow recommendations must beat the fixed route under matched budget before activation."
+  },
+  "evaluation": {
+    "link_a_sensor": "Compare sensor calls with an independent criterion.",
+    "link_b_policy": "Hold the sensor fixed and compare action menus or policies.",
+    "link_c_outcome": "Compare task outcome, cost, latency, and risk with the simpler baseline.",
+    "matched_baseline": "Repeat the baseline named in topology_decision.",
+    "trap_cases": [
+      "healthy repeated checking",
+      "unsolvable task",
+      "corrupted sensor"
+    ]
+  },
+  "prompt_contracts": {
+    "generator": "Perform the object-level task and report what changed.",
+    "sensor": "Extract observable evidence and uncertainty without choosing the next action.",
+    "controller": "Choose from the declared action menu using the sensor report, authority limits, and remaining budget."
+  }
+}

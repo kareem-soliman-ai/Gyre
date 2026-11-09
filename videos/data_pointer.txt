@@ -1,0 +1,5 @@
+Bulk video assets: D:\Dev\Data\Gyre\videos
+
+The Git repository stores scripts, prompts, captions, and receipts only.
+Raw images, source clips, audio, project files, and 4K masters stay on D:.
+

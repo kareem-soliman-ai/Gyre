@@ -1,139 +1,167 @@
 # Gyre
 
-**Psychology-grounded loop patterns for AI agents.**
+**A runnable playground for engineering agent loops, measurements, controllers,
+and human-AI coordination.**
 
-Loop engineering is having its moment. Boris Cherny says he doesn't prompt Claude anymore, he writes loops that prompt Claude. Peter Steinberger's two sentences about designing loops instead of prompts did 6.5 million views. Addy Osmani wrote the field guide. The leverage point has moved from the prompt to the loop, and everyone building agents is now, whether they call it that or not, a loop engineer.
+Gyre begins with a simple separation:
 
-Here is the thing nobody in that conversation has said out loud: this is not a new discipline. It is cybernetic psychology, rediscovered by people who never took the class.
+> A loop is a controller. A measurement is a sensor. A graph is made of
+> decisions whose edges contain both.
 
-Psychology has been studying loops for sixty-five years. Not execution loops, cognitive loops. The loop a mind runs when it worries at a problem, when it checks its own confidence, when it repairs a relationship that has gone off the rails, when it gets stuck and needs to walk away before the answer arrives. These have names, mechanisms, decades of empirical work, and a hard-won understanding of what separates a loop that helps from a loop that quietly wastes your life. Agent builders are re-deriving fragments of this from scratch, one Reddit post about "why does my agent get stuck" at a time.
+It then adds the complication that makes real systems difficult: observing, testing, asking, or verifying may change the object being measured.
 
-Gyre is the taxonomy, translated. Each pattern names its source in the psychological or cybernetic literature, states the mechanism, translates it into a shape you can drop into an agent scaffold, and defines the behavioural signal that tells you whether the loop is working or pathological.
+## Try it in five minutes
 
----
-
-## The claim, in one paragraph
-
-An execution loop is: do something, check the result, decide whether to continue. Test, operate, test, exit. That structure is not an engineering invention. It is [TOTE](loops/L0-tote.md), proposed by Miller, Galanter and Pribram in 1960 as the fundamental unit of behaviour, the thing that displaced the reflex arc in psychology. When Steinberger says "do something, check, decide whether to stop," he is describing a TOTE unit. The agentic loop is a TOTE unit with an enormous Operate step. Once you see that, the rest of the psychology of loops becomes available to you: not as metaphor, but as a catalogue of mechanisms that have already been studied, measured, and validated in the one system we understand better than any agent, the human mind.
-
-## What this is
-
-Lightweight, loop-shaped patterns that fit the scaffolds you already write: hooks, monitors, wrappers, memory layers. Not a framework you adopt wholesale. A vocabulary and a set of shapes you borrow from.
-
-Every entry follows the same format:
-
-> **Source** (the psychology) → **Mechanism** (what it does in a mind) → **Agent translation** (what it does in an agent) → **Signal** (how you measure it) → **Exit condition** (when the loop should stop or change) → **Shape** (where it fits in a scaffold)
-
-## What this is not
-
-Not a cognitive architecture. ACT-R and SOAR spent decades on the monolithic route, and nobody shipping agents today adopts a monolith. Gyre is deliberately the opposite: small patterns shaped like the hooks people already write, each one useful on its own, none of them requiring you to buy the whole thing.
-
-Not a set of performance claims. No detector in this repository ships with a "saves you 40% of tokens" number attached, because none of them have earned one yet. When a pattern has run on real agent traces and produced a result worth defending, that result will be stated plainly, with the caveats intact. Until then, these are patterns and hypotheses, clearly labelled as such.
-
----
-
-## The catalogue
-
-Start at the [loop index](loops/INDEX.md). The short version:
-
-| # | Loop | Psychology source | What it catches in an agent |
-|---|------|-------------------|------------------------------|
-| [L0](loops/L0-tote.md) | TOTE | Miller, Galanter & Pribram (1960); Carver & Scheier | The loop itself, as the unit of behaviour. Framing. |
-| [L1](loops/L1-rumination-vs-reflection.md) | Rumination vs Reflection | Nolen-Hoeksema; Watkins (2008) | Retrying the same fix with cosmetic variation. Iteration that recycles instead of learns. |
-| [L2](loops/L2-metacognitive-calibration.md) | Metacognitive Calibration | Nelson & Narens (1990) | Confidence that never gets checked against outcomes. |
-| [L3](loops/L3-rupture-and-repair.md) | Rupture and Repair | Safran & Muran | The human quietly rewriting your output instead of telling you it is wrong. |
-| [L4](loops/L4-zeigarnik-intentions-register.md) | Zeigarnik Intentions Register | Zeigarnik (1927); Masicampo & Baumeister | Abandoned threads the agent forgets it ever opened. |
-| [L5](loops/L5-incubation-einstellung-breaker.md) | Incubation / Einstellung Breaker | Wallas (1926); Luchins; Sio & Ormerod (2009) | Fixation that more effort makes worse, not better. |
-| [L6](loops/L6-habituation-orienting.md) | Habituation / Orienting | Sokolov; Thompson & Spencer | Monitoring pass 400 as if it were pass 1. |
-| [L7](loops/L7-meta-loop.md) | The Meta-Loop | Explore-exploit; control theory | Which loop should run now, and when to switch. |
-
-Plus a [backlog](loops/backlog.md) of one-line sketches waiting for someone to pull on them.
-
-**Start here if you build agents:** [L1, Rumination vs Reflection](loops/L1-rumination-vs-reflection.md). It is the one every agent already suffers from, and the one with the clearest signal. Same surface behaviour as productive iteration, opposite outcome. The discriminator psychology settled on is not how many times you loop, it is whether each pass generates new information or recycles the old.
-
----
-
-## Loops are controllers. Measurements are sensors.
-
-Here is the design decision that runs through the code, and it is worth thirty seconds because it is also the most useful idea in the project.
-
-A loop is a controller: it decides when to act and how to route. A measurement is a sensor: it turns the agent's behaviour into the signal the controller acts on. Gyre keeps them strictly separate. A loop depends only on a `MeasurementProvider` interface and never imports a concrete measurement. So you can run the same loop with a throwaway sensor or a carefully built one, on the same trace, and watch it behave differently.
-
-That separation is not tidiness for its own sake. It is the [TOTE](loops/L0-tote.md) control-theory lineage taken literally, and control theory is blunt about one thing agent builders keep learning the hard way: **a controller is only as good as its sensor.** The loops here are decent controllers. What separates a system that works from one that thrashes is almost always the quality of the measurement feeding it. Gyre is built so you can see that for yourself instead of taking it on faith.
-
-Which means measurement is pluggable, and that is deliberate. Bring your own.
-
-```python
-from gyre import RuminationMonitor, ExitReason
-from gyre.providers import DiffNoveltyProvider   # a naive baseline that ships with Gyre
-
-monitor = RuminationMonitor(DiffNoveltyProvider(), patience=3, threshold=0.2)
-for attempt in agent_attempts:
-    monitor.observe(attempt)
-    if monitor.verdict().exit_reason is not ExitReason.CONTINUE:
-        break   # the loop plateaued; reframe, escalate, or abandon
-```
-
-Swap `DiffNoveltyProvider` for a sensor you build, and the loop code does not change. The naive baselines are real and honest about being crude; a good measurement fills in things they leave blank (a calibrated probability, a baseline-relative score, an estimate of its own reliability) and the loop starts firing earlier and more precisely. Want to know how much better your measurement is than the baseline? Score them head to head with `gyre.bench`. The value gap is runnable, not asserted.
-
-**See it on a reasoning loop.** Run `python scripts/demo_reasoning_loop.py`. It watches a reasoning model circle between two framings ("actually… however… actually…") and cuts the thinking short when the loop stops adding information. Rumination does not need tool calls: it happens in the thinking stream, where the tokens are pure cost and nobody reads them. The demo also shows the honest catch, a consecutive lexical sensor is fooled by the rewording, while comparing each thought against everything thought so far catches the circle. That gap is the whole argument for taking measurement seriously.
-
-To build your own sensor, start with [docs/building-measurements.md](docs/building-measurements.md). For the architecture in full, [docs/architecture.md](docs/architecture.md). A sensor can also run behind an API rather than in your process, so a validated instrument can be used without being shipped: see [docs/hosted-measurements.md](docs/hosted-measurements.md).
-
-**Think you can do better? You probably can — prove it.** `python scripts/challenge.py --contender yourmodule:build` scores your sensor on the labelled corpora against the published scoreboard, per cell, with the trap cells shown so a surface-form win cannot hide. The bench hindsight-sweeps your thresholds (it is deliberately generous to challengers) and the published instruments get no such favour. Rules and standing invitation: [docs/challenge.md](docs/challenge.md).
-
----
-
-## The three tiers
-
-Gyre is built in three layers.
-
-**Tier 1, the patterns and the loops (here, open).** The documented catalogue, plus the loop controllers, the measurement seam, naive baseline sensors, and the benchmark harness. Once a pattern is named anyone can restate it, so there is nothing to protect and every reason to give it away well. This ships open, and it ships first.
-
-**Tier 2, the instruments (the fence).** The sensors that actually score loop quality well: validated, latent-variable measurements with known reliability. A rumination detector that models the construct rather than proxying it, a calibration sensor that knows whether the agent is over or under confident, a rupture detector for the human-agent dyad. These are measurement instruments with real validity requirements, and getting one quietly wrong is worse than not measuring at all. The method is described openly (every pattern doc, plus the build guide). The validated sensors live behind a pluggable interface in a gitignored layer, because an unvalidated instrument should not be handed a confident voice, and because this is the part that takes a background in psychometrics to build and to defend. Open method, closed instrument.
-
-**Tier 3, the controller (not here).** The meta-loop that decides which loop runs when. A hard problem with its own research lineage, described here as an interface, not rebuilt as a giveaway.
-
-The architecture makes this fence clean rather than mercenary: the loops and the naive sensors are genuinely free and genuinely useful, the benchmark is a public proving ground, and only the validated instrument sits behind the interface. Free razor. The blade is the measurement.
-
----
-
-## Install
+Python 3.11 or later is required. No API key or external service is needed.
 
 ```bash
-pip install -e .
+git clone https://github.com/kareem-soliman-ai/Gyre.git
+cd Gyre
+python -m pip install -e .
+python scripts/hierarchical_factory.py --demo
 ```
 
-```python
-from gyre import RuminationMonitor, HabituationFilter, CalibrationGovernor
-from gyre.providers import DiffNoveltyProvider, ZScoreDeviationProvider
-from gyre.bench import compare_providers
+You are establishing a farm and factory on an uncharted continent before
+stormfall. Food, cargo, shelter, crew condition, energy, repairs, weather,
+instruments, and living traces interact. Food beds, cargo types, crew, power
+sources, motors, and organisms vary both between public variants and within
+them. The rotating-unit baseline succeeds on 147/200 reused public development
+seeds, so the demo is a starting point rather than an answer.
+
+The simulator keeps identity, interpretation, and outcome separate:
+
+```text
+immutable ID -> trace-17
+your alias   -> "possible night pollinator"
+your model   -> "active scans reduce later visits" (confidence 0.65)
+criterion    -> production, survival, and what happens after the next survey
 ```
 
-The package ships the loop controllers, the measurement seam, naive reference sensors so everything runs out of the box, and the benchmark. It does not ship validated instruments. See [`src/gyre/`](src/gyre/) for the code and [docs/building-measurements.md](docs/building-measurements.md) to write a sensor of your own.
+Names are never scored. Mission gates, efficiency, causal recovery, observer
+disturbance, and resource use remain separate.
 
----
+For the interactive controller menu:
 
-## Credit where it is due
+```bash
+python scripts/hierarchical_factory.py
+```
 
-I come at this from a psychological science background, with graduate training in psychometrics and measurement theory. I am not a psychologist, and nothing here is clinical advice about anything. What I have is a lens: which loops does a mind actually run, what discriminates a productive loop from a pathological one, and how do you measure loop quality from behaviour over time. That last question is the one I care about most, and it is the hardest.
+The simpler v2.1 expedition remains available at
+`python scripts/living_factory.py`.
+The original three-variable observer-effect tutorial remains available at
+`python scripts/alien_factory.py`.
 
-The psychology cited here is other people's work. I have tried to cite it accurately and translate it honestly. Where an analogy between a human loop and an agent loop breaks down, the pattern doc says so, because a translation that hides its seams is worse than no translation.
+Full five-minute guide: [docs/START_HERE.md](docs/START_HERE.md).
 
-I build with AI in the loop and disclose it as a matter of principle. The framing and the interpretive calls are mine. The drafting and the plumbing involve AI collaboration.
+## What Gyre is trying to teach
 
----
+1. A useful loop needs a controlled variable, observation, sensor, policy, action menu, terminal states, and budget.
+2. Measurement quality, policy quality, and final outcome are different links and can fail independently.
+3. Pooled scores and plausible labels can hide the failure that matters.
+4. Measurement does not always pay; compare strong blind and fixed baselines.
+5. A measurement can disturb the measurand, later controls, or later evidence.
+6. Human and AI judgements are scoped measurements, not automatic truth.
+7. Human acceptance and objective outcome must remain separate.
+8. Human-system capability is shown by matched outcomes, not by a persuasive collaboration trace.
+9. Participant-created names are hypotheses, not benchmark answer keys.
+10. Public methods and protected candidate instruments can coexist behind a clean interface.
 
-## The open question
+Read the compact [major-lessons map](docs/LESSONS.md), then follow only the links relevant to you.
 
-Here is what I actually want from putting this out.
+## Three ways to use the repository
 
-**If you are a psychologist or study cognition:** which loops am I missing? Sixty-five years is a lot of literature and this catalogue is eight entries. What mechanism have you spent your career on that would translate into an agent and that no engineer has thought to look for?
+| If you want to… | Start here |
+|---|---|
+| Play the hierarchical farm/factory expedition | `python scripts/hierarchical_factory.py` |
+| Play the simpler v2.1 expedition | `python scripts/living_factory.py` |
+| Learn the smallest observer-effect mechanic | `python scripts/alien_factory.py` |
+| See evidence contradict an intuitive prediction | `python -m gyre.lessons` |
+| Explore human/system control choices | `python scripts/loop_playground.py --list` |
+| Browse psychology-derived loop patterns | [Loop catalogue](loops/INDEX.md) |
+| Build and compare a measurement | [Build Your Own Measurement](docs/building-measurements.md) |
+| Design an agent loop or graph | [`loop-engineer` skill](skills/loop-engineer/SKILL.md) |
+| Make an explainer or Alien Factory promo | [Video studio](videos/README.md) |
+| Inspect experiments, including failed gates | [Experiment index](experiments/INDEX.md) |
+| Find deeper research notes | [Documentation map](docs/INDEX.md) |
 
-**If you build agents:** which of these have you already built without knowing it had a name? Every one of these patterns exists in the wild as a hack somebody wrote at 2am to stop their agent doing something stupid. I want to know which hacks map onto which mechanisms, because that is where the catalogue earns its keep.
+## The architecture
 
-Open an issue, start a discussion, or just tell me I have got one wrong. The whole point of naming these loops is to find out which ones are real.
+Gyre keeps four concerns separable:
 
----
+```text
+world/state
+    -> observation
+    -> measurement provider
+    -> controller or graph policy
+    -> declared action
+    -> independent outcome
+```
 
-*Licensed dual: code under [Apache-2.0](LICENSE), the written catalogue under [CC BY 4.0](LICENSE-docs). Cite it if you use it, and the lineage stays legible for the next person.*
+When observation is reactive, the measurement node also has explicit causal edges back into world state, mechanism state, or instrument state.
+
+Public loops depend on the `MeasurementProvider` interface, never a particular sensor. Hold the controller constant and compare sensors; hold the sensor
+constant and compare controllers. See [architecture.md](docs/architecture.md).
+
+## What ships openly
+
+- eight psychology-grounded loop patterns;
+- measurement and loop interfaces;
+- naive sensors and strong public baselines;
+- benchmark and claims-verification machinery;
+- the Alien Factory v1 tutorial, hierarchical Living Instrument Expedition, and Loop Control Lab;
+- framework-neutral loop/graph design contracts;
+- experiment preregistrations, receipts, nulls, and failed gates.
+
+What does not ship: private corpora, fitted operating points, user capability
+profiles, protected instrument implementations, or learned controller
+parameters. Protection is an IP boundary, not a validation claim.
+The method remains replaceable and testable without exposing those assets.
+
+## Evidence status
+
+The repository does not treat “implemented” as “validated.”
+
+- The public loop-design skills remain experimental; their qualification gates did not pass.
+- The Sealed Repository Rescue scorer passed an engineering sub-gate, while independent public benchmark gates remain open.
+- EXP-06 qualified the local observer-effect mechanics and generous-budget discoverability.
+- EXP-07 killed the idle exploit but exposed a 200/200 balanced-policy ceiling.
+- EXP-08 v2.1 reduced that baseline to 99/200, but its preregistered omnibus
+  gate still did not pass because score variation missed the frozen threshold.
+- EXP-09 added persistent within-variant heterogeneity but failed its
+  variant-model gate: category and context explained 43.17% of effect variance.
+- EXP-10 v2.2.1 passed all 11 recovery gates on reused development seeds:
+  category and context explained 62.11%, while stable unit identity added
+  37.89 percentage points. This is a mechanics result, not independent
+  confirmation.
+- The protected development candidate currently leads the stated synthetic
+  sensor ranking, but its operating point was selected on those same public
+  corpora. The scoreboard marks it as a maintainer-reported development result,
+  not a holdout or transfer result.
+- Post-freeze adaptive Alien Factory qualification and real-world
+  joint-capability claims remain open.
+
+Run `python scripts/challenge.py` to reproduce every public entry. Public
+contenders can submit CI-reproducible receipts; private contenders can publish
+scores without publishing machinery, but those rows remain visibly
+self-reported and outside the verified ranking. See the
+[score submission guide](docs/contributing-a-score.md) and
+[verification model](docs/score-verification.md).
+
+See [experiments/INDEX.md](experiments/INDEX.md) for exact results and
+boundaries.
+
+## Contributing
+
+Contributions can add loop patterns, challenge the public sensors, improve teaching worlds, or supply stronger falsifiers. Start with [CONTRIBUTING.md](CONTRIBUTING.md).
+
+The question behind the project is practical: which measurements and control structures help agents produce better independently verified outcomes, and under what conditions do they fail?
+
+## Credit and licence
+
+Gyre translates work from psychology, psychometrics, cybernetics, control theory, and current agent engineering. The deeper lineage and translation
+limits are documented in the [loop catalogue](loops/INDEX.md) and [Cybernetic Psychology](docs/cybernetic-psychology.md).
+
+The project is built with AI collaboration; framing and interpretive decisions remain the maintainer's.
+
+Code is Apache-2.0. Written catalogue material is CC BY 4.0. See
+[LICENSE](LICENSE) and [LICENSE-docs](LICENSE-docs).

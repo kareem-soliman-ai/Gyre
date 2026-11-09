@@ -1,10 +1,4 @@
-"""Tests for the evidence-arrival sensors (naive public tier + proprietary tier).
-
-The naive tests always run. The proprietary tests SKIP in a clean public
-checkout, following the pattern in test_proprietary_mvt.py.
-"""
-
-import pytest
+"""Tests for the public evidence-arrival sensor."""
 
 from gyre.loops.rumination import IterationObservation
 from gyre.providers import EvidenceNoveltyProvider, available
@@ -50,37 +44,3 @@ def test_evidence_novelty_degrades_to_artifact_only_without_errors():
     m = p.measure(IterationObservation(artifact="add a null check", index=1))
     assert m.value < 0.05
     assert m.detail["evidence_novelty"] is None
-
-
-# --- proprietary tier ---------------------------------------------------------
-
-evi = pytest.importorskip("gyre.providers.proprietary.evi_semantic")
-
-
-@pytest.fixture(scope="module")
-def evi_provider():
-    from gyre.embedding import make_embedder
-
-    try:
-        embed = make_embedder("local")
-    except Exception as exc:  # noqa: BLE001 - fastembed missing or model blocked
-        pytest.skip(f"local embedder unavailable: {exc}")
-    return evi.EviSemanticProvider(embed=embed)
-
-
-def test_evi_semantic_vetoes_on_new_evidence(evi_provider):
-    """The decisive cell: identical retry after the error changed must NOT be
-    called rumination, and retries before/after the change must be."""
-    st = gen_evid_retry("off_by_one", k_before=3, k_after=2)
-    readings = _feed(evi_provider, st.trace)
-    decisions = [m.decision for m in readings]
-    assert decisions[1] is True                   # same artifact, same error
-    assert decisions[3] is False                  # new error vetoes the call
-    assert decisions[4] is True                   # retry into the new error
-
-
-def test_evi_semantic_is_self_deciding(evi_provider):
-    st = gen_evid_retry("null_check")
-    readings = _feed(evi_provider, st.trace)
-    assert all(m.decision is not None for m in readings)
-    assert all(m.probability is not None for m in readings)

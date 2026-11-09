@@ -4,10 +4,10 @@ build-backend = "hatchling.build"
 
 [project]
 name = "gyre-loops"
-version = "0.1.0"
-description = "Psychology-grounded loop patterns for AI agents: interfaces and vocabulary."
+version = "0.2.0"
+description = "Runnable loop, measurement, control, and human-AI coordination playground."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 license = "Apache-2.0"
 license-files = ["LICENSE"]
 authors = [{ name = "Kareem Soliman" }]
@@ -23,7 +23,7 @@ dependencies = []
 
 [project.urls]
 Homepage = "https://github.com/kareem-soliman-ai/Gyre"
-Documentation = "https://github.com/kareem-soliman-ai/Gyre/tree/main/loops"
+Documentation = "https://github.com/kareem-soliman-ai/Gyre/blob/main/docs/START_HERE.md"
 Issues = "https://github.com/kareem-soliman-ai/Gyre/issues"
 
 [project.optional-dependencies]

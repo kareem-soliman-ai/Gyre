@@ -1,7 +1,7 @@
 """Classical item analysis: the corpus as a calibrated item bank.
 
-Vendored pattern from Firasa Evaluations / Criterion Labs (classical test
-theory, not IRT — the honest scope). Given a roster of judges scored against a
+This uses classical test theory, not IRT — the honest scope. Given a roster of
+judges scored against a
 reference, each corpus step becomes an ITEM with:
 
 - ``difficulty``      p = fraction of judges that got it right. An item every

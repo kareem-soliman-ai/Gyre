@@ -7,7 +7,7 @@ pathological state) and it reports how well the provider's readings agree with t
 labels.
 
 This is the neutral proving ground. It is public, and it is the same harness a
-naive baseline and a validated instrument both get scored on. That is what makes
+naive baseline and a protected candidate both get scored on. That is what makes
 the value gap empirical rather than asserted: you do not have to take anyone's
 word that a better measurement helps, you run both through ``evaluate_provider``
 and read the numbers.

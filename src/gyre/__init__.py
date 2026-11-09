@@ -10,6 +10,7 @@ What ships here (all open):
   ``EinstellungBreaker`` (L5), ``HabituationFilter`` (L6)
 - naive reference providers, so every loop runs out of the box
 - ``gyre.bench``: score your own measurement against a baseline
+- ``gyre.challenge``: the Alien Factory and objective challenge harnesses
 
 What does not ship here: validated latent-variable measurements. Those take real
 psychometric work and live behind a gitignored fence
@@ -17,6 +18,7 @@ psychometric work and live behind a gitignored fence
 proxies; build a better one and prove it with ``gyre.bench``.
 
 Read the catalogue: ../loops/INDEX.md
+Start the expedition: ../docs/START_HERE.md
 Build a measurement: ../docs/building-measurements.md
 """
 

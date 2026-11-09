@@ -26,9 +26,9 @@ be worth the cost (in stakes, time, attention) it takes to obtain one?
 
 Where the implementation makes a real choice
 ---------------------------------------------
-Aurora's ``npbi.inference.value_of_information`` is built around a
-fully-specified posterior over named hypotheses. L2's state in Gyre
-is more modest: a running Brier score, a sample count, and a decision
+The general value-of-information formulation assumes a fully specified
+posterior over named hypotheses. L2's state in Gyre is more modest: a running
+Brier score, a sample count, and a decision
 upper/lower threshold. The implementation below uses a Beta-binomial
 conjugate model on the recent window of (correct, wrong) outcomes —
 the simplest non-trivial posterior that supports a real VoI
@@ -47,9 +47,7 @@ translates it.
 
 Provenance
 ----------
-Ported from Aurora's ``npbi.inference.value_of_information``
-(``voi_decide``, ``value_of_information``,
-``expected_information_gain``). The Bayesian-update machinery
+The Bayesian-update machinery
 (``posterior_after``) is renamed to ``beta_posterior_after`` so its
 semantics are explicit, and the L2 loop is wired by giving the
 output a Beta–Bernoulli "state" via the running window of outcomes
@@ -70,10 +68,7 @@ from gyre.measurement import Meaning, Measurement
 
 
 # ---------------------------------------------------------------------------
-# Core VoI primitives, ported from Aurora.
-# Reproduced (with full attribution in the module docstring) so the same
-# rules can be applied to Gyre's calibration setting without importing
-# scipy / numpy.
+# Core VoI primitives.
 # ---------------------------------------------------------------------------
 
 
@@ -284,8 +279,8 @@ def voi_decide(
     """The principal VoI primitive: continue observing or commit?
 
     Returns ``("OBSERVE", voi)`` when VoI > 0; else
-    ``("COMMIT", 0.0)``. Mirrors Aurora's ``voi_decide`` but on a
-    Beta prior rather than a fully specified posterior.
+    ``("COMMIT", 0.0)`` using a Beta prior rather than a fully specified
+    posterior.
     """
 
     voi = value_of_information(

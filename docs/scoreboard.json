@@ -1,6 +1,9 @@
 {
   "tier": "synthetic (labels by construction); real-trace scores ship only after expert-anchored validation",
   "bench": "gyre.bench.evaluate_provider (per-trace reset; hindsight threshold sweep for uncalibrated sensors)",
+  "ranking": "unweighted sum of pooled F1 across difficulty and evidence",
+  "ranking_scope": "The verified ranking includes public-reproducible and, once supported, sealed-evaluator-attested entries only. Self-reported scores remain visible but are not ranking eligible.",
+  "verification": "A number alone is not proof. Public factories are recomputed by CI; private implementations require a sealed evaluator receipt for independent verification.",
   "entries": [
     {
       "provider": "cusum:gain-shift",
@@ -30,6 +33,12 @@
             "evid-retry": 0.75
           }
         }
+      },
+      "verification": {
+        "class": "public-reproducible",
+        "ranking_eligible": true,
+        "evidence_scope": "public-synthetic-development",
+        "statement": "Implementation and scorer are public; CI can recompute this result."
       }
     },
     {
@@ -61,7 +70,13 @@
           }
         }
       },
-      "note": "measures relative depletion, structurally blind to rumination-from-start"
+      "note": "measures relative depletion, structurally blind to rumination-from-start",
+      "verification": {
+        "class": "public-reproducible",
+        "ranking_eligible": true,
+        "evidence_scope": "public-synthetic-development",
+        "statement": "Implementation and scorer are public; CI can recompute this result."
+      }
     },
     {
       "provider": "naive:diff-novelty",
@@ -91,6 +106,12 @@
             "evid-retry": 0.857
           }
         }
+      },
+      "verification": {
+        "class": "public-reproducible",
+        "ranking_eligible": true,
+        "evidence_scope": "public-synthetic-development",
+        "statement": "Implementation and scorer are public; CI can recompute this result."
       }
     },
     {
@@ -121,6 +142,12 @@
             "evid-retry": 1.0
           }
         }
+      },
+      "verification": {
+        "class": "public-reproducible",
+        "ranking_eligible": true,
+        "evidence_scope": "public-synthetic-development",
+        "statement": "Implementation and scorer are public; CI can recompute this result."
       }
     },
     {
@@ -152,7 +179,13 @@
           }
         }
       },
-      "note": "measures the TREND in information gain, so it is structurally blind to a loop that was unproductive from step one - there is no decline to detect. Owns the depletion cell (1.00) where level sensors false-fire"
+      "note": "measures the TREND in information gain, so it is structurally blind to a loop that was unproductive from step one - there is no decline to detect. Owns the depletion cell (1.00) where level sensors false-fire",
+      "verification": {
+        "class": "public-reproducible",
+        "ranking_eligible": true,
+        "evidence_scope": "public-synthetic-development",
+        "statement": "Implementation and scorer are public; CI can recompute this result."
+      }
     },
     {
       "provider": "psy:diffusion-rumination",
@@ -182,6 +215,12 @@
             "evid-retry": 0.4
           }
         }
+      },
+      "verification": {
+        "class": "self-reported",
+        "ranking_eligible": false,
+        "evidence_scope": "public-synthetic-development",
+        "statement": "Implementation absent from the public checkout; score is a maintainer report, not an independently verified result."
       }
     },
     {
@@ -212,6 +251,12 @@
             "evid-retry": 0.667
           }
         }
+      },
+      "verification": {
+        "class": "self-reported",
+        "ranking_eligible": false,
+        "evidence_scope": "public-synthetic-development",
+        "statement": "Implementation absent from the public checkout; score is a maintainer report, not an independently verified result."
       }
     },
     {
@@ -242,6 +287,12 @@
             "evid-retry": 1.0
           }
         }
+      },
+      "verification": {
+        "class": "self-reported",
+        "ranking_eligible": false,
+        "evidence_scope": "public-synthetic-development",
+        "statement": "Implementation absent from the public checkout; score is a maintainer report, not an independently verified result."
       }
     },
     {
@@ -272,6 +323,12 @@
             "evid-retry": 1.0
           }
         }
+      },
+      "verification": {
+        "class": "self-reported",
+        "ranking_eligible": false,
+        "evidence_scope": "public-synthetic-development",
+        "statement": "Implementation absent from the public checkout; score is a maintainer report, not an independently verified result."
       }
     },
     {
@@ -302,6 +359,49 @@
             "evid-retry": 1.0
           }
         }
+      },
+      "verification": {
+        "class": "self-reported",
+        "ranking_eligible": false,
+        "evidence_scope": "public-synthetic-development",
+        "statement": "Implementation absent from the public checkout; score is a maintainer report, not an independently verified result."
+      }
+    },
+    {
+      "provider": "psy:joint-sensor-v1",
+      "corpora": {
+        "difficulty": {
+          "f1": 0.9,
+          "precision": 0.818,
+          "recall": 1.0,
+          "calibrated": true,
+          "cells": {
+            "depletion": 0.8,
+            "easy": 1.0,
+            "edge": 0.0,
+            "hard": 1.0
+          }
+        },
+        "evidence": {
+          "f1": 0.985,
+          "precision": 0.971,
+          "recall": 1.0,
+          "calibrated": true,
+          "cells": {
+            "evid-easy": 1.0,
+            "evid-hard": 1.0,
+            "evid-pivot": 0.0,
+            "evid-progress": 0.0,
+            "evid-retry": 1.0
+          }
+        }
+      },
+      "note": "protected provider; operating point selected on these same public synthetic corpora. Maintainer-reported development score, not a sealed holdout, transfer result, or independently reproducible public entry",
+      "verification": {
+        "class": "self-reported",
+        "ranking_eligible": false,
+        "evidence_scope": "public-synthetic-development",
+        "statement": "Implementation absent from the public checkout; score is a maintainer report, not an independently verified result."
       }
     },
     {
@@ -333,7 +433,13 @@
           }
         }
       },
-      "note": "measures relative depletion, structurally blind to rumination-from-start"
+      "note": "measures relative depletion, structurally blind to rumination-from-start",
+      "verification": {
+        "class": "self-reported",
+        "ranking_eligible": false,
+        "evidence_scope": "public-synthetic-development",
+        "statement": "Implementation absent from the public checkout; score is a maintainer report, not an independently verified result."
+      }
     },
     {
       "provider": "psy:semantic-novelty",
@@ -363,6 +469,12 @@
             "evid-retry": 0.857
           }
         }
+      },
+      "verification": {
+        "class": "self-reported",
+        "ranking_eligible": false,
+        "evidence_scope": "public-synthetic-development",
+        "statement": "Implementation absent from the public checkout; score is a maintainer report, not an independently verified result."
       }
     },
     {
@@ -394,7 +506,13 @@
           }
         }
       },
-      "note": "self-baseline decision layer for LONG real traces; inert here because its burn-in exceeds these 4-5 step synthetic traces"
+      "note": "self-baseline decision layer for LONG real traces; inert here because its burn-in exceeds these 4-5 step synthetic traces",
+      "verification": {
+        "class": "public-reproducible",
+        "ranking_eligible": true,
+        "evidence_scope": "public-synthetic-development",
+        "statement": "Implementation and scorer are public; CI can recompute this result."
+      }
     },
     {
       "provider": "selfcal:evidence-novelty",
@@ -425,7 +543,13 @@
           }
         }
       },
-      "note": "self-baseline decision layer for LONG real traces; inert here because its burn-in exceeds these 4-5 step synthetic traces"
+      "note": "self-baseline decision layer for LONG real traces; inert here because its burn-in exceeds these 4-5 step synthetic traces",
+      "verification": {
+        "class": "public-reproducible",
+        "ranking_eligible": true,
+        "evidence_scope": "public-synthetic-development",
+        "statement": "Implementation and scorer are public; CI can recompute this result."
+      }
     },
     {
       "provider": "sprt:gain-shift",
@@ -455,6 +579,12 @@
             "evid-retry": 0.75
           }
         }
+      },
+      "verification": {
+        "class": "public-reproducible",
+        "ranking_eligible": true,
+        "evidence_scope": "public-synthetic-development",
+        "statement": "Implementation and scorer are public; CI can recompute this result."
       }
     }
   ]

@@ -12,10 +12,10 @@ tiers, so the ladder engineers actually climb is visible end to end:
   generosity gyre.bench extends to naive sensors.
 - **Sensed tier (Gyre loops, E2).** The same routes, but triggered by an L1
   low-gain flag at a sensor operating point MEASURED on the synthetic corpus
-  (scripts/eval_evidence.py), for a weak (naive) and a strong (validated)
-  sensor. Fixed routes and the L5 divergent/convergent rule.
+  (scripts/eval_evidence.py), for a weak public proxy and a protected
+  development candidate. Fixed routes and the L5 divergent/convergent rule.
 - **Adaptive tier (Tier 3).** A belief + expected-value controller, loaded
-  through the proprietary controller seam (gyre.control.proprietary). On a
+  through the protected controller registry. On a
   clean public checkout this tier reports itself unavailable and everything
   else still runs; the oracle (true phase, true parameters — the regret floor)
   is public, so the size of the gap the adaptive tier closes is verifiable
@@ -53,7 +53,7 @@ _src = Path(__file__).resolve().parents[1] / "src"
 if str(_src) not in sys.path:
     sys.path.insert(0, str(_src))
 
-from gyre.control import ControlContext
+from gyre.control import ControlContext, get_controller
 from gyre.interfaces import ExitReason, LoopVerdict
 from gyre.loops.incubation import EinstellungBreaker
 from gyre.measurement import Meaning, Measurement
@@ -88,8 +88,8 @@ def oracle_q(V: float, divergent: bool, c_human: float):
     """Value iteration on the TRUE parameters — the public regret floor.
 
     This is deliberately public: the oracle is what makes the size of the gap
-    verifiable. Textbook finite-horizon planning; the private tier's value is
-    not this arithmetic, it is the validated belief filter and calibration
+    verifiable. Textbook finite-horizon planning; the protected tier's value is
+    not this arithmetic, it is the fitted belief filter and calibration
     that let a controller act near this floor WITHOUT seeing the true phase.
     """
     p_rf = P_REFRAME_DIV if divergent else P_REFRAME_CONV
@@ -212,7 +212,7 @@ class L5Policy:
         return CONT
 
 
-# --- adaptive tier: loaded through the proprietary controller seam ---------------
+# --- adaptive tier: loaded through the protected controller registry -----------
 
 _ROUTE_TO_ACTION = {
     ExitReason.CONTINUE: CONT,
@@ -230,7 +230,7 @@ def _flag_measurement(flag: bool) -> Measurement:
 
 
 class AdaptiveAdapter:
-    """Runs the real proprietary controller against the simulator by wrapping
+    """Runs the registered protected controller against the simulator by wrapping
     each flag as a calibrated L1 verdict — the same code path a production
     scaffold uses, not a reimplementation."""
 
@@ -261,21 +261,26 @@ class AdaptiveAdapter:
 
 
 def make_adaptive(delta: float, rng: random.Random, tpr: float, fpr: float):
-    """Construct the proprietary controller at (possibly warped) parameters.
+    """Construct the protected controller at (possibly warped) parameters.
     Returns None on a public checkout, and the ladder runs without the tier."""
     try:
-        from gyre.control.proprietary.adaptive_ev import AdaptiveEVController, WorldModel
-    except Exception:  # noqa: BLE001 - clean public checkout
+        controller = get_controller("psy:adaptive-ev")
+        world = replace(
+            controller.world,
+            p_success=P_SUCCESS,
+            q_stick=Q_STICK,
+            e_evidence=E_EVIDENCE,
+            p_reframe_div=P_REFRAME_DIV,
+            p_reframe_conv=P_REFRAME_CONV,
+            p_human=P_HUMAN,
+            ctx_loss=CTX_LOSS,
+        )
+    except (KeyError, AttributeError):
         return None
 
     def warp(p: float) -> float:
         return min(0.95, max(0.01, p * math.exp(delta * rng.gauss(0, 1))))
 
-    world = WorldModel(
-        p_success=P_SUCCESS, q_stick=Q_STICK, e_evidence=E_EVIDENCE,
-        p_reframe_div=P_REFRAME_DIV, p_reframe_conv=P_REFRAME_CONV,
-        p_human=P_HUMAN, ctx_loss=CTX_LOSS,
-    )
     if delta > 0.0:
         world = replace(world, **{
             f: warp(getattr(world, f))
@@ -283,9 +288,9 @@ def make_adaptive(delta: float, rng: random.Random, tpr: float, fpr: float):
                       "p_reframe_conv", "p_human", "ctx_loss")
         })
         tpr, fpr = warp(tpr), warp(fpr)
-    controller = AdaptiveEVController(
-        sensor_tpr=min(tpr, 1.0), sensor_fpr=min(fpr, 0.9), world=world
-    )
+    controller.sensor_tpr = min(tpr, 1.0)
+    controller.sensor_fpr = min(fpr, 0.9)
+    controller.world = world
     return AdaptiveAdapter(controller, f"{delta:.1f}")
 
 
@@ -463,8 +468,8 @@ def main() -> int:
             for delta in (0.0, 0.3, 0.6):
                 res = evaluate_adaptive(delta, 20260717, tpr, fpr, n, heterogeneous, c_human)
                 if res is None:
-                    print("  adaptive tier unavailable (proprietary controller not "
-                          "present — see src/gyre/control/proprietary/README.md)")
+                    print("  adaptive tier unavailable (protected controller not "
+                          "registered)")
                     break
                 adaptive_rows.append(Row(f"adaptive d={delta:.1f}", *res))
             _print_rows(adaptive_rows, oracle_row.mean)

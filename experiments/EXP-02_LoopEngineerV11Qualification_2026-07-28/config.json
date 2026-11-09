@@ -1,0 +1,134 @@
+{
+  "experiment_id": "EXP-02",
+  "name": "Loop Engineer v1.1 Qualification",
+  "date": "2026-07-28",
+  "random_seed": 2026072802,
+  "arms": [
+    "bare",
+    "template",
+    "skill"
+  ],
+  "generators": {
+    "models": [
+      "qwen/qwen3-coder",
+      "deepseek/deepseek-v3.2"
+    ],
+    "temperature": 0.2,
+    "max_tokens": 3200,
+    "replicate_seeds": [
+      311,
+      733
+    ],
+    "request_overrides": {
+      "qwen/qwen3-coder": {
+        "response_format": {
+          "type": "json_object"
+        }
+      },
+      "deepseek/deepseek-v3.2": {
+        "response_format": {
+          "type": "json_object"
+        }
+      }
+    }
+  },
+  "repair": {
+    "max_repairs": 1,
+    "feedback": "Return only the public-validator and held-out contract-check failures. Do not disclose checks that already passed."
+  },
+  "judges": {
+    "comparison": "skill_vs_template",
+    "models": [
+      "openai/gpt-5.4-mini",
+      "mistralai/mistral-small-3.2-24b-instruct",
+      "anthropic/claude-sonnet-4.6"
+    ],
+    "temperature": 0.0,
+    "max_tokens": 900,
+    "swap_order": true,
+    "request_overrides": {
+      "openai/gpt-5.4-mini": {
+        "response_format": {
+          "type": "json_object"
+        }
+      },
+      "mistralai/mistral-small-3.2-24b-instruct": {
+        "response_format": {
+          "type": "json_object"
+        }
+      },
+      "anthropic/claude-sonnet-4.6": {
+        "response_format": {
+          "type": "json_object"
+        }
+      }
+    }
+  },
+  "prices_usd_per_token": {
+    "qwen/qwen3-coder": {
+      "prompt": 0.0000003,
+      "completion": 0.000001
+    },
+    "deepseek/deepseek-v3.2": {
+      "prompt": 0.000000269,
+      "completion": 0.0000004
+    },
+    "openai/gpt-5.4-mini": {
+      "prompt": 0.00000075,
+      "completion": 0.0000045
+    },
+    "mistralai/mistral-small-3.2-24b-instruct": {
+      "prompt": 0.0000001,
+      "completion": 0.0000003
+    },
+    "anthropic/claude-sonnet-4.6": {
+      "prompt": 0.000003,
+      "completion": 0.000015
+    }
+  },
+  "max_cost_usd": 2.0,
+  "frozen": {
+    "skill_version": "1.1.0",
+    "skill_sha256": "7f9c06be1da3129653698dec774382bafb963d695a988ce01fe1b3a54f7b6585",
+    "asset_sha256": "3080fcea6ba084123af5b6d19cfca3a15ce2b9bb890043895778508283a574a5",
+    "validator_sha256": "265e9fb3591307c24cd2c991e2c703d686974722d4bb5a2fa068d43c8beeb055",
+    "base_commit": "dc0b8f0bbae108436a1b50887d4bfa36a9df5b1f"
+  },
+  "tasks": [
+    {
+      "id": "database_migration",
+      "stratum": "targeted",
+      "title": "Bounded multi-tenant database migration",
+      "brief": "Design a control graph for applying an irreversible schema migration across 250 customer databases. A dry run, verified backup, and rollback route are mandatory. Run at most 5 tenant migrations concurrently and remain inside a 25-minute maintenance window. A human database owner must approve every transition from dry run to a live destructive migration. Stop and roll back after 2 failed verification attempts for a tenant. Preserve an idempotent per-tenant ledger so interruption cannot duplicate work."
+    },
+    {
+      "id": "adaptive_batch",
+      "stratum": "targeted",
+      "title": "Adaptive multi-tenant document batch",
+      "brief": "Design a control graph for processing documents from multiple tenants within 18 minutes and USD 12, using at most 6 workers. Tenant failures must be isolated. Proposed adaptive scaling must remain in shadow mode while its recommendations are evaluated; record worker-start and state-merge costs and require hysteresis before any future promotion. Pause after 3 consecutive rate-limit signals. Replaying records that contain personal information requires human approval."
+    },
+    {
+      "id": "evaluation_adjudication",
+      "stratum": "transfer",
+      "title": "Correlated model-evaluation adjudication",
+      "brief": "Design a graph that adjudicates a benchmark result using at most 24 judgements drawn from at most 4 model families. Multiple models from one vendor or lineage are correlated and must not be counted as independent corroboration. Preserve disagreements rather than averaging them away. Compare the graph with a fixed three-judge baseline under the same budget. Treat unqualified judge signals as raw rather than calibrated. A human benchmark owner must approve external release."
+    },
+    {
+      "id": "privacy_onboarding",
+      "stratum": "transfer",
+      "title": "Privacy-sensitive customer onboarding",
+      "brief": "Design a graph for onboarding a customer using identity and consent documents. Personal information must never be sent to the analytics node. Retain documents for no more than 30 days and complete deletion within 24 hours of consent withdrawal. Send at most 2 reminder cycles for missing documents. A human compliance owner must approve account activation. Consent withdrawal invalidates accumulated state and must trigger a reset and deletion route."
+    }
+  ],
+  "decision_gate": {
+    "primary_arm": "skill",
+    "primary_baseline": "template",
+    "minimum_skill_joint_pass_rate": 0.75,
+    "minimum_paired_risk_difference": 0.2,
+    "maximum_skill_safety_failures": 0,
+    "maximum_completion_token_ratio": 1.5,
+    "fallback_efficiency": "Pass when cost per joint success is no higher than template even if the token ratio exceeds 1.5.",
+    "transfer_requirement": "The skill must not have a negative paired joint-pass difference in the two transfer tasks.",
+    "secondary_judge_requirement": "At least 60% of non-inconsistent, non-tie order-swapped panel preferences favour the skill."
+  }
+}

@@ -6,7 +6,7 @@
       "status": "confirmed",
       "public_allowed": true,
       "tier": "synthetic",
-      "evidence": "scripts/eval_synthetic.py + gyre.bench (per-trace reset default); internal E1 record 2026-07-17",
+      "evidence": "scripts/challenge.py + gyre.bench (per-trace reset default); internal E1 record 2026-07-17",
       "caveat_markers": [
         "synthetic"
       ],

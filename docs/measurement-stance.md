@@ -32,7 +32,10 @@ This is "open method, closed pipeline," and it is the same fence serious measure
 This is not just a policy, it is the architecture. Loops are controllers and measurements are sensors, joined by a `MeasurementProvider` interface, and the loop never imports a concrete sensor (see [architecture.md](architecture.md)). That seam is what lets the fence be clean rather than grudging:
 
 - The **loops**, the **measurement seam**, the **naive baseline sensors**, and the **benchmark harness** are all public. Everything runs out of the box on the baselines.
-- **Validated instruments** plug into the same interface from a gitignored layer. A public checkout simply has none and falls back to the baselines. Nothing about the loop changes; only the quality of the signal does.
+- **Protected candidates** plug into the same interface from a gitignored layer.
+  A public checkout simply has none and falls back to the baselines. Nothing
+  about the loop changes. A candidate becomes a validated instrument only after
+  the required evidence gates pass.
 
 So "open method, closed instrument" is literally true: the method is the public interface plus the [build guide](building-measurements.md), and the closed part is a set of provider implementations behind the fence, not a secret woven through the control code.
 

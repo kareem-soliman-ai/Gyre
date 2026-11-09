@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0",
+  "receipt_type": "gyre-sensor-score",
+  "created_at": "2026-07-28T23:54:30.603570+00:00",
+  "submitter": "gyre-maintainers",
+  "provider": "naive:diff-novelty",
+  "implementation": {
+    "visibility": "public",
+    "factory": "gyre.providers.naive:DiffNoveltyProvider"
+  },
+  "verification": {
+    "class": "public-reproducible",
+    "ranking_eligible": true,
+    "evidence_scope": "public-synthetic-development",
+    "statement": "CI can import and recompute this public implementation."
+  },
+  "score": {
+    "provider": "naive:diff-novelty",
+    "corpora": {
+      "difficulty": {
+        "f1": 0.885,
+        "precision": 0.92,
+        "recall": 0.852,
+        "calibrated": false,
+        "cells": {
+          "depletion": 1.0,
+          "easy": 1.0,
+          "edge": 0.0,
+          "hard": 0.818
+        }
+      },
+      "evidence": {
+        "f1": 0.886,
+        "precision": 0.838,
+        "recall": 0.939,
+        "calibrated": false,
+        "cells": {
+          "evid-easy": 1.0,
+          "evid-hard": 1.0,
+          "evid-pivot": 0.0,
+          "evid-progress": 0.0,
+          "evid-retry": 0.857
+        }
+      }
+    }
+  },
+  "scorer": {
+    "command": "python scripts/challenge.py",
+    "files_sha256": {
+      "scripts/challenge.py": "f65ae2bf6b3fc6fd9f690e9b84c55cd923530db6026c8ab05012880e725c8161",
+      "src/gyre/bench.py": "e235d2c5c4441265c66a852d8deb10550d36509d87ba390b991ac49b28a96abd",
+      "src/gyre/synthetic.py": "cb02dfe6392c924eddd7a4d053c95f9bc5b81328e6a078b16324a142ff36bf17"
+    }
+  },
+  "environment": {
+    "python": "3.11.15",
+    "platform": "Windows-10-10.0.26200-SP0"
+  },
+  "git": {
+    "commit": "dc0b8f0bbae108436a1b50887d4bfa36a9df5b1f",
+    "dirty": true
+  }
+}

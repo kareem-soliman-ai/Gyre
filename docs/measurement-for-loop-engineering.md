@@ -1,5 +1,9 @@
 # Your agent loop is only as good as the evidence it runs on
 
+> For the compact repository synthesis, start with
+> [Gyre's Major Lessons](LESSONS.md). This document retains the full
+> measurement-science argument and experiment design.
+
 **A measurement-science account of loop engineering: why sensors, controllers and outcomes have to be separated, and how to run the experiment that tells you which one is broken.**
 
 Audience: engineers building agentic systems. No psychology background assumed. Every unfamiliar idea is bridged to something you already use.
@@ -297,10 +301,13 @@ The general principle, borrowed from psychometrics: **convergent validity requir
 - The **seams**: `MeasurementProvider` (sensors) and the controller interfaces, so nothing is fused.
 - **Naive baseline sensors** that are real, usable, and honest about being crude.
 - **Labelled synthetic corpora** *with their generators visible*, so you can audit exactly what each case contains rather than trusting a description.
-- A **benchmark** that is deliberately generous to challengers: if your sensor returns raw values, the harness sweeps every threshold and reports your best case. Validated instruments get no such favour — they are scored on their own decisions.
+- A **benchmark** that is deliberately generous to challengers: if your sensor returns raw values, the harness sweeps every threshold and reports your best case. Self-deciding providers get no such favour — they are scored on their own decisions.
 - A **published scoreboard**, generated from a bench run rather than hand-written, plus two CI gates: one checking every public claim is tagged to a ledger entry, and one re-deriving the cited figures to make sure they still reproduce. A number that goes stale turns the build red instead of quietly staying wrong.
 
-**Private — the things that make an instrument validated rather than plausible:** fitted operating points, corrected mechanisms, and the labelled corpora they were earned on. Open method, closed instrument. The method is fully described; what stays behind the fence is the calibration, because a measurement that ships its fitted constants is a measurement you can game.
+**Private — the fitted machinery and protected evidence assets:** fitted
+operating points, corrected mechanisms, and protected corpora. Open method,
+protected instrument. Keeping an implementation private does not validate it;
+validation still depends on the stated evidence gate.
 
 **The invitation is adversarial by design.** Bring your own sensor:
 

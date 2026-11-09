@@ -26,10 +26,8 @@ the right sensor for the depletion morphology Gyre's plant cells model.
 
 Provenance
 ----------
-This implementation is ported from Aurora's
-``npbi.navigation.marginal_value`` module, which itself was built from the
-standalone MVT-falsifier work in EXP-UN-14. The shape and semantics are
-preserved; what changes is the *output*: the original module returned a
+This implementation adapts an earlier marginal-value prototype. The shape and
+semantics are preserved; what changes is the *output*: the original module returned a
 ``MarginalValueDecision`` for a dispatch layer to consume, while this one
 returns a ``Measurement`` so a ``RuminationMonitor`` can drive it
 transparently.  The controller-side decision is unchanged: STAY <-> CONTINUE,
@@ -51,8 +49,8 @@ from gyre.measurement import Meaning, Measurement
 
 # ---------------------------------------------------------------------------
 # Snapshot data structures — the MVT's domain model.
-# Reproduced from Aurora so downstream code in the wider portfolio that
-# knows the shape can construct ``MarginalValueContext``s directly.
+# Kept explicit so downstream code can construct ``MarginalValueContext``s
+# directly.
 # ---------------------------------------------------------------------------
 
 
@@ -106,7 +104,6 @@ def marginal_value_decision(context: MarginalValueContext) -> MarginalValueDecis
 
 # ---------------------------------------------------------------------------
 # The Gyre-flavoured measurement provider.
-# Imported / ported from Aurora's ``npbi.navigation.marginal_value``.
 # ---------------------------------------------------------------------------
 
 

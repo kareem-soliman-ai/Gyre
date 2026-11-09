@@ -230,7 +230,7 @@ def test_build_panel_labels_budget_forces_majority_fallback():
     assert summary["human_needed"] == 1
 
 
-# --- source-family quorum (vendored from Aurora EXP-UN-02) ---
+# --- source-family quorum ---
 
 
 class _FamilyJudge:
@@ -336,7 +336,7 @@ def test_build_panel_labels_marks_inadmissible_steps():
     assert summary["inadmissible"] == 1
 
 
-# --- design-tagged per-cell qualification (vendored from ConstructLens EQA) -----
+# --- design-tagged per-cell qualification ---
 
 from gyre.labeling import qualify_judge_by_cell  # noqa: E402
 
@@ -377,7 +377,7 @@ def test_clean_judge_qualifies_across_cells():
     assert set(q.cell_minority_recall) == {"easy", "depletion"}
 
 
-# --- verbatim-evidence validity + calibration gap (vendored from Firasa EQA) ----
+# --- verbatim-evidence validity + calibration gap ---
 
 from gyre.labeling import (  # noqa: E402
     JudgeVerdict as _JV,
@@ -427,7 +427,7 @@ def test_qualify_judge_applies_evidence_bar_when_supplied():
     assert any("evidence" in r for r in q.reasons)
 
 
-# --- per-cell SWA judge profiles + router (vendored from Firasa EQA-replication) -
+# --- per-cell SWA judge profiles + router ---
 
 from gyre.labeling import (  # noqa: E402
     profile_judge_by_cell,

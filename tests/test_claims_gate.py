@@ -1,4 +1,4 @@
-"""Claims-integrity gate (vendored from facet's science-bundle check_claims).
+"""Claims-integrity gate adapted from an earlier science-bundle checker.
 
 The rule it enforces: a public claim cannot outlive the evidence behind it.
 Every headline number in a public doc carries a claim tag bound to a ledger

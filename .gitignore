@@ -24,9 +24,34 @@ src/gyre/control/proprietary/*
 !src/gyre/control/proprietary/__init__.py
 !src/gyre/control/proprietary/README.md
 
+# Private experiment drivers and verification scaffolds. Public scripts must
+# run against registry/interface seams without importing private machinery.
+scripts/private/
+scripts/*proprietary*.py
+experiments/private/
+tests/private/
+tests/test_proprietary_*.py
+
 # Labelled trace corpora used to validate measurements (a separate asset)
 traces/private/
 benchmarks/private/
+
+# Contributors may develop proprietary contenders here. The directory itself
+# is ignored; only deliberately generated receipts under benchmarks/submissions
+# should be submitted.
+contenders/private/
+
+# Video source clips and masters are bulk data stored on D:. Keep only scripts,
+# prompts, captions, pointers, and render receipts in the repository.
+videos/raw/
+videos/renders/
+videos/exports/
+videos/**/*.mp4
+videos/**/*.mov
+videos/**/*.mkv
+videos/**/*.webm
+videos/**/*.wav
+videos/**/*.flac
 
 # --- Session/agent artefacts ---
 .remember/
@@ -57,5 +82,7 @@ Thumbs.db
 .idea/
 .vscode/
 
-# Private sensor/controller tests (filenames + contents would reveal the instruments)
-tests/test_proprietary_*.py
+# Ecosystem pointer files injected by a private tooling repo; they describe
+# local machine paths and are not part of the public project.
+CLAUDE.md
+AGENTS.md

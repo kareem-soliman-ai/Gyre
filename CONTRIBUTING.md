@@ -1,6 +1,7 @@
 # Contributing to Gyre
 
-Gyre is a catalogue, and catalogues get better when more people who know the source material check the entries. There are three kinds of contribution, in rough order of how much I want them.
+Gyre is a catalogue and a measurement playground. Both get better when people
+test their seams. There are four kinds of contribution.
 
 ## 1. Argue with a translation
 
@@ -26,10 +27,45 @@ The `Buildable` and `Instrument` patterns can be implemented against the [`LoopM
 
 **No performance claims without validation.** You may contribute a detector and describe its method. You may not claim it "saves X" or "catches Y%" unless you have validated it against real agent traces with labelled ground truth, and you attach the sample, the method, and the caveats. A detector that reports a confident number it has not earned is a liability, and this repository will not ship one. [docs/measurement-stance.md](docs/measurement-stance.md) explains why in full. This is not bureaucracy; it is the difference between a measurement and a guess with a decimal point.
 
+## 4. Add a control case
+
+The [Loop Control Lab](docs/loop-control-playground.md) needs cases from real
+developer work. Copy an object in
+[`docs/examples/loop-control-cases.json`](docs/examples/loop-control-cases.json)
+and keep these rules:
+
+1. separate `objective_outcome` from `human_acceptance`;
+2. declare consequence, ambiguity, reversibility, verification, recovery, and
+   the evidence for any capability lead;
+3. include the strongest credible alternative route;
+4. state where the human can request evidence, change the criterion, change
+   authority, pause, or terminate;
+5. label synthetic or illustrative outcomes as such.
+
+Run `python scripts/loop_playground.py --cases your-cases.json --level expert`
+before opening a PR. A useful case can falsify a controller or expose a missing
+action. It does not need to make Gyre look good.
+
+## 5. Extend the Alien Factory
+
+The [Alien Factory expedition](docs/observer-effects-challenge.md) accepts new
+public synthetic world families when they teach a distinct causal or
+measurement problem.
+
+Keep immutable variable IDs separate from participant-created aliases. Do not
+score whether someone guessed an intended narrative label. Score prospective
+predictions, interventions, and objective terminal outcomes. Declare the
+possible mechanism class in standard mode and audit whether the realised world
+is identifiable under its information budget.
+
+Synthetic profile constants are public challenge fixtures, not fitted
+instrument parameters. Do not copy validated private mechanisms, operating
+points, calibration data, or learned controller parameters into the simulator.
+
 ## Style and mechanics
 
 - Prose is Australian English. Cite accurately. No em dashes if you can help it, but that is a preference, not a gate.
-- Python targets 3.10+, standard library only for the interfaces layer (keep the vocabulary dependency-free). Detectors may pull dependencies; declare them.
+- Python targets 3.11+, standard library only for the interfaces layer (keep the vocabulary dependency-free). Detectors may pull dependencies; declare them.
 - Run the tests before a PR: `pip install -e ".[dev]" && pytest`.
 - Keep the pattern-doc format fixed. The uniformity is a feature; it is what lets someone scan any entry the same way.
 

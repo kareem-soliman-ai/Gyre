@@ -9,7 +9,7 @@ the `__init__.py` stub. Everything else you drop here stays local.
 The control seam (`gyre.control`), the reference controllers (fixed-route,
 L5-informed), and the controller-gap experiment
 (`scripts/exp_controller_gap.py`) are all public and stay that way. The
-experiment is also the honest sales pitch for what sits behind this fence: no
+experiment is also the public test for what sits behind this fence: no
 fixed route is safe across cost regimes — the best fixed policy under cheap
 escalation is nearly the worst when human attention gets expensive — and a
 context-conditioned controller closes most of the gap to oracle routing.
@@ -17,9 +17,9 @@ context-conditioned controller closes most of the gap to oracle routing.
 What is not open is the adaptive controller itself. The L7 pattern doc says why
 in one line: a controller that decides an agent's mode-switching will be
 brittle in exactly the situations where you needed it most unless it is built
-against validated sensors and validated itself. Handing out a sketch with a
-confident voice would be worse than handing out nothing. The interface is
-public; the validated implementation has a price on it.
+against qualified sensors and validated itself. Handing out a sketch with a
+confident voice would be worse than handing out nothing. The interface and
+evaluation method are public; fitted implementations remain protected.
 
 ## The contract
 

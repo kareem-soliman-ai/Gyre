@@ -68,14 +68,13 @@ register("ar1:residual", Ar1ResidualSensor)
 from gyre.providers.fusion import SensorFusionGate  # noqa: E402
 
 # --- register the MVT rumination sensor (A4 from the taxonomy) ---
-# Imported from Aurora's npbi.navigation.marginal_value; refactored
-# behind the MeasurementProvider seam.
+# Refactored from an earlier marginal-value prototype behind the
+# MeasurementProvider seam.
 from gyre.providers.mvt_rumination import MvtRuminationSensor  # noqa: E402
 register("mvt:rumination", MvtRuminationSensor)
 
 # --- register the VoI stopping sensor (A6 from the taxonomy) ---
-# Ported from Aurora's npbi.inference.value_of_information; wired behind the
-# L2 (calibration) seam.
+# Wired behind the L2 (calibration) seam.
 from gyre.providers.value_of_information import ValueOfInformationProvider  # noqa: E402
 register("voi:commit-stop", ValueOfInformationProvider)
 

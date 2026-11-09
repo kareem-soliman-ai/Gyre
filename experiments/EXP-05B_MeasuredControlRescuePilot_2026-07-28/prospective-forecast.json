@@ -1,0 +1,26 @@
+{
+  "locked_before_final_evaluation": true,
+  "forecaster": "system",
+  "calibration_status": "uncalibrated_on_this_task_family",
+  "expected_score": 97.0,
+  "score_band_probabilities": {
+    "0-79": 0.03,
+    "80-94": 0.12,
+    "95-100": 0.85
+  },
+  "category_pass_probabilities": {
+    "behavioral_conformance": 0.97,
+    "regression_preservation": 0.99,
+    "robustness_metamorphic": 0.94,
+    "recovery_replay_idempotency": 0.93,
+    "performance_boundary": 0.98
+  },
+  "human_forecast": null,
+  "human_forecast_note": "No independent task-outcome forecast was collected before this run.",
+  "probe_value_estimate": {
+    "expected_score_gain": 0.5,
+    "decision": "do_not_probe",
+    "reason": "The candidate already passes fresh local contract tests; a development probe has low expected value and consumes optionality."
+  }
+}
+
